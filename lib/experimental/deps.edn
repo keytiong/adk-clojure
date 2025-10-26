@@ -1,0 +1,10 @@
+{:paths
+ ["src/main/clojure" "src/main/java" "target/classes"]
+
+ :deps
+ {io.kosong.adk/adk-clojure {:local/root "../core"}
+  }
+
+ :aliases
+ {:build {:deps       {io.github.clojure/tools.build {:mvn/version "0.10.10"}}
+          :ns-default build}}}

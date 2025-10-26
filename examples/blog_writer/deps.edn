@@ -1,0 +1,11 @@
+{:paths ["src"]
+ :deps
+ {org.clojure/clojure       {:mvn/version "1.12.3"}
+  selmer/selmer             {:mvn/version "1.12.65"}
+  io.kosong.adk/adk-clojure {:local/root "../../lib/core"}}
+
+ :aliases
+ {:adk-web {:extra-deps {io.kosong.adk/adk-clojure-dev {:local/root "../../lib/dev"}}
+            :exec-fn    io.kosong.adk.web/run
+            :exec-args  {:port             8080
+                         :agent-namespaces [agents.blog-writer]}}}}
