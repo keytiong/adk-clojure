@@ -17,7 +17,8 @@
                     :lib       lib
                     :version   version
                     :basis     @basis
-                    :src-dirs  ["src/main/clojure"]})
+                    :src-dirs  ["src/main/clojure"]
+                    :resource-dirs ["src/main/resources"]})
       (b/copy-dir {:src-dirs   ["src/main/clojure" "src/main/resources"]
                    :target-dir class-dir})
       (b/jar {:class-dir class-dir

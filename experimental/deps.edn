@@ -8,5 +8,14 @@
   }
 
  :aliases
- {:build {:deps       {io.github.clojure/tools.build {:mvn/version "0.10.10"}}
-          :ns-default build}}}
+ {:build
+  {:deps       {io.github.clojure/tools.build {:mvn/version "0.10.10"}}
+   :ns-default build}
+
+  :deploy
+  {:extra-deps {slipset/deps-deploy {:mvn/version "0.2.2"}}
+   :exec-fn    deps-deploy.deps-deploy/deploy
+   :exec-args  {:installer      :remote
+                :sign-releases? true
+                :pom-file       "target/classes/META-INF/maven/io.kosong.adk/adk-clojure-experimental/pom.xml"
+                :artifact       "target/adk-clojure-experimental-0.1.0-SNAPSHOT.jar"}}}}
