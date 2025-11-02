@@ -1,10 +1,10 @@
 {:paths ["src"]
  :deps
  {org.clojure/clojure       {:mvn/version "1.12.3"}
-  io.kosong.adk/adk-clojure {:local/root "../../lib/core"}}
+  io.kosong.adk/adk-clojure {:local/root "../../core"}}
 
  :aliases
- {:adk-web {:extra-deps {io.kosong.adk/adk-clojure-dev {:local/root "../../lib/dev"}}
+ {:adk-web {:extra-deps {io.kosong.adk/adk-clojure-dev {:local/root "../../dev"}}
             :exec-fn    io.kosong.adk.web/run
             :exec-args  {:port             8080
                          :agent-namespaces [agents.multi-tool]}}}}
