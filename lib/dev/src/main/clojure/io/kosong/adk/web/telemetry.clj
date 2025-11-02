@@ -33,18 +33,27 @@
 
 (defn store-span
   [trace-store ^SpanData span]
+  (let [span-map  (as-span-map span)
+        span-id   (get span-map "span_id")
+        trace-id  (get span-map "trace_id")
+        event-id  (get-in span-map ["attributes" "gcp.vertex.agent.event_id"])
+        update-fn (fn [store span]
+                    (-> store
+                        (update :spans assoc span-id span)
+                        (update-in [:trace->span-index trace-id] (fn [span-ids] (if span-ids (conj span-ids span-id) [span-id])))
+                        (update-in [:event->span-index] assoc event-id span-id)))]
+    (swap! trace-store update-fn span-map)))
+
+(defn map-session-trace
+  [trace-store ^SpanData span]
   (let [span-map   (as-span-map span)
-        span-id    (get span-map "span_id")
         trace-id   (get span-map "trace_id")
-        event-id   (get-in span-map ["attributes" "gcp.vertex.agent.event_id"])
         session-id (get-in span-map ["attributes" "gcp.vertex.agent.session_id"])
-        f          (fn [store span]
+        update-fn  (fn [store span]
                      (-> store
-                         (update :spans assoc span-id span)
-                         (update-in [:trace->span-index trace-id] (fn [span-ids] (if span-ids (conj span-ids span-id) [span-id])))
                          (update-in [:session->trace-index session-id] (fn [trace-ids] (if trace-ids (conj trace-ids trace-id) [trace-id])))
-                         (update-in [:event->span-index] assoc event-id span-id)))]
-    (swap! trace-store f span-map)))
+                         ))]
+    (swap! trace-store update-fn span-map)))
 
 (defn ->api-server-span-exporter
   [trace-store]
@@ -56,7 +65,9 @@
           (when (or (= span-name "call_llm")
                     (= span-name "send_data")
                     (clojure.string/starts-with? span-name "tool_response"))
-            (store-span trace-store span))))
+            (store-span trace-store span))
+          (when (= span-name "call_llm")
+            (map-session-trace trace-store span))))
       (CompletableResultCode/ofSuccess))
 
     (^CompletableResultCode flush

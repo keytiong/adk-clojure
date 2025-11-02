@@ -9,7 +9,7 @@
              Callbacks$AfterToolCallback Callbacks$AfterToolCallbackBase Callbacks$BeforeAgentCallback Callbacks$BeforeAgentCallbackBase Callbacks$BeforeModelCallback Callbacks$BeforeModelCallbackBase
              Callbacks$BeforeToolCallback Callbacks$BeforeToolCallbackBase Instruction Instruction$Provider Instruction$Static InvocationContext ReadonlyContext
              RunConfig RunConfig$Builder)
-           (com.google.adk.models LlmRequest LlmResponse)
+           (com.google.adk.models LlmRequest LlmRequest$Builder LlmResponse)
            (com.google.adk.tools BaseTool ToolContext)
            (com.google.genai.types AudioTranscriptionConfig)
            (io.reactivex.rxjava3.core Maybe Single)
@@ -56,11 +56,10 @@
   IFn
   (into-before-model-callback [f]
     (reify Callbacks$BeforeModelCallback
-      (^Maybe call [_ ^CallbackContext context ^LlmRequest llm-request]
+      (^Maybe call [_ ^CallbackContext context ^LlmRequest$Builder llm-request-builder]
         (try
-          (let [llm-request-m  (datafy llm-request)
-                context-m      (datafy context)
-                llm-response-m (f context-m llm-request-m)]
+          (let [context-m      (datafy context)
+                llm-response-m (f context-m llm-request-builder)]
             (if llm-response-m
               (Maybe/just (p/into-llm-response llm-response-m))
               (Maybe/empty)))

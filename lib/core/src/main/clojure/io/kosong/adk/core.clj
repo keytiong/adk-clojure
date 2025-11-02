@@ -46,12 +46,15 @@
        (io.kosong.adk.sessions/create-session session-service app-name user-id state)))))
 
 (defn agent-context
-  [& {:keys [app-name user-id agent session-service artifact-service session]}]
+  [& {:keys [app-name user-id agent session-service artifact-service memory-service session
+             plugins]}]
   (let [session-service  (or session-service (io.kosong.adk.sessions/in-memory-session-service))
         artifact-service (or artifact-service (io.kosong.adk.artifacts/in-memory-artifact-service))]
     (cond-> {}
             (some? session-service) (assoc :session-service session-service)
             (some? artifact-service) (assoc :artifact-service artifact-service)
+            (some? memory-service) (assoc :memory-service memory-service)
+            (some? plugins) (assoc :plugins plugins)
             (some? session) (assoc :session session)
             (some? app-name) (assoc :app-name app-name)
             (some? user-id) (assoc :user-id user-id)
@@ -263,9 +266,11 @@
   ([context agent user-content run-config]
    (let [session-service       (:session-service context)
          artifact-service      (:artifact-service context)
+         memory-service        (:memory-service context)
+         plugins               (:plugins context)
          app-name              (resolve-app-name context)
          ^Session session      (get-or-create-session context)
-         runner                (Runner. agent app-name artifact-service session-service)
+         runner                (Runner. agent app-name artifact-service session-service memory-service plugins)
          ^Content content      (p/into-content user-content)
          ^RunConfig run-config (if (some? run-config)
                                  (p/into-run-config run-config)

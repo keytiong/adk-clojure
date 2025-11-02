@@ -3,7 +3,7 @@
             [io.kosong.adk.protocols :as p]
             [io.kosong.adk.utils :refer [optional-datafy-assoc]])
   (:import (clojure.lang IPersistentMap)
-           (com.google.adk.models LlmRegistry LlmRegistry$LlmFactory LlmRequest LlmResponse)
+           (com.google.adk.models LlmRegistry LlmRegistry$LlmFactory LlmRequest LlmRequest$Builder LlmResponse)
            (com.google.genai.types EditImageParameters$Builder FinishReason GenerateContentConfig HttpOptions)))
 
 
