@@ -14,18 +14,17 @@ This is adk-clojure, a Clojure wrapper for Google's Agent Development Kit (ADK) 
 
 ```bash
 # Build core library (includes Java compilation)
-cd lib/core
+cd core
 clojure -T:build clean
-clojure -T:build javac
 clojure -T:build jar
 
 # Build dev library (no Java compilation needed)
-cd lib/dev
+cd dev
 clojure -T:build clean
 clojure -T:build jar
 ```
 
-The core library includes custom Java classes (`ClojureFunctionTool.java` and `ClojureAgent.java`) that must be compiled before building the JAR. The dev library has no Java sources.
+The core library includes custom Java classes (`ClojureFunctionTool.java` and `ClojureAgent.java`) that must be compiled before building the JAR. The `jar` task automatically runs Java compilation via the `:deps/prep-lib` hook. The dev library has no Java sources.
 
 ### Running Examples
 
@@ -41,9 +40,10 @@ clojure -M -m agents.blogger
 
 ### REPL Development
 
-The recommended workflow is REPL-driven from the project root:
+The recommended workflow is REPL-driven from the `dev-resources` directory:
 
 ```bash
+cd dev-resources
 clojure -M:dev
 ```
 
@@ -51,11 +51,20 @@ Then in the REPL:
 
 ```clojure
 (require '[io.kosong.adk.web :as adk-web])
-(adk-web/main ["config.edn"])
 
-;; Register agents dynamically
-(require 'agents.chatbot)
-(adk-web/load-agent-registry! 'agents.chatbot)
+;; Start web server with agent namespaces
+(adk-web/run {:port 8080
+              :agent-namespaces ['agents.chatbot 'agents.blogger]})
+
+;; Stop web server
+(adk-web/stop!)
+```
+
+Alternatively, run examples with their ADK web alias:
+
+```bash
+cd examples/chatbot
+clojure -X:adk-web
 ```
 
 ## Architecture
@@ -64,13 +73,13 @@ Then in the REPL:
 
 The architecture uses Clojure protocols extensively to provide seamless bidirectional conversion between Clojure data structures and Google ADK Java objects. This pattern is central to the entire codebase:
 
-**Protocols** (`lib/core/src/main/clojure/io/kosong/adk/protocols.clj`):
+**Protocols** (`core/src/main/clojure/io/kosong/adk/protocols.clj`):
 - Define ~30 conversion protocols organized by domain
 - Agent-related: `IntoAgent`, `IntoTool`, `IntoInstruction`, `IntoRunConfig`, callback protocols
 - Type-related: `IntoPart`, `IntoContent`, `IntoBlob`, `IntoSchema`, `IntoFunctionCall`, etc.
 - All conversions flow through these protocols for consistency
 
-**Type Implementations** (`lib/core/src/main/clojure/io/kosong/adk/types.clj`):
+**Type Implementations** (`core/src/main/clojure/io/kosong/adk/types.clj`):
 - Extend `Datafiable` protocol for Java→Clojure (using `datafy`)
 - Extend `Into*` protocols for Clojure→Java (e.g., `into-content`, `into-part`)
 - Enable transparent use of Clojure maps where Java objects are expected
@@ -96,13 +105,13 @@ The architecture uses Clojure protocols extensively to provide seamless bidirect
 
 Two critical Java classes bridge Clojure and ADK Java:
 
-**ClojureFunctionTool** (`lib/core/src/main/java/io/kosong/adk/tools/ClojureFunctionTool.java`):
+**ClojureFunctionTool** (`core/src/main/java/io/kosong/adk/tools/ClojureFunctionTool.java`):
 - Automatically converts Clojure functions (vars) into ADK tools
 - Extracts function metadata (name, docstring, arglists) to generate tool schemas
 - Uses var metadata `^{:schema {...}}` on parameters for type specifications
 - Special handling: parameters named `tool-context` receive execution context automatically
 
-**ClojureAgent** (`lib/core/src/main/java/io/kosong/adk/agents/ClojureAgent.java`):
+**ClojureAgent** (`core/src/main/java/io/kosong/adk/agents/ClojureAgent.java`):
 - Enables custom agent implementations in pure Clojure
 - Accepts Clojure functions for `runAsyncFn` and `runLiveFn`
 - Converts between Java `InvocationContext` and Clojure maps using `datafy`
@@ -157,7 +166,7 @@ Agents can have:
 
 ### Web Framework Architecture
 
-The web framework (`lib/dev`) uses:
+The web framework (`dev`) uses:
 
 **Integrant** for component lifecycle management:
 - `:system/session-service` - Session storage
@@ -236,7 +245,7 @@ Common pattern in `dev/system.clj`: Register OpenAI-compatible endpoints (Ollama
 
 ## Key Files and Their Purposes
 
-**lib/core/src/main/clojure/io/kosong/adk/**:
+**core/src/main/clojure/io/kosong/adk/**:
 - `core.clj` - Main API (agent builders, run functions, context management)
 - `protocols.clj` - Conversion protocols between Clojure and Java types
 - `types.clj` - Datafiable implementations and type conversions for Google GenAI types
@@ -247,7 +256,7 @@ Common pattern in `dev/system.clj`: Register OpenAI-compatible endpoints (Ollama
 - `sessions.clj` - Session service wrappers
 - `utils.clj` - Helper functions (`optional-datafy-assoc` for handling Java Optional/List/Set/Map)
 
-**lib/dev/src/main/clojure/io/kosong/adk/web/**:
+**dev/src/main/clojure/io/kosong/adk/web/**:
 - `web.clj` - Integrant system configuration and lifecycle
 - `handlers.clj` - HTTP request handlers
 - `routes.clj` - Reitit route definitions
