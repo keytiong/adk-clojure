@@ -2,7 +2,9 @@
  ["src/main/clojure" "src/main/java" "target/classes"]
 
  :deps
- {io.kosong.adk/adk-clojure {:local/root "../core"}
+ {
+  org.clojure/clojure       {:mvn/version "1.13.3"}
+  io.kosong.adk/adk-clojure {:local/root "../core"}
   }
 
  :aliases
