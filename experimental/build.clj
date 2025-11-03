@@ -1,7 +1,7 @@
 (ns build
   (:require [clojure.tools.build.api :as b]))
 
-(def lib 'io.kosong.adk/adk-clojure-dev)
+(def lib 'io.kosong.adk/adk-clojure-experiment)
 (def version (format "0.1.0-SNAPSHOT"))
 (def class-dir "target/classes")
 (def jar-file (format "target/%s-%s.jar" (name lib) version))

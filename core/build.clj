@@ -24,7 +24,11 @@
                     :lib       lib
                     :version   version
                     :basis     @basis
-                    :src-dirs  ["src/main/clojure"]})
+                    :src-dirs  ["src/main/clojure"]
+                    :pom-data  [[:licenses
+                                 [:license
+                                  [:name "The MIT License"]
+                                  [:url "https://opensource.org/license/MIT"]]]]})
       (b/copy-dir {:src-dirs   ["src/main/clojure" "resources"]
                    :target-dir class-dir})
       (b/jar {:class-dir class-dir
