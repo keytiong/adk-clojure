@@ -4,7 +4,7 @@
  :deps
  {
   org.clojure/clojure       {:mvn/version "1.12.3"}
-  io.kosong.adk/adk-clojure {:local/root "../core"}
+  io.kosong.adk/adk-clojure {:mvn/version "0.1.0-SNAPSHOT"}
   }
 
  :aliases
