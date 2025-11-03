@@ -2,6 +2,7 @@ dev-resources/
 *.iml
 *.jar
 *.class
+*.pom.asc
 /classes/
 target/
 /checkouts/
