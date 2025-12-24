@@ -39,14 +39,19 @@
         (optional-datafy-assoc :turn-complete (.turnComplete x))
         (optional-datafy-assoc :error-code (.errorCode x))
         (optional-datafy-assoc :error-message (.errorMessage x))
-        (optional-datafy-assoc :interrupted (.interrupted x)))))
+        (optional-datafy-assoc :interrupted (.interrupted x))
+        (optional-datafy-assoc :model-version (.modelVersion x))
+        (optional-datafy-assoc :usage-metadata (.usageMetadata x))
+        (optional-datafy-assoc :avg-logprobs (.avgLogprobs x))
+        (optional-datafy-assoc :finish-reason (.finishReason x)))))
 
 (extend-protocol p/IntoLlmResponse
   IPersistentMap
   (into-llm-response [x]
     (let [{:keys [content grounding-metadata partial
                   turn-complete error-code error-message
-                  interrupted]} x
+                  interrupted
+                  model-version usage-metadata avg-logprobs finish-reason]} x
           b (LlmResponse/builder)]
       (when (some? content)
         (.content b (p/into-content content)))
@@ -62,4 +67,12 @@
         (.errorMessage b ^String error-message))
       (when (some? interrupted)
         (.interrupted b ^Boolean interrupted))
+      (when (some? model-version)
+        (.modelVersion b ^String model-version))
+      (when (some? usage-metadata)
+        (.usageMetadata b usage-metadata))
+      (when (some? avg-logprobs)
+        (.avgLogprobs b avg-logprobs))
+      (when (some? finish-reason)
+        (.finishReason b ^FinishReason finish-reason))
       (.build b))))

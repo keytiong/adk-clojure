@@ -1,9 +1,9 @@
 {:paths ["src"]
  :deps
- {org.clojure/clojure                           {:mvn/version "1.12.3"}
-  io.kosong.adk/adk-clojure                     {:local/root "../../core"}
-  com.google.adk/google-adk-langchain4j {:mvn/version "0.3.0"}
-  dev.langchain4j/langchain4j-open-ai           {:mvn/version "1.4.0"}}
+ {org.clojure/clojure                   {:mvn/version "1.12.3"}
+  io.kosong.adk/adk-clojure             {:local/root "../../core"}
+  com.google.adk/google-adk-langchain4j {:mvn/version "0.5.0"}
+  dev.langchain4j/langchain4j-open-ai   {:mvn/version "1.4.0"}}
 
  :aliases
  {:adk-web {:extra-deps {io.kosong.adk/adk-clojure-dev {:local/root "../../dev"}}

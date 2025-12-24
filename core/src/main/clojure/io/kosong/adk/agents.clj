@@ -8,7 +8,7 @@
              BaseAgent CallbackContext Callbacks$AfterAgentCallback Callbacks$AfterAgentCallbackBase Callbacks$AfterModelCallback Callbacks$AfterModelCallbackBase
              Callbacks$AfterToolCallback Callbacks$AfterToolCallbackBase Callbacks$BeforeAgentCallback Callbacks$BeforeAgentCallbackBase Callbacks$BeforeModelCallback Callbacks$BeforeModelCallbackBase
              Callbacks$BeforeToolCallback Callbacks$BeforeToolCallbackBase Instruction Instruction$Provider Instruction$Static InvocationContext ReadonlyContext
-             RunConfig RunConfig$Builder)
+             RunConfig RunConfig$Builder RunConfig$ToolExecutionMode)
            (com.google.adk.models LlmRequest LlmRequest$Builder LlmResponse)
            (com.google.adk.tools BaseTool ToolContext)
            (com.google.genai.types AudioTranscriptionConfig)
@@ -176,12 +176,15 @@
   IPersistentMap
   (into-run-config [x]
     (let [{:keys [streaming-mode max-llm-calls response-modalities
-                  save-input-blobs-as-artifact output-audio-transcription]} x
+                  save-input-blobs-as-artifact output-audio-transcription
+                  tool-execution-mode]} x
           ^RunConfig$Builder b (RunConfig/builder)]
       (when (some? streaming-mode)
         (.setStreamingMode b streaming-mode))
       (when (some? max-llm-calls)
         (.setMaxLlmCalls b max-llm-calls))
+      (when (some? tool-execution-mode)
+        (.setToolExecutionMode b tool-execution-mode))
       (when (some? response-modalities)
         (.setResponseModalities response-modalities))
       (when (some? save-input-blobs-as-artifact)

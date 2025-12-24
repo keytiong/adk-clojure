@@ -25,7 +25,11 @@
         (optional-datafy-assoc :interrupted (.interrupted x))
         (optional-datafy-assoc :branch (.branch x))
         (optional-datafy-assoc :grounding-metadata (.groundingMetadata x))
-        (optional-datafy-assoc :timestamp (.timestamp x)))))
+        (optional-datafy-assoc :timestamp (.timestamp x))
+        (optional-datafy-assoc :model-version (.modelVersion x))
+        (optional-datafy-assoc :usage-metadata (.usageMetadata x))
+        (optional-datafy-assoc :avg-logprobs (.avgLogprobs x))
+        (optional-datafy-assoc :finish-reason (.finishReason x)))))
 
 (extend-protocol Datafiable
   EventActions
@@ -44,7 +48,8 @@
   (into-event [^IPersistentMap x]
     (let [{:keys [id invocation-id author content actions long-running-tool-ids
                   partial turn-complete error-code error-message interrupted
-                  branch grounding-metadata timestamp]} x
+                  branch grounding-metadata timestamp
+                  model-version usage-metadata avg-logprobs finish-reason]} x
           b (Event/builder)]
       (when (some? id)
         (.id b id))
@@ -74,6 +79,14 @@
         (.groundingMetadata b ^GroundingMetadata (p/into-grounding-metadata grounding-metadata)))
       (when (some? timestamp)
         (.timestamp b ^Long timestamp))
+      (when (some? model-version)
+        (.modelVersion b ^String model-version))
+      (when (some? usage-metadata)
+        (.usageMetadata b usage-metadata))
+      (when (some? avg-logprobs)
+        (.avgLogprobs b avg-logprobs))
+      (when (some? finish-reason)
+        (.finishReason b ^FinishReason finish-reason))
       (.build b))))
 
 (extend-protocol p/IntoEventActions
