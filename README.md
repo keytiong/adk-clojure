@@ -1,11 +1,13 @@
 # Clojure Agent Development Kit (ADK)
 
+[![Clojars Project](https://img.shields.io/clojars/v/io.kosong.adk/adk-clojure.svg?include_prereleases)](https://clojars.org/io.kosong.adk/adk-clojure)
+
 A Clojure wrapper for Google's Java [Agent Development Kit (ADK)](https://github.com/google/adk-java), providing idiomatic Clojure interfaces for building AI agents.
 ## Overview
 
-ADK Clojure provides idiomatic Clojure API for creating AI agents with ADK:
+ADK Clojure provides idiomatic Clojure APIs for creating AI agents with ADK:
 
-- **Domain Object Construction**: Construct ADK domain objects with map instead of Java builders.
+- **Domain Object Construction**: Construct ADK domain objects with maps instead of Java builders.
 - **Function Tool**: Converts Clojure functions into tools for agents.
 - **Datafied Domain Objects**: ADK domain objects are `Datafiable` as maps.
 - **ADK Web for Clojure Agents**: ADK web implemented in Clojure for Clojure based agents.
@@ -17,7 +19,7 @@ Before using ADK Clojure, ensure you have:
 
 - **Java 17 or higher**: Required for running the Google ADK Java library
 - **Clojure CLI tools**: Install from [clojure.org](https://clojure.org/guides/install_clojure)
-- **Google API Credentials**: Follow this [instruction](https://google.github.io/adk-docs/agents/models/#using-google-gemini-models) to setup credentials to use Google Gemini model and Vertex AI.
+- **Google API Credentials**: Follow these [instructions](https://google.github.io/adk-docs/agents/models/#using-google-gemini-models) to setup credentials to use Google Gemini models and Vertex AI.
 
 ## Installation
 
@@ -26,7 +28,7 @@ Before using ADK Clojure, ensure you have:
 Add to your `deps.edn`:
 
 ```clojure
-{:deps {io.kosong.adk/adk-clojure {:local/root "path/to/adk-clojure/lib/core"}}}
+{:deps {io.kosong.adk/adk-clojure {:local/root "path/to/adk-clojure/core"}}}
 ```
 
 ### Run ADK Web
@@ -34,18 +36,18 @@ Add to your `deps.edn`:
 If you need the ADK Web for development:
 
 ```clojure
-{:deps {io.kosong.adk/adk-clojure-dev {:local/root "path/to/adk-clojure/lib/dev"}}}
+{:deps {io.kosong.adk/adk-clojure-dev {:local/root "path/to/adk-clojure/dev"}}}
 ```
 
 ## Build
 
 ```bash
 # Build adk-clojure library
-cd lib/core
+cd core
 clojure -T:build jar
 
 # Build adk-clojure-dev library
-cd lib/dev
+cd dev
 clojure -T:build jar
 ```
 
@@ -67,7 +69,7 @@ clojure -T:build jar
 ;; Create a context and run the agent
 (adk/run (adk/agent-context) chatbot "What is the capital of France?")
 ```
-Result. A sequence of map representation of `com.google.adk.events.Event`
+Result: A sequence of map representation of `com.google.adk.events.Event`
 
 ```clojure
 ({:id "2ee78340-d5fb-4cc5-b24c-83f8deb89e4e",
@@ -83,7 +85,7 @@ Result. A sequence of map representation of `com.google.adk.events.Event`
 ```clojure
 (require '[io.kosong.adk.core :as adk])
 
-; defines a function with hard coded result for demo
+; Define a function with hard coded result for demo
 (defn get-weather
   "Gets the weather for a given location"
   [^{:schema {:type "STRING"}} location]
@@ -91,20 +93,19 @@ Result. A sequence of map representation of `com.google.adk.events.Event`
    :condition "Sunny"
    :location location})
 
-; Define a weather agnet that uses to function as tool
+; Define a weather agent that uses the function as a tool
 (def weather-agent
   (adk/llm-agent
     :name "weather-assistant"
     :model "gemini-2.5-flash"
     :description "Provides weather information"
-    :instruction "You are a weather assistant. Use the get-weather tool to provide accurate
-    weather information."
+    :instruction "You are a weather assistant. Use the get-weather tool to provide accurate weather information."
     :tools [#'get-weather]))
 
 ; Run the agent
-(adk/run (adk/agent-context) weather-agent "what is the weather in new york?")
+(adk/run (adk/agent-context) weather-agent "What is the weather in New York?")
 ```
-Result. A sequence of events showing function call, function response and LLM response
+Result: A sequence of events showing function call, function response, and LLM response
 ```clojure
 ({:id "784b9267-6017-40c4-a3bc-bc82c14ff910",
   :invocation-id "e-62a5ccaf-2e5e-480d-bcd6-6a09f3a1461d",

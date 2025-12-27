@@ -9,6 +9,6 @@ This example showcase how to define Clojure function as tool for agent.
 ```bash
 cd examples/multi_tool
 
-clojure -A:adk-web
+clojure -X:adk-web
 ```
 Access ADK web on http://localhost:8080
