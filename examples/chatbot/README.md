@@ -15,6 +15,6 @@ Ensure a local LLM is setup
 ```bash
 cd examples/chatbot
 
-clojure -A:adk-web
+clojure -X:adk-web
 ```
 Access ADK web on http://localhost:8080

@@ -10,5 +10,5 @@ in ADK samples repository
 ```bash
 cd examples/academic_research
 
-clojure -A:adk-web
+clojure -X:adk-web
 ```
