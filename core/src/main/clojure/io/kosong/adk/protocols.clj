@@ -37,6 +37,9 @@
 (defprotocol IntoOutputAudioTranscriptionConfig
   (into-output-audio-transcription-config [x]))
 
+(defprotocol IntoLiveRequest
+  (into-live-request [x]))
+
 
 ;;
 ;; com.google.genai.types
@@ -104,6 +107,60 @@
 
 (defprotocol IntoHttpOptions
   (into-http-options [x]))
+
+(defprotocol IntoGenerateContentConfig
+  (into-generate-content-config [x]))
+
+(defprotocol IntoGenerateContentResponseUsageMetadata
+  (into-generate-content-response-usage-metadata [x]))
+
+(defprotocol IntoModalityTokenCount
+  (into-modality-token-count [x]))
+
+(defprotocol IntoGenerationConfigRoutingConfig
+  (into-generation-config-routing-config [x]))
+
+(defprotocol IntoGenerationConfigRoutingConfigAutoRoutingMode
+  (into-generation-config-routing-config-auto-routing-mode [x]))
+
+(defprotocol IntoGenerationConfigRoutingConfigManualRoutingMode
+  (into-generation-config-routing-config-manual-routing-mode [x]))
+
+(defprotocol IntoModelSelectionConfig
+  (into-model-selection-config [x]))
+
+(defprotocol IntoSafetySetting
+  (into-safety-setting [x]))
+
+(defprotocol IntoGenaiTool
+  (into-genai-tool [x]))
+
+(defprotocol IntoToolConfig
+  (into-tool-config [x]))
+
+(defprotocol IntoSpeechConfig
+  (into-speech-config [x]))
+
+(defprotocol IntoVoiceConfig
+  (into-voice-config [x]))
+
+(defprotocol IntoReplicatedVoiceConfig
+  (into-replicated-voice-config [x]))
+
+(defprotocol IntoPrebuiltVoiceConfig
+  (into-prebuilt-voice-config [x]))
+
+(defprotocol IntoMultiSpeakerVoiceConfig
+  (into-multi-speaker-voice-config [x]))
+
+(defprotocol IntoAutomaticFunctionCallingConfig
+  (into-automatic-function-calling-config [x]))
+
+(defprotocol IntoThinkingConfig
+  (into-thinking-config [x]))
+
+(defprotocol IntoImageConfig
+  (into-image-config [x]))
 
 ;;
 ;; com.google.adk.models

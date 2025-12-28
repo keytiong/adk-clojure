@@ -87,6 +87,8 @@
     (-> (io.pedestal.connector/default-connector-map host port)
         (io.pedestal.connector/with-interceptors default-interceptors)
         (io.pedestal.connector/with-interceptor routing-interceptor)
-        (io.pedestal.http.http-kit/create-connector {:server-header  "adk-web/http-kit"
-                                                     :allow-virtual? true})))
+        (io.pedestal.http.http-kit/create-connector {:server-header      "adk-web/http-kit"
+                                                     :allow-virtual?     true
+                                                     :max-ws             10485760   ; 10MB WebSocket frame size
+                                                     :ws-max-idle-time   300000}))) ; 5min idle timeout
   )

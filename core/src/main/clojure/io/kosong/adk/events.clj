@@ -3,8 +3,8 @@
             [io.kosong.adk.protocols :as p]
             [clojure.core.protocols :refer [Datafiable]])
   (:import (clojure.lang IPersistentMap)
-           (com.google.adk.events Event EventActions)
-           (com.google.genai.types Content FinishReason GroundingMetadata)
+           (com.google.adk.events Event Event$Builder EventActions EventActions$Builder)
+           (com.google.genai.types Content FinishReason GenerateContentResponseUsageMetadata GroundingMetadata)
            (java.util Map Set)
            (java.util.concurrent ConcurrentHashMap)))
 
@@ -22,6 +22,8 @@
         (optional-datafy-assoc :turn-complete (.turnComplete x))
         (optional-datafy-assoc :error-code (.errorCode x))
         (optional-datafy-assoc :error-message (.errorMessage x))
+        (optional-datafy-assoc :finish-reason (.finishReason x))
+        (optional-datafy-assoc :usage-metadata (.usageMetadata x))
         (optional-datafy-assoc :interrupted (.interrupted x))
         (optional-datafy-assoc :branch (.branch x))
         (optional-datafy-assoc :grounding-metadata (.groundingMetadata x))
@@ -29,7 +31,7 @@
         (optional-datafy-assoc :model-version (.modelVersion x))
         (optional-datafy-assoc :usage-metadata (.usageMetadata x))
         (optional-datafy-assoc :avg-logprobs (.avgLogprobs x))
-        (optional-datafy-assoc :finish-reason (.finishReason x)))))
+  )))
 
 (extend-protocol Datafiable
   EventActions
@@ -48,9 +50,10 @@
   (into-event [^IPersistentMap x]
     (let [{:keys [id invocation-id author content actions long-running-tool-ids
                   partial turn-complete error-code error-message interrupted
+                  usage-metadata
                   branch grounding-metadata timestamp
                   model-version usage-metadata avg-logprobs finish-reason]} x
-          b (Event/builder)]
+          ^Event$Builder b (Event/builder)]
       (when (some? id)
         (.id b id))
       (when (some? invocation-id)
@@ -71,6 +74,8 @@
         (.errorCode b ^FinishReason error-code))
       (when (some? error-message)
         (.errorMessage b ^String error-message))
+      (when (some? usage-metadata)
+        (.usageMetadata b ^GenerateContentResponseUsageMetadata (p/into-generate-content-response-usage-metadata x)))
       (when (some? interrupted)
         (.interrupted b ^Boolean interrupted))
       (when (some? branch)

@@ -1,0 +1,9 @@
+{:paths   ["src"]
+ :deps    {org.clojure/clojure           {:mvn/version "1.12.3"}
+           io.kosong.adk/adk-clojure     {:local/root "../../core"}
+           io.kosong.adk/adk-clojure-dev {:local/root "../../dev"}}
+
+ :aliases {:adk-web
+           {:exec-fn   io.kosong.adk.web/run
+            :exec-args {:port             8080
+                        :agent-namespaces [agents.live-chatbot]}}}}

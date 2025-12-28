@@ -3,10 +3,11 @@
             [io.kosong.adk.protocols :as p]
             [io.kosong.adk.utils :refer [optional-datafy-assoc]])
   (:import (clojure.lang IPersistentMap)
-           (com.google.genai.types Content FunctionCall FunctionResponse GenerateContentConfig GroundingChunk GroundingChunkRetrievedContext
-                                   GroundingChunkWeb GroundingMetadata GroundingSupport HttpOptions Part
-                                   Blob RetrievalMetadata SearchEntryPoint Segment)
-           (java.util Base64)))
+           (com.google.genai.types AutomaticFunctionCallingConfig AutomaticFunctionCallingConfig$Builder Content FunctionCall FunctionResponse GenerateContentConfig GenerateContentConfig$Builder GenerateContentResponseUsageMetadata GenerateContentResponseUsageMetadata$Builder GenerationConfigRoutingConfig GenerationConfigRoutingConfig$Builder GenerationConfigRoutingConfigAutoRoutingMode GenerationConfigRoutingConfigAutoRoutingMode$Builder GenerationConfigRoutingConfigManualRoutingMode GenerationConfigRoutingConfigManualRoutingMode$Builder GroundingChunk GroundingChunkRetrievedContext
+                                   GroundingChunkWeb GroundingMetadata GroundingSupport HttpOptions ImageConfig ImageConfig$Builder ModalityTokenCount ModalityTokenCount$Builder ModelSelectionConfig ModelSelectionConfig$Builder MultiSpeakerVoiceConfig Part
+                                   Blob PrebuiltVoiceConfig PrebuiltVoiceConfig$Builder ReplicatedVoiceConfig ReplicatedVoiceConfig$Builder RetrievalMetadata SafetySetting SafetySetting$Builder Schema SearchEntryPoint Segment SpeakerVoiceConfig$Builder SpeechConfig SpeechConfig$Builder ThinkingConfig ThinkingConfig$Builder ToolConfig VoiceConfig VoiceConfig$Builder)
+           (com.google.adk.agents LiveRequest LiveRequestQueue)
+           (java.util Base64 List)))
 
 
 (extend-protocol Datafiable
@@ -163,6 +164,29 @@
         (optional-datafy-assoc :headers (.headers x))
         (optional-datafy-assoc :timeout (.timeout x)))))
 
+(extend-protocol Datafiable
+  GenerateContentResponseUsageMetadata
+  (datafy [^GenerateContentResponseUsageMetadata x]
+    (-> {}
+        (optional-datafy-assoc :cache-tokens-details (.cacheTokensDetails x))
+        (optional-datafy-assoc :cached-content-token-count (.cachedContentTokenCount x))
+        (optional-datafy-assoc :candidates-token-count (.candidatesTokenCount x))
+        (optional-datafy-assoc :candidates-tokens-details (.candidatesTokensDetails x))
+        (optional-datafy-assoc :prompt-token-count (.promptTokenCount x))
+        (optional-datafy-assoc :prompt-tokens-details (.promptTokensDetails x))
+        (optional-datafy-assoc :thoughts-token-count (.thoughtsTokenCount x))
+        (optional-datafy-assoc :tool-use-prompt-token-count (.toolUsePromptTokenCount x))
+        (optional-datafy-assoc :tool-use-prompt-tokens-details (.toolUsePromptTokensDetails x))
+        (optional-datafy-assoc :total-token-count (.totalTokenCount x))
+        (optional-datafy-assoc :traffic-type (.trafficType x)))))
+
+(extend-protocol Datafiable
+  ModalityTokenCount
+  (datafy [^ModalityTokenCount x]
+    (-> {}
+        (optional-datafy-assoc :modality (.modality x))
+        (optional-datafy-assoc :token-count (.tokenCount x)))))
+
 (extend-protocol p/IntoPart
   IPersistentMap
   (into-part [^IPersistentMap x]
@@ -296,3 +320,388 @@
   HttpOptions
   (into-http-options [x]
     x))
+
+;;
+;; LiveRequest
+;;
+
+(extend-protocol Datafiable
+  LiveRequest
+  (datafy [^LiveRequest x]
+    (-> {}
+        (optional-datafy-assoc :content (.content x))
+        (optional-datafy-assoc :blob (.blob x))
+        (optional-datafy-assoc :close (.close x)))))
+
+(extend-protocol p/IntoLiveRequest
+  IPersistentMap
+  (into-live-request [x]
+    (let [{:keys [content blob close]} x
+          b (LiveRequest/builder)]
+      (when (some? content)
+        (.content b (p/into-content content)))
+      (when (some? blob)
+        (.blob b (p/into-blob blob)))
+      (when (some? close)
+        (.close b close))
+      (.build b))))
+
+(extend-protocol p/IntoLiveRequest
+  LiveRequest
+  (into-live-request [x]
+    x))
+
+(extend-protocol p/IntoGenerateContentConfig
+  GenerateContentConfig
+  (into-generate-content-config [x]
+    x))
+
+(extend-protocol p/IntoGenerateContentConfig
+  IPersistentMap
+  (into-generate-content-config [x]
+    (let [{:keys [http-options
+                  should-return-http-response
+                  system-instruction
+                  temperature
+                  top-p
+                  top-k
+                  candidate-count
+                  max-output-tokens
+                  stop-sequences
+                  response-logprobs
+                  logprobs
+                  presence-penalty
+                  frequency-penalty
+                  seed
+                  response-mime-type
+                  response-schema
+                  response-json-schema
+                  routing-config
+                  model-selection-config
+                  safety-settings
+                  tools
+                  tool-config
+                  labels
+                  cached-content
+                  response-modalities
+                  media-resolution
+                  speech-config
+                  audio-timestamp
+                  automatic-function-calling
+                  thinking-config
+                  image-config
+                  enable-enhanced-civic-answers]} x
+          ^GenerateContentConfig$Builder b (GenerateContentConfig/builder)]
+      (when (some? http-options)
+        (.httpOptions b ^HttpOptions (p/into-http-options http-options)))
+      (when (some? should-return-http-response)
+        (.shouldReturnHttpResponse b should-return-http-response))
+      (when (some? system-instruction)
+        (.systemInstruction b ^Content (p/into-content system-instruction)))
+      (when (some? temperature)
+        (.temperature b (float temperature)))
+      (when (some? top-p)
+        (.topP b (float top-p)))
+      (when (some? top-k)
+        (.topK b (float top-k)))
+      (when (some? candidate-count)
+        (.candidateCount b (int candidate-count)))
+      (when (some? max-output-tokens)
+        (.maxOutputTokens b (int candidate-count)))
+      (when (some? stop-sequences)
+        (.stopSequences b ^List stop-sequences))
+      (when (some? response-logprobs)
+        (.responseLogprobs b response-logprobs))
+      (when (some? logprobs)
+        (.logprobs b (int logprobs)))
+      (when (some? presence-penalty)
+        (.presencePenalty b (float presence-penalty)))
+      (when (some? frequency-penalty)
+        (.frequencyPenalty b (float frequency-penalty)))
+      (when (some? seed)
+        (.seed b (int seed)))
+      (when (some? response-mime-type)
+        (.responseMimeType b response-mime-type))
+      (when (some? response-schema)
+        (.responseSchema b ^Schema (p/into-schema response-schema)))
+      (when (some? response-json-schema)
+        ;; TODO clojure to json schema object conversion
+        (.responseJsonSchema b response-json-schema))
+      (when (some? routing-config)
+        (.routingConfig b ^GenerationConfigRoutingConfig (p/into-generation-config-routing-config routing-config)))
+      (when (some? model-selection-config)
+        (.modelSelectionConfig b ^ModelSelectionConfig (p/into-model-selection-config model-selection-config)))
+      (when (some? safety-settings)
+        (.safetySettings b ^List (mapv p/into-safety-setting safety-settings)))
+      (when (some? tools)
+        ;; TODO
+        (.tools b ^List (mapv p/into-genai-tool tools)))
+      (when (some? tool-config)
+        ;; TODO
+        (.toolConfig b ^ToolConfig (p/into-tool-config tool-config)))
+      (when (some? labels)
+        (.labels b labels))
+      (when (some? cached-content)
+        (.cachedContent b cached-content))
+      (when (some? response-modalities)
+        (.responseModalities b ^List response-modalities))
+      (when (some? media-resolution)
+        (.mediaResolution b ^String media-resolution))
+      (when (some? speech-config)
+        (.speechConfig b ^SpeechConfig (p/into-speech-config speech-config)))
+      (when (some? audio-timestamp)
+        (.audioTimestamp b audio-timestamp))
+      (when (some? automatic-function-calling)
+        (.automaticFunctionCalling b ^AutomaticFunctionCallingConfig (p/into-automatic-function-calling-config automatic-function-calling)))
+      (when (some? thinking-config)
+        (.thinkingConfig b ^ThinkingConfig (p/into-thinking-config thinking-config)))
+      (when (some? image-config)
+        (.imageConfig b ^ImageConfig (p/into-image-config image-config)))
+      (when (some? enable-enhanced-civic-answers)
+        (.enableEnhancedCivicAnswers b enable-enhanced-civic-answers))
+      (.build b))))
+
+(extend-protocol p/IntoGenerateContentResponseUsageMetadata
+  GenerateContentResponseUsageMetadata
+  (into-generate-content-response-usage-metadata [x]
+    x))
+
+(extend-protocol p/IntoGenerateContentResponseUsageMetadata
+  IPersistentMap
+  (into-generate-content-response-usage-metadata [x]
+    (let [{:keys [cache-tokens-details
+                  cached-content-token-count
+                  candidates-token-count
+                  candidates-tokens-details
+                  prompt-token-count
+                  prompt-tokens-details
+                  thoughts-token-count
+                  tool-use-prompt-token-count
+                  tool-use-prompt-tokens-details
+                  total-token-count
+                  traffic-type
+                  ]} x
+          ^GenerateContentResponseUsageMetadata$Builder b (GenerateContentResponseUsageMetadata/builder)]
+      (when (some? cache-tokens-details)
+        (.cacheTokensDetails b ^List (mapv p/into-modality-token-count cache-tokens-details)))
+      (when (some? cached-content-token-count)
+        (.cachedContentTokenCount b cached-content-token-count))
+      (when (some? candidates-token-count)
+        (.candidatesTokenCount b candidates-token-count))
+      (when (some? candidates-tokens-details)
+        (.candidatesTokensDetails b ^List (mapv p/into-modality-token-count candidates-tokens-details)))
+      (when (some? prompt-token-count)
+        (.promptTokenCount b prompt-token-count))
+      (when (some? prompt-tokens-details)
+        (.promptTokensDetails b ^List (mapv p/into-modality-token-count prompt-tokens-details)))
+      (when (some? thoughts-token-count)
+        (.thoughtsTokenCount b thoughts-token-count))
+      (when (some? tool-use-prompt-token-count)
+        (.toolUsePromptTokenCount b tool-use-prompt-token-count))
+      (when (some? tool-use-prompt-tokens-details)
+        (.toolUsePromptTokensDetails b ^List (mapv p/into-modality-token-count tool-use-prompt-tokens-details)))
+      (when (some? total-token-count)
+        (.totalTokenCount b total-token-count))
+      (when (some? traffic-type)
+        (.trafficType b ^String traffic-type))
+      (.build b))))
+
+(extend-protocol p/IntoGenerationConfigRoutingConfig
+  GenerationConfigRoutingConfig
+  (into-generation-config-routing-config [x]
+    x))
+
+(extend-protocol p/IntoGenerationConfigRoutingConfig
+  IPersistentMap
+  (into-generation-config-routing-config [x]
+    (let [{:keys [auto-mode manual-mode]} x
+          ^GenerationConfigRoutingConfig$Builder b (GenerationConfigRoutingConfig/builder)]
+      (when (some? auto-mode)
+        (.autoMode b ^GenerationConfigRoutingConfigAutoRoutingMode  (p/into-generation-config-routing-config-auto-routing-mode auto-mode)))
+      (when (some? manual-mode)
+        (.manualMode b ^GenerationConfigRoutingConfigManualRoutingMode  (p/into-generation-config-routing-config-manual-routing-mode manual-mode)))
+      (.build b))))
+
+(extend-protocol p/IntoGenerationConfigRoutingConfigAutoRoutingMode
+  GenerationConfigRoutingConfigAutoRoutingMode
+  (into-generation-config-routing-config-auto-routing-mode [x]
+    x))
+
+(extend-protocol p/IntoGenerationConfigRoutingConfigAutoRoutingMode
+  IPersistentMap
+  (into-generation-config-routing-config-auto-routing-mode [x]
+    (let [{:keys [model-routing-preference]} x
+          ^GenerationConfigRoutingConfigAutoRoutingMode$Builder b (GenerationConfigRoutingConfigAutoRoutingMode/builder)]
+      (when (some? model-routing-preference)
+        (.modelRoutingPreference b ^String model-routing-preference))
+      (.build b))))
+
+(extend-protocol p/IntoGenerationConfigRoutingConfigManualRoutingMode
+  GenerationConfigRoutingConfigManualRoutingMode
+  (into-generation-config-routing-config-manual-routing-mode [x]
+    x))
+
+(extend-protocol p/IntoGenerationConfigRoutingConfigManualRoutingMode
+  IPersistentMap
+  (into-generation-config-routing-config-manual-routing-mode [x]
+    (let [{:keys [model-name]} x
+          ^GenerationConfigRoutingConfigManualRoutingMode$Builder b (GenerationConfigRoutingConfigManualRoutingMode/builder)]
+      (when (some? model-name)
+        (.modelName b model-name))
+      (.build b))))
+
+(extend-protocol p/IntoModelSelectionConfig
+  ModelSelectionConfig
+  (into-model-selection-config [x]
+    x))
+
+(extend-protocol p/IntoModelSelectionConfig
+  IPersistentMap
+  (into-model-selection-config [x]
+    (let [{:keys [feature-selection-preference]} x
+          ^ModelSelectionConfig$Builder b (ModelSelectionConfig/builder)]
+      (when (some? feature-selection-preference)
+        (.featureSelectionPreference b ^String feature-selection-preference))
+      (.build b))))
+
+(extend-protocol p/IntoSafetySetting
+  SafetySetting
+  (into-safety-setting [x]
+    x))
+
+(extend-protocol p/IntoSafetySetting
+
+  IPersistentMap
+  (into-safety-setting [x]
+    (let [{:keys [category method threshold]} x
+          ^SafetySetting$Builder b (SafetySetting/builder)]
+      (when (some? category)
+        (.category b ^String category))
+      (when (some? method)
+        (.method b ^String method))
+      (when (some? threshold)
+        (.threshold b ^String threshold))
+      (.build b))))
+
+(extend-protocol p/IntoSpeechConfig
+  SpeechConfig
+  (into-speech-config [x]
+    x))
+
+(extend-protocol p/IntoSpeechConfig
+  IPersistentMap
+  (into-speech-config [x]
+    (let [{:keys [voice-config language-code multi-speaker-voice-config]} x
+          ^SpeechConfig$Builder b (SpeechConfig/builder)]
+      (when (some? voice-config)
+        (.voiceConfig b ^VoiceConfig (p/into-voice-config voice-config)))
+      (when (some? language-code)
+        (.languageCode b language-code))
+      (when (some? multi-speaker-voice-config)
+        (.multiSpeakerVoiceConfig b ^MultiSpeakerVoiceConfig (p/into-multi-speaker-voice-config multi-speaker-voice-config)))
+      (.build b))))
+
+(extend-protocol p/IntoVoiceConfig
+  VoiceConfig
+  (into-voice-config [x]
+    x))
+
+(extend-protocol p/IntoVoiceConfig
+  IPersistentMap
+  (into-voice-config [x]
+    (let [{:keys [replicated-voice-config prebuilt-voice-config]} x
+          ^VoiceConfig$Builder b (VoiceConfig/builder)]
+      (when (some? replicated-voice-config)
+        (.replicatedVoiceConfig b ^ReplicatedVoiceConfig  (p/into-replicated-voice-config replicated-voice-config)))
+      (when (some? prebuilt-voice-config)
+        (.prebuiltVoiceConfig b ^PrebuiltVoiceConfig (p/into-prebuilt-voice-config prebuilt-voice-config)))
+      (.build b))))
+
+(extend-protocol p/IntoReplicatedVoiceConfig
+  ReplicatedVoiceConfig
+  (into-replicated-voice-config [x]
+    x))
+
+(extend-protocol p/IntoReplicatedVoiceConfig
+  IPersistentMap
+  (into-replicated-voice-config [x]
+    (let [{:keys [mime-type voice-sample-audio]} x
+          ^ReplicatedVoiceConfig$Builder b (ReplicatedVoiceConfig/builder)]
+      (when (some? mime-type)
+        (.mimeType b mime-type))
+      (when (some? voice-sample-audio)
+        ;; TODO byte array conversion?
+        (.voiceSampleAudio b voice-sample-audio))
+      (.build b))))
+
+(extend-protocol p/IntoPrebuiltVoiceConfig
+  PrebuiltVoiceConfig
+  (into-prebuilt-voice-config [x]
+    x))
+
+(extend-protocol p/IntoPrebuiltVoiceConfig
+  IPersistentMap
+  (into-prebuilt-voice-config [x]
+    (let [{:keys [voice-name]} x
+          ^PrebuiltVoiceConfig$Builder b (PrebuiltVoiceConfig/builder)]
+      (when (some? voice-name)
+        (.voiceName b voice-name))
+      (.build b))))
+
+(extend-protocol p/IntoAutomaticFunctionCallingConfig
+  AutomaticFunctionCallingConfig
+  (into-automatic-function-calling-config [x]
+    x))
+
+(extend-protocol p/IntoAutomaticFunctionCallingConfig
+  IPersistentMap
+  (into-automatic-function-calling-config [x]
+    (let [{:keys [disable maximum-remote-calls ignore-call-hgistory]} x
+          ^AutomaticFunctionCallingConfig$Builder b (AutomaticFunctionCallingConfig/builder)]
+      (when (some? disable)
+        (.disable b disable))
+      (when (some? maximum-remote-calls)
+        (.maximumRemoteCalls b (int maximum-remote-calls)))
+      (when (some? ignore-call-hgistory)
+        (.ignoreCallHistory b ignore-call-hgistory))
+      (.build b))))
+
+(extend-protocol p/IntoThinkingConfig
+  ThinkingConfig
+  (into-thinking-config [x]
+    x))
+
+(extend-protocol p/IntoThinkingConfig
+  IPersistentMap
+  (into-thinking-config [x]
+    (let [{:keys [include-thoughts thinking-budget thinking-level]} x
+          ^ThinkingConfig$Builder b (ThinkingConfig/builder)]
+      (when (some? include-thoughts)
+        (.includeThoughts b include-thoughts))
+      (when (some? thinking-budget)
+        (.thinkingBudget b (int thinking-budget)))
+      (when (some? thinking-level)
+        (.thinkingLevel b ^String thinking-level))
+      (.build b))))
+
+(extend-protocol p/IntoImageConfig
+  ImageConfig
+  (into-image-config [x]
+    x))
+
+(extend-protocol p/IntoImageConfig
+  IPersistentMap
+  (into-image-config [x]
+    (let [{:keys [aspect-ratio image-size person-generation output-mime-type output-compression-quality] } x
+          ^ImageConfig$Builder b (ImageConfig/builder)]
+      (when (some? aspect-ratio)
+        (.aspectRatio b aspect-ratio))
+      (when (some? image-size)
+        (.imageSize b image-size))
+      (when (some? person-generation)
+        (.personGeneration b person-generation))
+      (when (some? output-mime-type)
+        (.outputMimeType b output-mime-type))
+      (when (some? output-compression-quality)
+        (.outputCompressionQuality b output-compression-quality))
+      (.build b))))

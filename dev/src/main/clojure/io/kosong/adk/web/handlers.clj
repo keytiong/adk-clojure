@@ -6,10 +6,13 @@
             [clojure.core.async :as async]
             [io.kosong.adk.core :as adk]
             [io.pedestal.interceptor]
+            [io.pedestal.service.websocket]
             [io.pedestal.http.sse]
             [clojure.walk]
             [reitit.ring]
-            [charred.api :refer [write-json-str]])
+            [charred.api :refer [write-json-str read-json]]
+            [org.httpkit.server :as http-kit]
+            [clojure.tools.logging :as log])
   (:import (com.google.adk.agents RunConfig$StreamingMode)))
 
 (defn index-html
@@ -184,4 +187,96 @@
   [app-context req]
   {:status 200
    :body   []})
+
+;;
+;; WebSocket LiveStreaming Support
+;;
+
+;; Atom to track active WebSocket connections
+;; Format: {ws-channel → {:user-id string, :app-name string, :session-id string, :channels map}}
+(defonce active-ws-connections (atom {}))
+
+(defn check-connection-limits
+  "Check if new connection would exceed limits.
+   Returns true if connection is allowed, false otherwise."
+  [user-id app-name]
+  (let [conns      @active-ws-connections
+        user-count (count (filter #(= user-id (:user-id (val %))) conns))
+        app-count  (count (filter #(= app-name (:app-name (val %))) conns))]
+    (and (< user-count 10)                                  ; Max 10 connections per user
+         (< app-count 100))))                               ; Max 100 connections per app
+
+(defn parse-ws-query-params
+  "Parse query parameters from WebSocket upgrade request."
+  [request]
+  (let [query-string (:query-string request)
+        params       (when query-string
+                       (into {} (map (fn [pair]
+                                       (let [[k v] (clojure.string/split pair #"=")]
+                                         [(keyword k) v]))
+                                     (clojure.string/split query-string #"&"))))]
+    {:app-name   (:app_name params)
+     :user-id    (:user_id params)
+     :session-id (:session_id params)}))
+
+(defn parse-live-request
+  "Parse JSON LiveRequest from WebSocket message.
+   Returns map with :content, :blob, or :close key.
+   Handles both camelCase and snake_case for compatibility."
+  [data]
+  (try
+    (let [parsed (read-json data {:key-fn keyword})]
+      ;; Handle both mimeType and mime_type for compatibility
+      (if-let [blob (:blob parsed)]
+        {:blob (if (contains? blob :mime_type)
+                 (assoc blob :mime-type (:mime_type blob))
+                 blob)}
+        parsed))
+    (catch Exception e
+      (log/error e "Error parsing LiveRequest JSON:" data)
+      nil)))
+
+(defn run-live-interceptor
+  [app-context]
+  (let [on-open   (fn [ch req]
+                    (when (:websocket? req)
+                      (let [app-name        (get-in req [:query-params "app_name"])
+                            user-id         (get-in req [:query-params "user"])
+                            session-id      (get-in req [:query-params "session_id"])
+                            agent           (get (-> app-context :agent-registry deref) app-name)
+                            agent-context   (-> (adk/agent-context
+                                                  :app-name app-name
+                                                  :user-id user-id
+                                                  :agent agent
+                                                  :session-service (:session-service app-context)
+                                                  :artifact-service (:artifact-service app-context)))
+                            session-context (if (adk/get-session agent-context app-name user-id session-id)
+                                              (adk/with-session agent-context session-id)
+                                              (adk/with-new-session agent-context {} session-id))
+                            run-live-client (adk/run-live session-context agent)
+                            {:keys [event-ch]} run-live-client]
+                        (clojure.core.async/go
+                          (loop []
+                            (when-some [event (clojure.core.async/<! event-ch)]
+                              (let [json-data (write-json-str (->camel-case-string-key event))]
+                                (io.pedestal.service.websocket/send-text! ch json-data))
+                              (recur))))
+                        run-live-client)))
+        on-close  (fn [ch process reason]
+                    (println "on-close" reason))
+        on-text   (fn [ch process text]
+                    (let [message    (charred.api/read-json text :key-fn csk/->kebab-case-keyword)
+                          request-ch (:request-ch process)]
+                      (clojure.core.async/put! request-ch message)))
+        on-binary (fn [ch process data]
+                    )]
+    {:name  ::run-live
+     :enter (fn [context]
+              (io.pedestal.service.websocket/upgrade-request-to-websocket
+                context
+                {:on-open   on-open
+                 :on-close  on-close
+                 :on-text   on-text
+                 :on-binary on-binary})
+              )}))
 

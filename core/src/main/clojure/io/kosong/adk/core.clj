@@ -3,7 +3,7 @@
             [clojure.datafy :as d :refer [datafy]]
             [io.kosong.adk.protocols :as p]
             [clojure.tools.logging :as log])
-  (:import (com.google.adk.agents Instruction LlmAgent LoopAgent RunConfig SequentialAgent)
+  (:import (com.google.adk.agents Instruction LlmAgent LoopAgent RunConfig RunConfig$StreamingMode SequentialAgent)
            (com.google.adk.runner Runner)
            (com.google.adk.sessions Session)
            (com.google.genai.types Content)
@@ -135,7 +135,7 @@
     (when (some? tools)
       (.tools b ^List (mapv p/into-tool tools)))
     (when (some? generate-content-config)
-      (.generateContentConfig b generate-content-config))
+      (.generateContentConfig b (p/into-generate-content-config generate-content-config)))
     (when (some? example-provider)
       (.exampleProvider b example-provider))
     (when (some? include-contents)
@@ -271,13 +271,13 @@
          app-name              (resolve-app-name context)
          ^Session session      (get-or-create-session context)
          runner                (-> (Runner/builder)
-                                  (.agent agent)
-                                  (.appName app-name)
-                                  (.artifactService artifact-service)
-                                  (.sessionService session-service)
-                                  (.memoryService memory-service)
-                                  (.plugins plugins)
-                                  (.build))
+                                   (.agent agent)
+                                   (.appName app-name)
+                                   (.artifactService artifact-service)
+                                   (.sessionService session-service)
+                                   (.memoryService memory-service)
+                                   (.plugins plugins)
+                                   (.build))
          ^Content content      (p/into-content user-content)
          ^RunConfig run-config (if (some? run-config)
                                  (p/into-run-config run-config)
@@ -304,3 +304,79 @@
   ([context agent new-message run-config]
    (let [event-ch (run-async context agent new-message run-config)]
      (chan->seq event-ch))))
+
+(defn run-live
+  "Executes an agent with bidirectional live streaming support.
+
+   Returns a map with two channels:
+   - :event-ch - core.async channel for Events from agent (sliding buffer 16)
+   - :request-ch - core.async channel for LiveRequests to agent (blocking buffer 10)
+
+   LiveRequest format:
+   - {:content ...} - send turn-by-turn content to model
+   - {:blob ...} - send realtime audio/video blob to model
+   - {:close true} - close the live connection
+
+   Parameters:
+   - context: agent context (app-name, user-id, session-service, etc.)
+   - agent: the agent to execute
+   - initial-content: optional initial content to start the conversation (can be nil)
+   - run-config: optional RunConfig map (should include :streaming-mode BIDI for live mode)
+
+   Example:
+   (let [{:keys [event-ch request-ch]} (run-live context agent nil {:streaming-mode BIDI})]
+     ;; Send requests
+     (async/>!! request-ch {:content \"Hello\"})
+     ;; Read events
+     (async/<!! event-ch)
+     ;; Close connection
+     (async/>!! request-ch {:close true}))"
+  ([context agent]
+   (run-live context agent nil))
+  ([context agent run-config]
+   (let [session-service       (:session-service context)
+         artifact-service      (:artifact-service context)
+         memory-service        (:memory-service context)
+         plugins               (:plugins context)
+         app-name              (resolve-app-name context)
+         ^Session session      (get-or-create-session context)
+         runner                (-> (Runner/builder)
+                                   (.agent agent)
+                                   (.appName app-name)
+                                   (.artifactService artifact-service)
+                                   (.sessionService session-service)
+                                   (.memoryService memory-service)
+                                   (.plugins plugins)
+                                   (.build))
+         ;; Create LiveRequestQueue with channel bridge
+         {:keys [queue channel]} (io.kosong.adk.runner/live-request-queue)
+
+         ;; Build RunConfig with BIDI streaming mode
+         ^RunConfig run-config (if (some? run-config)
+                                 (p/into-run-config run-config)
+                                 (p/into-run-config {:streaming-mode RunConfig$StreamingMode/BIDI}))
+
+         ;; Create event channel with sliding buffer
+         event-ch              (async/chan (async/sliding-buffer 16))
+         on-next               (reify io.reactivex.rxjava3.functions.Consumer
+                                 (accept [_ event]
+                                   (log/info event)
+                                   (async/>!! event-ch (d/datafy event))))
+         on-error              (reify io.reactivex.rxjava3.functions.Consumer
+                                 (accept [_ error]
+                                   (log/error error "Error in run-live")
+                                   (async/>!! event-ch error)
+                                   (async/close! event-ch)
+                                   (async/close! channel)))
+         on-complete           (reify io.reactivex.rxjava3.functions.Action
+                                 (run [_]
+                                   (async/close! event-ch)
+                                   (async/close! channel)))
+
+         ;; Call runLive with LiveRequestQueue
+         event-flow            (.runLive runner session queue run-config)
+         _disposable           (.subscribe event-flow on-next on-error on-complete)]
+
+     {:event-ch           event-ch
+      :request-ch         channel
+      :live-request-queue queue})))
