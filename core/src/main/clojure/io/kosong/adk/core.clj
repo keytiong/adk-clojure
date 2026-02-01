@@ -2,11 +2,13 @@
   (:require [clojure.core.async :as async]
             [clojure.datafy :as d :refer [datafy]]
             [io.kosong.adk.protocols :as p]
-            [clojure.tools.logging :as log])
+            [clojure.tools.logging :as log]
+            [io.kosong.java]
+            [io.kosong.autovalue :as av])
   (:import (com.google.adk.agents Instruction LlmAgent LoopAgent RunConfig RunConfig$StreamingMode SequentialAgent)
            (com.google.adk.runner Runner)
            (com.google.adk.sessions Session)
-           (com.google.genai.types Content)
+           (com.google.genai.types Content GenerateContentConfig Schema)
            (io.kosong.adk.agents ClojureAgent)
            (java.util List Map Optional)))
 
@@ -135,7 +137,7 @@
     (when (some? tools)
       (.tools b ^List (mapv p/into-tool tools)))
     (when (some? generate-content-config)
-      (.generateContentConfig b (p/into-generate-content-config generate-content-config)))
+      (.generateContentConfig b (io.kosong.java/make-object GenerateContentConfig generate-content-config)))
     (when (some? example-provider)
       (.exampleProvider b example-provider))
     (when (some? include-contents)
@@ -165,9 +167,9 @@
       (let [after-tool-callback (if (coll? after-tool-callback) after-tool-callback [after-tool-callback])]
         (.afterToolCallback b ^List (mapv p/into-after-tool-callback after-tool-callback))))
     (when (some? input-schema)
-      (.inputSchema b (p/into-schema input-schema)))
+      (.inputSchema b (io.kosong.java/make-object Schema input-schema)))
     (when (some? output-schema)
-      (.outputSchema b (p/into-schema output-schema)))
+      (.outputSchema b (io.kosong.java/make-object Schema output-schema)))
     (when (some? executor)
       (.executor b executor))
     (when (some? output-key)
@@ -278,10 +280,10 @@
                                    (.memoryService memory-service)
                                    (.plugins plugins)
                                    (.build))
-         ^Content content      (p/into-content user-content)
+         ^Content content      (io.kosong.java/make-object com.google.genai.types.Content user-content)
          ^RunConfig run-config (if (some? run-config)
-                                 (p/into-run-config run-config)
-                                 (p/into-run-config {}))
+                                 (io.kosong.java/make-object RunConfig run-config)
+                                 (io.kosong.java/make-object RunConfig {}))
          event-ch              (async/chan 16)
          on-next               (reify io.reactivex.rxjava3.functions.Consumer
                                  (accept [_ event]
@@ -353,8 +355,8 @@
 
          ;; Build RunConfig with BIDI streaming mode
          ^RunConfig run-config (if (some? run-config)
-                                 (p/into-run-config run-config)
-                                 (p/into-run-config {:streaming-mode RunConfig$StreamingMode/BIDI}))
+                                 (io.kosong.java/make-object RunConfig run-config)
+                                 (io.kosong.java/make-object RunConfig {:streaming-mode "BIDI"}))
 
          ;; Create event channel with sliding buffer
          event-ch              (async/chan (async/sliding-buffer 16))

@@ -1,6 +1,7 @@
 (ns io.kosong.autovalue-test
   (:require
     [io.kosong.autovalue :as av]
+    [io.kosong.java]
     [clojure.test :refer [testing is]]))
 
 (def generate-content-config-obj
@@ -48,5 +49,5 @@
          generate-content-config-data)))
 
 (testing "map to autovalue"
-  (let [obj (av/into-autovalue com.google.genai.types.GenerateContentConfig generate-content-config-data)]
+  (let [obj (io.kosong.java/make-object com.google.genai.types.GenerateContentConfig generate-content-config-data)]
     (is (= obj generate-content-config-obj))))

@@ -4,18 +4,16 @@
   AutoValue is a source code generator for value classes in Java. This namespace
   provides bidirectional conversion:
   - Java AutoValue instances -> Clojure maps (via Datafiable protocol)
-  - Clojure maps -> Java AutoValue instances (via into-autovalue multi method)
+  - Clojure maps -> Java instances (via io.kosong.java/make-object multi method)
 
   Supports nested AutoValue objects and collections."
-  (:require [clojure.datafy :refer [datafy]]
-            [camel-snake-kebab.core :as csk])
-  (:import [java.lang.reflect Modifier Method ParameterizedType]
-           [java.util Optional]
+  (:require [camel-snake-kebab.core :as csk]
+            [clojure.datafy :refer [datafy]]
+            [io.kosong.java])
+  (:import (java.lang.reflect Modifier)
+           (java.util Optional)
            (org.reflections Reflections)
            (org.reflections.util ConfigurationBuilder)))
-
-
-(defmulti into-autovalue (fn [cls data] cls))
 
 ;; =============================================================================
 ;; AutoValue Detection
@@ -46,6 +44,12 @@
       (= known-enum-class-name (.getName (.getReturnType known-enum-method)))
       false)))
 
+(defn- enum-type?
+  [type]
+  (if (instance? Class type)
+    (.isAssignableFrom java.lang.Enum type)
+    false))
+
 (defn- autovalue-enum-instance?
   [obj]
   (autovalue-enum-type? (.getClass obj)))
@@ -70,19 +74,14 @@
     (instance? java.util.Map v)
     (assoc! m k (clojure.lang.PersistentArrayMap/create v))
 
+    (enum-type? v)
+    (assoc! m k (.name v))
+
     (autovalue-enum-instance? v)
     (assoc! m k (.name (.knownEnum v)))
 
     :else
     (assoc! m k (datafy v))))
-
-(defn- autovalue-type
-  "Resolve the data class that this auto value object implements"
-  [obj]
-  (when (autovalue-instance? obj)
-    (let [super-class (.getSuperclass (.getClass obj))]
-      (when-not (= super-class java.lang.Object)
-        super-class))))
 
 (defn- find-generated-class
   "Find the generated AutoValue_ClassName for an abstract class.
@@ -96,7 +95,7 @@
                            (str package-name ".AutoValue_" simple-name)
                            (str "AutoValue_" simple-name))]
       (Class/forName autovalue-name))
-    (catch ClassNotFoundException _
+    (catch ClassNotFoundException e
       nil)))
 
 (defn- autovalue-type?
@@ -127,7 +126,8 @@
 (defn- list-type?
   [^java.lang.reflect.Type type]
   (and (instance? java.lang.reflect.ParameterizedType type)
-       (= "java.util.List" (-> ^java.lang.reflect.ParameterizedType type (.getRawType) (.getTypeName)))))
+       (.isAssignableFrom java.util.List (-> ^java.lang.reflect.ParameterizedType type (.getRawType)))
+       #_(= "java.util.List" (-> ^java.lang.reflect.ParameterizedType type (.getRawType) (.getTypeName)))))
 
 (defn- map-type?
   [^java.lang.reflect.Type type]
@@ -166,7 +166,7 @@
   (let [accessor (symbol property-name)]
     `(optional-datafy-assoc ~property-keyword (. ~x ~accessor))))
 
-(defn- emit-datafy-autovalue-impl
+(defn emit-datafy-object
   [cls]
   (when-not (autovalue-type? cls)
     (ex-info "Class is not an AutoValue type" {:class cls}))
@@ -185,16 +185,20 @@
   [b data {:keys [property-name property-keyword
                   list-type?
                   actual-type]}]
-  (let [v        (symbol "v")
-        prop-sym (symbol property-name)
-        m        (symbol "m")]
+  (let [v            (symbol "v")
+        prop-sym     (symbol property-name)
+        x            (symbol "x")]
     `(when-some [~v (~property-keyword ~data)]
        ~(cond
-          (and list-type? (autovalue-type? actual-type))
-          `(. ~b ~prop-sym (mapv (fn [~m] (into-autovalue ~actual-type ~m)) ~v))
+          (autovalue-type? actual-type)
+          (if list-type?
+            `(. ~b ~prop-sym (mapv (fn [~x] (io.kosong.java/make-object ~actual-type ~x)) ~v))
+            `(. ~b ~prop-sym (io.kosong.java/make-object ~actual-type ~v)))
 
-          (and (not list-type?) (autovalue-type? actual-type))
-          `(. ~b ~prop-sym (into-autovalue ~actual-type ~v))
+          (enum-type? actual-type)
+          (if list-type?
+            `(. ~b ~prop-sym (mapv (fn [~x] (~(symbol (.getName actual-type) "valueOf") ~x)) ~v))
+            `(. ~b ~prop-sym (~(symbol (.getName actual-type) "valueOf") ~v)))
 
           :else
           `(. ~b ~prop-sym ~v)))))
@@ -208,11 +212,11 @@
        ~@(map (fn [p] (emit-builder-setter b data p)) props)
        (.build ~b))))
 
-(defn- emit-into-autovalue-method
+(defn emit-make-object-method
   [cls]
   (let [data (symbol "data")
         _cls (symbol "_cls")]
-    `(defmethod into-autovalue ~cls [~_cls ~data]
+    `(defmethod io.kosong.java/make-object ~cls [~_cls ~data]
        (cond
          (instance? ~cls ~data)
          ~data
@@ -227,21 +231,31 @@
     (-> r
         (.getTypesAnnotatedWith com.google.auto.value.AutoValue true))))
 
-
 (defmacro register-autovalue-class
   [cls-sym]
   (let [cls-name (name cls-sym)
         cls      (Class/forName cls-name)]
     (if (autovalue-type? cls)
       `(do
-         (emit-into-autovalue-method ~cls)
-         (emit-datafy-autovalue-impl ~cls)
-         nil)
+         ~(emit-make-object-method cls)
+         ~(emit-datafy-object cls))
       (throw (ex-info "invalid auto value class" {})))))
 
 (defmacro register-autovalue-package [package]
   (let [cls (find-autovalue-types package)]
     `(do
-       ~@(map (fn [c] (emit-into-autovalue-method c)) cls)
-       ~@(map (fn [c] (emit-datafy-autovalue-impl c)) cls)
+       ~@(map (fn [c] (emit-make-object-method c)) cls)
+       ~@(map (fn [c] (emit-datafy-object c)) cls)
        nil)))
+
+(comment
+
+  (require '[io.kosong.java])
+
+  (io.kosong.java/make-object-able? com.google.adk.agents.RunConfig)
+
+  (io.kosong.autovalue/register-autovalue-class com.google.adk.agents.RunConfig)
+
+  (emit-make-object-method com.google.adk.agents.RunConfig)
+
+  ,)

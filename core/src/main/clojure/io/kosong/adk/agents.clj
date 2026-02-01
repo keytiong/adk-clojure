@@ -2,19 +2,23 @@
   (:require [clojure.core.protocols :refer [Datafiable]]
             [clojure.datafy :refer [datafy]]
             [io.kosong.adk.protocols :as p]
-            [io.kosong.adk.utils :refer [optional-datafy-assoc]])
+            [io.kosong.adk.utils :refer [optional-datafy-assoc]]
+            [io.kosong.java])
   (:import (clojure.lang IFn IPersistentMap)
            (com.google.adk.agents
              BaseAgent CallbackContext Callbacks$AfterAgentCallback Callbacks$AfterAgentCallbackBase Callbacks$AfterModelCallback Callbacks$AfterModelCallbackBase
              Callbacks$AfterToolCallback Callbacks$AfterToolCallbackBase Callbacks$BeforeAgentCallback Callbacks$BeforeAgentCallbackBase Callbacks$BeforeModelCallback Callbacks$BeforeModelCallbackBase
              Callbacks$BeforeToolCallback Callbacks$BeforeToolCallbackBase Instruction Instruction$Provider Instruction$Static InvocationContext ReadonlyContext
-             RunConfig RunConfig$Builder RunConfig$ToolExecutionMode)
-           (com.google.adk.models LlmRequest LlmRequest$Builder LlmResponse)
+             RunConfig RunConfig$Builder RunConfig$StreamingMode)
+           (com.google.adk.models LlmRequest$Builder LlmResponse)
            (com.google.adk.tools BaseTool ToolContext)
-           (com.google.genai.types AudioTranscriptionConfig)
+           (com.google.genai.types AudioTranscriptionConfig Content Modality)
            (io.reactivex.rxjava3.core Maybe Single)
            (java.util Map)))
 
+
+#_(io.kosong.autovalue/register-autovalue-class com.google.adk.agents.RunConfig)
+(io.kosong.autovalue/register-autovalue-class com.google.adk.agents.LiveRequest)
 
 (extend-protocol Datafiable
   InvocationContext
@@ -61,7 +65,7 @@
           (let [context-m      (datafy context)
                 llm-response-m (f context-m llm-request-builder)]
             (if llm-response-m
-              (Maybe/just (p/into-llm-response llm-response-m))
+              (Maybe/just (io.kosong.java/make-object LlmResponse llm-response-m))
               (Maybe/empty)))
           (catch Throwable t
             (Maybe/error ^Throwable t)))))))
@@ -81,7 +85,7 @@
                 context-m       (datafy context)
                 llm-response-m1 (f context-m llm-response-m0)]
             (if llm-response-m1
-              (Maybe/just (p/into-llm-response llm-response-m1))
+              (Maybe/just (io.kosong.java/make-object LlmResponse llm-response-m1))
               (Maybe/empty)))
           (catch Throwable t
             (Maybe/error ^Throwable t)))))))
@@ -98,7 +102,7 @@
       (^Maybe call [_ ^CallbackContext context]
         (try
           (if-let [r (f (datafy context))]
-            (Maybe/just (p/into-content r))
+            (Maybe/just (io.kosong.java/make-object Content r))
             (Maybe/empty))
           (catch Throwable t
             (Maybe/error ^Throwable t)))))))
@@ -115,7 +119,7 @@
       (^Maybe call [_ ^CallbackContext context]
         (try
           (if-let [r (f (datafy context))]
-            (Maybe/just (p/into-content r))
+            (Maybe/just (io.kosong.java/make-object Content r))
             (Maybe/empty))
           (catch Throwable t
             (Maybe/error ^Throwable t)))))))
@@ -172,37 +176,60 @@
   (into-after-tool-callback [x]
     x))
 
-(extend-protocol p/IntoRunConfig
-  IPersistentMap
-  (into-run-config [x]
-    (let [{:keys [streaming-mode max-llm-calls response-modalities
-                  save-input-blobs-as-artifact output-audio-transcription
-                  tool-execution-mode]} x
-          ^RunConfig$Builder b (RunConfig/builder)]
-      (when (some? streaming-mode)
-        (.setStreamingMode b streaming-mode))
-      (when (some? max-llm-calls)
-        (.setMaxLlmCalls b max-llm-calls))
-      (when (some? tool-execution-mode)
-        (.setToolExecutionMode b tool-execution-mode))
-      (when (some? response-modalities)
-        (.setResponseModalities response-modalities))
-      (when (some? save-input-blobs-as-artifact)
-        (.setSaveInputBlobsAsArtifacts save-input-blobs-as-artifact))
-      (when (some? output-audio-transcription)
-        (.setOutputAudioTranscription (p/into-output-audio-transcription-config output-audio-transcription)))
-      (.build b))))
+(defmethod io.kosong.java/make-object RunConfig
+  [_ data]
+  (let [{:keys [streaming-mode max-llm-calls response-modalities
+                save-input-blobs-as-artifact input-audio-transcription
+                output-audio-transcription
+                tool-execution-mode]} data
+        ^RunConfig$Builder b (RunConfig/builder)]
+    (when (some? streaming-mode)
+      (.setStreamingMode b (RunConfig$StreamingMode/valueOf streaming-mode)))
+    (when (some? max-llm-calls)
+      (.setMaxLlmCalls b max-llm-calls))
+    (when (some? tool-execution-mode)
+      (.setToolExecutionMode b tool-execution-mode))
+    (when (some? response-modalities)
+      (.setResponseModalities b (mapv (fn [^String x] (Modality. x)) response-modalities)))
+    (when (some? save-input-blobs-as-artifact)
+      (.setSaveInputBlobsAsArtifacts b save-input-blobs-as-artifact))
+    (when (some? input-audio-transcription)
+      (.setInputAudioTranscription b (io.kosong.java/make-object AudioTranscriptionConfig input-audio-transcription)))
+    (when (some? output-audio-transcription)
+      (.setOutputAudioTranscription b (io.kosong.java/make-object AudioTranscriptionConfig output-audio-transcription)))
+    (.build b)))
 
-(extend-protocol p/IntoRunConfig
-  RunConfig
-  (into-run-config [x]
-    x))
+#_(extend-protocol p/IntoRunConfig
+    IPersistentMap
+    (into-run-config [x]
+      (let [{:keys [streaming-mode max-llm-calls response-modalities
+                    save-input-blobs-as-artifact output-audio-transcription
+                    tool-execution-mode]} x
+            ^RunConfig$Builder b (RunConfig/builder)]
+        (when (some? streaming-mode)
+          (.setStreamingMode b streaming-mode))
+        (when (some? max-llm-calls)
+          (.setMaxLlmCalls b max-llm-calls))
+        (when (some? tool-execution-mode)
+          (.setToolExecutionMode b tool-execution-mode))
+        (when (some? response-modalities)
+          (.setResponseModalities response-modalities))
+        (when (some? save-input-blobs-as-artifact)
+          (.setSaveInputBlobsAsArtifacts save-input-blobs-as-artifact))
+        (when (some? output-audio-transcription)
+          (.setOutputAudioTranscription (p/into-output-audio-transcription-config output-audio-transcription)))
+        (.build b))))
 
-(extend-protocol p/IntoOutputAudioTranscriptionConfig
-  IPersistentMap
-  (into-output-audio-transcription-config [x]
-    (let [b (AudioTranscriptionConfig/builder)]
-      (.build b))))
+#_(extend-protocol p/IntoRunConfig
+    RunConfig
+    (into-run-config [x]
+      x))
+
+#_(extend-protocol p/IntoOutputAudioTranscriptionConfig
+    IPersistentMap
+    (into-output-audio-transcription-config [x]
+      (let [b (AudioTranscriptionConfig/builder)]
+        (.build b))))
 
 (extend-protocol p/IntoInstruction
   String
@@ -213,7 +240,7 @@
   IFn
   (into-instruction [f]
     (let [get-instruction-fn (reify java.util.function.Function
-                               (apply [_  context]
+                               (apply [_ context]
                                  (Single/just (f (datafy context)))))]
       (Instruction$Provider. get-instruction-fn))))
 

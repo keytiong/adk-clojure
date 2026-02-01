@@ -88,8 +88,8 @@
         session-id      (:session-id b)
         streaming       (:streaming b)
         run-config      (if streaming
-                          {:streaming-mode RunConfig$StreamingMode/SSE}
-                          {:streaming-mode RunConfig$StreamingMode/NONE})
+                          {:streaming-mode "SSE"}
+                          {:streaming-mode "NONE"})
         user-id         (:user-id b)
         new-message     (:new-message b)
         session-context (-> (adk/agent-context
