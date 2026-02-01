@@ -19,7 +19,10 @@
                     :basis         @basis
                     :src-dirs      ["src/main/clojure"]
                     :resource-dirs ["src/main/resources"]
-                    :pom-data      [[:licenses
+                    :pom-data      [[:url "https://github.com/keytiong/adk-clojure"]
+                                    [:scm
+                                     [:url "https://github.com/keytiong/adk-clojure"]]
+                                    [:licenses
                                      [:license
                                       [:name "The MIT License"]
                                       [:url "https://opensource.org/license/MIT"]]]]})
