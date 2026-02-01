@@ -46,7 +46,7 @@ public class ClojureFunctionTool extends BaseTool {
 
     private static final IFn DATAFY_FN;
     private static final IFn STRINGIFY_KEYS_FN;
-    private static final IFn INTO_SCHEMA_FN;
+    private static final IFn MAKE_OBJECT_FN;
 
     static {
         IFn require = Clojure.var("clojure.core", "require");
@@ -57,7 +57,7 @@ public class ClojureFunctionTool extends BaseTool {
 
         DATAFY_FN = Clojure.var("clojure.datafy", "datafy");
         STRINGIFY_KEYS_FN = Clojure.var("clojure.walk", "stringify-keys");
-        INTO_SCHEMA_FN = Clojure.var("io.kosong.adk.protocols", "into-schema");
+        MAKE_OBJECT_FN = Clojure.var("io.kosong.java", "make-object");
     }
 
 
@@ -142,24 +142,29 @@ public class ClojureFunctionTool extends BaseTool {
     private static Schema resolveParameterSchema(Symbol s) {
         IPersistentMap meta = s.meta();
 
-        if (meta != null) {
-            Object schemaMap = meta.valAt(Keyword.intern("schema"), null);
-            if (schemaMap != null) {
-                return (Schema) INTO_SCHEMA_FN.invoke(schemaMap);
-            } else {
-                String tag = (String) meta.valAt(Keyword.intern("tag"), null);
-                if (tag != null) {
-                    Type t = TYPE_MAP.getOrDefault(tag, null);
-                    if (t != null) {
-                        return Schema.builder().type(t).build();
+        try {
+            if (meta != null) {
+                Object schemaMap = meta.valAt(Keyword.intern("schema"), null);
+                if (schemaMap != null) {
+                    return (Schema) MAKE_OBJECT_FN.invoke(Class.forName("com.google.genai.types.Schema"), schemaMap);
+                } else {
+                    String tag = (String) meta.valAt(Keyword.intern("tag"), null);
+                    if (tag != null) {
+                        Type t = TYPE_MAP.getOrDefault(tag, null);
+                        if (t != null) {
+                            return Schema.builder().type(t).build();
+                        }
                     }
                 }
             }
+            return DEFAULT_PARAMETER_SCHEMA;
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
         }
-        return DEFAULT_PARAMETER_SCHEMA;
     }
 
-    private static FunctionDeclaration initFunctionDeclaration(String name, String description, List<Symbol> argList) {
+    private static FunctionDeclaration initFunctionDeclaration(String name, String
+            description, List<Symbol> argList) {
 
         Map<String, Schema> properties = new LinkedHashMap<>();
 

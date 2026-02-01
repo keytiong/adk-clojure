@@ -35,5 +35,7 @@
                 :sign-releases? true
                 :pom-file       "target/classes/META-INF/maven/io.kosong.adk/adk-clojure/pom.xml"
                 :artifact       "target/adk-clojure-0.1.0-SNAPSHOT.jar"}}}
- :test          {:extra-paths ["src/test/clojure"]}
+
+ :test
+ {:extra-paths ["src/test/clojure"]}
  }

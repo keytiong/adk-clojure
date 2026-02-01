@@ -1,10 +1,11 @@
 (ns io.kosong.adk.events
   (:require [io.kosong.adk.utils :refer [optional-datafy-assoc]]
             [io.kosong.adk.protocols :as p]
-            [clojure.core.protocols :refer [Datafiable]])
+            [clojure.core.protocols :refer [Datafiable]]
+            [io.kosong.java])
   (:import (clojure.lang IPersistentMap)
-           (com.google.adk.events Event EventActions)
-           (com.google.genai.types Content FinishReason GroundingMetadata)
+           (com.google.adk.events Event Event$Builder EventActions)
+           (com.google.genai.types Content FinishReason GenerateContentResponseUsageMetadata GroundingMetadata)
            (java.util Map Set)
            (java.util.concurrent ConcurrentHashMap)))
 
@@ -22,6 +23,8 @@
         (optional-datafy-assoc :turn-complete (.turnComplete x))
         (optional-datafy-assoc :error-code (.errorCode x))
         (optional-datafy-assoc :error-message (.errorMessage x))
+        (optional-datafy-assoc :finish-reason (.finishReason x))
+        (optional-datafy-assoc :usage-metadata (.usageMetadata x))
         (optional-datafy-assoc :interrupted (.interrupted x))
         (optional-datafy-assoc :branch (.branch x))
         (optional-datafy-assoc :grounding-metadata (.groundingMetadata x))
@@ -29,7 +32,7 @@
         (optional-datafy-assoc :model-version (.modelVersion x))
         (optional-datafy-assoc :usage-metadata (.usageMetadata x))
         (optional-datafy-assoc :avg-logprobs (.avgLogprobs x))
-        (optional-datafy-assoc :finish-reason (.finishReason x)))))
+  )))
 
 (extend-protocol Datafiable
   EventActions
@@ -48,9 +51,10 @@
   (into-event [^IPersistentMap x]
     (let [{:keys [id invocation-id author content actions long-running-tool-ids
                   partial turn-complete error-code error-message interrupted
+                  usage-metadata
                   branch grounding-metadata timestamp
                   model-version usage-metadata avg-logprobs finish-reason]} x
-          b (Event/builder)]
+          ^Event$Builder b (Event/builder)]
       (when (some? id)
         (.id b id))
       (when (some? invocation-id)
@@ -58,7 +62,7 @@
       (when (some? author)
         (.author b author))
       (when (some? content)
-        (.content b ^Content (p/into-content content)))
+        (.content b ^Content (io.kosong.java/make-object Content content)))
       (when (some? actions)
         (.actions b (p/into-event-actions actions)))
       (when (some? long-running-tool-ids)
@@ -71,12 +75,14 @@
         (.errorCode b ^FinishReason error-code))
       (when (some? error-message)
         (.errorMessage b ^String error-message))
+      (when (some? usage-metadata)
+        (.usageMetadata b ^GenerateContentResponseUsageMetadata (io.kosong.java/make-object GenerateContentResponseUsageMetadata  x)))
       (when (some? interrupted)
         (.interrupted b ^Boolean interrupted))
       (when (some? branch)
         (.branch b ^String branch))
       (when (some? grounding-metadata)
-        (.groundingMetadata b ^GroundingMetadata (p/into-grounding-metadata grounding-metadata)))
+        (.groundingMetadata b ^GroundingMetadata (io.kosong.java/make-object GroundingMetadata grounding-metadata)))
       (when (some? timestamp)
         (.timestamp b ^Long timestamp))
       (when (some? model-version)

@@ -12,6 +12,7 @@ ADK Clojure provides idiomatic Clojure APIs for creating AI agents with ADK:
 - **Datafied Domain Objects**: ADK domain objects are `Datafiable` as maps.
 - **ADK Web for Clojure Agents**: ADK web implemented in Clojure for Clojure based agents.
 - **Async Event Support**: Converts ADK `RxJava` observables into `core.async` channels.
+- **Live Streaming Support**: Bidirectional WebSocket streaming for real-time agent interactions (audio, video, text).
 
 ## Prerequisites
 
@@ -132,6 +133,38 @@ Result: A sequence of events showing function call, function response, and LLM r
   :actions {:state-delta {}, :artifact-delta {}, :request-auth-configs {}},
   :timestamp 1761484202682})
 ```
+
+### Live Streaming with run-live
+
+The `run-live` function enables bidirectional real-time streaming for voice, video, and continuous interactions:
+
+```clojure
+(require '[io.kosong.adk.core :as adk])
+(require '[clojure.core.async :as async])
+
+;; Create an agent
+(def chatbot (adk/llm-agent
+               :name "live-chatbot"
+               :model "gemini-2.0-flash-exp"
+               :instruction "You are a helpful assistant"))
+
+;; Start live streaming session
+(let [{:keys [event-ch request-ch]} (adk/run-live (adk/agent-context) chatbot)]
+  ;; Send messages to agent
+  (async/>!! request-ch {:content "Hello!"})
+  (async/>!! request-ch {:blob {:mime-type "audio/pcm" :data "..."}})
+
+  ;; Receive events from agent
+  (let [event (async/<!! event-ch)]
+    (println "Agent response:" (get-in event [:content :parts 0 :text])))
+
+  ;; Close connection
+  (async/>!! request-ch {:close true}))
+```
+
+**WebSocket Endpoint**: Connect via `ws://localhost:8080/run_live?app_name=my-agent&user_id=user123&session_id=session456`
+
+See `examples/live-chatbot` for a complete example with JavaScript WebSocket client.
 
 ### Run ADK Web
 

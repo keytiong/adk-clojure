@@ -34,6 +34,9 @@
    ["/run_sse"
     {:post {:interceptors [(h/run-sse-interceptor app-context)]}}]
 
+   ["/run_live"
+    {:get {:interceptors [(h/run-live-interceptor app-context)]}}]
+
    ["/debug/trace/:event-id"
     {:get {:handler (partial h/get-trace-by-event app-context)}}]
 

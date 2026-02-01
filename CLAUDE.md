@@ -185,6 +185,7 @@ The web framework (`dev`) uses:
 - `POST /api/sessions/{app-name}/{user-id}` - Create session
 - `GET /api/sessions/{app-name}/{user-id}` - List sessions
 - `POST /api/run/sse` - Run agent with Server-Sent Events streaming
+- `GET /api/run_live` - Run agent with WebSocket bidirectional live streaming (query params: app_name, user_id, session_id)
 - `GET /api/graph/{app-name}/{user-id}/{session-id}/{event-id}` - Agent graph visualization
 
 ### Event Streaming with core.async
@@ -203,6 +204,63 @@ Agent execution returns core.async channels:
 Streaming modes:
 - `RunConfig$StreamingMode/SSE` - Server-sent events (partial responses)
 - `RunConfig$StreamingMode/NONE` - Wait for complete responses
+- `RunConfig$StreamingMode/BIDI` - Bidirectional streaming for live connections
+
+### Bidirectional Live Streaming with run-live
+
+The `run-live` function provides real-time bidirectional communication between clients and agents via WebSockets:
+
+```clojure
+(let [{:keys [event-ch request-ch]} (adk/run-live context agent initial-content run-config)]
+  ;; request-ch: Send LiveRequest maps to agent (blocking buffer 10)
+  (async/>!! request-ch {:content "Hello"})
+  (async/>!! request-ch {:blob {:mime-type "audio/pcm" :data "..."}})
+  (async/>!! request-ch {:close true})
+
+  ;; event-ch: Receive Event objects from agent (sliding buffer 16)
+  (async/<!! event-ch))
+```
+
+**LiveRequest Format:**
+- `{:content ...}` - Send turn-by-turn content (text/parts)
+- `{:blob {:mime-type "..." :data "..."}}` - Send realtime audio/video blob
+- `{:close true}` - Close the live connection
+
+**Channel Behavior:**
+- `event-ch`: Sliding buffer (16) - drops oldest events if consumer is slow
+- `request-ch`: Blocking buffer (10) - applies backpressure to prevent overwhelming agent
+
+**WebSocket Endpoint** (`/run_live`):
+- Query params: `app_name`, `user_id`, `session_id`
+- Client → Server: JSON LiveRequest objects
+- Server → Client: JSON Event objects
+- Connection limits: 10 per user, 100 per app
+- Frame size: 10MB max
+- Idle timeout: 5 minutes
+
+**Example WebSocket Usage** (JavaScript):
+```javascript
+const ws = new WebSocket('ws://localhost:8080/run_live?app_name=my-agent&user_id=user123&session_id=session456');
+
+ws.onopen = () => {
+  ws.send(JSON.stringify({content: {role: "user", parts: [{text: "Hello!"}]}}));
+};
+
+ws.onmessage = (event) => {
+  const data = JSON.parse(event.data);
+  console.log('Event:', data);
+};
+
+ws.send(JSON.stringify({close: true})); // Close connection
+```
+
+**Use Cases:**
+- Real-time voice conversations (audio streaming)
+- Continuous interaction without request/response overhead
+- Multi-modal applications (video + audio + text)
+- Live transcription and feedback
+
+See `examples/live-chatbot` for a complete working example.
 
 ### Tool Definition Conventions
 
