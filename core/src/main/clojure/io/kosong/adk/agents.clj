@@ -17,7 +17,6 @@
            (java.util Map)))
 
 
-#_(io.kosong.autovalue/register-autovalue-class com.google.adk.agents.RunConfig)
 (io.kosong.autovalue/register-autovalue-class com.google.adk.agents.LiveRequest)
 
 (extend-protocol Datafiable
@@ -198,38 +197,6 @@
     (when (some? output-audio-transcription)
       (.setOutputAudioTranscription b (io.kosong.java/make-object AudioTranscriptionConfig output-audio-transcription)))
     (.build b)))
-
-#_(extend-protocol p/IntoRunConfig
-    IPersistentMap
-    (into-run-config [x]
-      (let [{:keys [streaming-mode max-llm-calls response-modalities
-                    save-input-blobs-as-artifact output-audio-transcription
-                    tool-execution-mode]} x
-            ^RunConfig$Builder b (RunConfig/builder)]
-        (when (some? streaming-mode)
-          (.setStreamingMode b streaming-mode))
-        (when (some? max-llm-calls)
-          (.setMaxLlmCalls b max-llm-calls))
-        (when (some? tool-execution-mode)
-          (.setToolExecutionMode b tool-execution-mode))
-        (when (some? response-modalities)
-          (.setResponseModalities response-modalities))
-        (when (some? save-input-blobs-as-artifact)
-          (.setSaveInputBlobsAsArtifacts save-input-blobs-as-artifact))
-        (when (some? output-audio-transcription)
-          (.setOutputAudioTranscription (p/into-output-audio-transcription-config output-audio-transcription)))
-        (.build b))))
-
-#_(extend-protocol p/IntoRunConfig
-    RunConfig
-    (into-run-config [x]
-      x))
-
-#_(extend-protocol p/IntoOutputAudioTranscriptionConfig
-    IPersistentMap
-    (into-output-audio-transcription-config [x]
-      (let [b (AudioTranscriptionConfig/builder)]
-        (.build b))))
 
 (extend-protocol p/IntoInstruction
   String

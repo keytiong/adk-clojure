@@ -1,11 +1,9 @@
 (ns io.kosong.adk.sessions
   (:require [clojure.core.protocols :refer [Datafiable]]
-            [io.kosong.adk.protocols :as p]
             [io.kosong.adk.utils :refer [optional-datafy-assoc]]
             [io.kosong.java])
   (:import (com.google.adk.sessions BaseSessionService GetSessionConfig InMemorySessionService ListSessionsResponse Session VertexAiSessionService)
            (com.google.genai.types HttpOptions)
-           (java.time Instant)
            (java.util Map Optional)
            (java.util.concurrent ConcurrentHashMap)))
 

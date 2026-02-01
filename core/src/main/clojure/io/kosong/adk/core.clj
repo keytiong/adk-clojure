@@ -3,8 +3,7 @@
             [clojure.datafy :as d :refer [datafy]]
             [io.kosong.adk.protocols :as p]
             [clojure.tools.logging :as log]
-            [io.kosong.java]
-            [io.kosong.autovalue :as av])
+            [io.kosong.java])
   (:import (com.google.adk.agents Instruction LlmAgent LoopAgent RunConfig RunConfig$StreamingMode SequentialAgent)
            (com.google.adk.runner Runner)
            (com.google.adk.sessions Session)
@@ -225,11 +224,6 @@
         state           (or state {})]
     (-> (io.kosong.adk.sessions/create-session session-service app-name user-id state session-id)
         (datafy))))
-
-(defn ->run-config
-  []
-  (let [b (RunConfig/builder)]
-    (.build b)))
 
 (defn chan->seq [ch]
   (if-let [v (async/<!! ch)]

@@ -4,7 +4,7 @@
             [clojure.core.protocols :refer [Datafiable]]
             [io.kosong.java])
   (:import (clojure.lang IPersistentMap)
-           (com.google.adk.events Event Event$Builder EventActions EventActions$Builder)
+           (com.google.adk.events Event Event$Builder EventActions)
            (com.google.genai.types Content FinishReason GenerateContentResponseUsageMetadata GroundingMetadata)
            (java.util Map Set)
            (java.util.concurrent ConcurrentHashMap)))
