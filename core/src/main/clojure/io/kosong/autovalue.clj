@@ -9,11 +9,10 @@
   Supports nested AutoValue objects and collections."
   (:require [camel-snake-kebab.core :as csk]
             [clojure.datafy :refer [datafy]]
+            [clojure.pprint]
             [io.kosong.java])
   (:import (java.lang.reflect Modifier)
-           (java.util Optional)
-           (org.reflections Reflections)
-           (org.reflections.util ConfigurationBuilder)))
+           (java.util Optional)))
 
 ;; =============================================================================
 ;; AutoValue Detection
@@ -105,9 +104,9 @@
   (if (instance? Class type)
     (or
       ;; Case 1: Already the generated class
-      (.contains (.getName type) ".AutoValue_")
+     (.contains (.getName type) ".AutoValue_")
       ;; Case 2: Abstract class with generated implementation
-      (some? (find-generated-class type)))
+     (some? (find-generated-class type)))
     false))
 
 (defn- property-method?
@@ -159,6 +158,7 @@
   [clazz]
   (->> (.getMethods clazz)
        (filter property-method?)
+       (sort-by #(.getName ^java.lang.reflect.Method %))
        (mapv extract-property-info-from-method)))
 
 (defn- emit-property
@@ -223,13 +223,42 @@
          (instance? clojure.lang.IPersistentMap ~data)
          ~(emit-map-to-autovalue cls data)))))
 
-(defn- find-autovalue-types
+(defn find-autovalue-types
   [package]
-  (let [c (-> (ConfigurationBuilder.)
-              (.forPackage package (into-array ClassLoader [])))
-        r (Reflections. c)]
-    (-> r
-        (.getTypesAnnotatedWith com.google.auto.value.AutoValue true))))
+  (let [config-builder-cls (Class/forName "org.reflections.util.ConfigurationBuilder")
+        reflections-cls    (Class/forName "org.reflections.Reflections")
+        cb                 (.newInstance (.getConstructor config-builder-cls (into-array Class []))
+                                         (into-array Object []))
+        _                  (.invoke (.getMethod config-builder-cls "forPackage"
+                                                (into-array Class [String (Class/forName "[Ljava.lang.ClassLoader;")]))
+                                    cb (into-array Object [package (into-array ClassLoader [])]))
+        configuration-cls  (Class/forName "org.reflections.Configuration")
+        r                  (.newInstance (.getConstructor reflections-cls (into-array Class [configuration-cls]))
+                                         (into-array Object [cb]))]
+    (.invoke (.getMethod reflections-cls "getTypesAnnotatedWith"
+                         (into-array Class [Class Boolean/TYPE]))
+             r (into-array Object [com.google.auto.value.AutoValue true]))))
+
+(defn generate-source-file
+  "Generate a Clojure source file with static extend-type and defmethod forms
+  for all AutoValue types in the given package. The generated file requires no
+  reflection at load time."
+  [package ns-sym output-path]
+  (let [classes    (sort-by #(.getName %) (find-autovalue-types package))
+        forms      (mapcat (fn [c] [(emit-make-object-method c)
+                                    (emit-datafy-object c)])
+                           classes)
+        ns-form    (list 'ns ns-sym
+                         (list :require '[io.kosong.autovalue :refer [optional-datafy-assoc]]
+                               '[io.kosong.java]))
+        all-forms  (cons ns-form forms)
+        content    (with-out-str
+                     (doseq [form all-forms]
+                       (clojure.pprint/pprint form)
+                       (println)))]
+    (clojure.java.io/make-parents output-path)
+    (spit output-path content)
+    (println "Generated" output-path "with" (count classes) "AutoValue types")))
 
 (defmacro register-autovalue-class
   [cls-sym]
@@ -256,6 +285,4 @@
 
   (io.kosong.autovalue/register-autovalue-class com.google.adk.agents.RunConfig)
 
-  (emit-make-object-method com.google.adk.agents.RunConfig)
-
-  ,)
+  (emit-make-object-method com.google.adk.agents.RunConfig))
