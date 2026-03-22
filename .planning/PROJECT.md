@@ -18,12 +18,13 @@ Conversions between Clojure maps and `com.google.genai.types` Java objects must 
 - ✓ `generated_types.clj` file generated — covers full `com.google.genai.types` AutoValue hierarchy
 - ✓ `types.clj` updated — simplified to require `io.kosong.adk.generated-types`
 - ✓ Runtime macro (`register-autovalue-class`) retained for non-genai types (e.g. `LiveRequest`)
+- ✓ Tests in `autovalue_test.clj` structured as `deftest` forms, pass via `clojure -X:test` (Validated in Phase 1: Ship It)
+- ✓ `generated_types.clj` committed to repository (351 AutoValue types, deterministic output) (Validated in Phase 1: Ship It)
+- ✓ Build pipeline verified end-to-end — `generate-types` idempotent, `jar` clean (Validated in Phase 1: Ship It)
 
 ### Active
 
-- [ ] Tests in `autovalue_test.clj` are structured correctly and pass
-- [ ] `generated_types.clj` committed to repository
-- [ ] Build pipeline verified end-to-end (`generate-types` → `jar`)
+_(none — all requirements validated in Phase 1)_
 
 ### Out of Scope
 
@@ -44,9 +45,10 @@ This is an in-progress task in the `develop` branch of adk-clojure. The codebase
 
 | Decision | Rationale | Outcome |
 |----------|-----------|---------|
-| Generate `com.google.genai.types` only | Full type hierarchy; `com.google.adk.*` types are fewer and runtime macro is acceptable | — Pending |
-| Commit `generated_types.clj` to repo | Avoids Reflections dependency at runtime or during normal builds | — Pending |
-| `generate-types` as explicit build task | Regeneration is intentional, not automatic — protects against accidental overwrites | — Pending |
+| Generate `com.google.genai.types` only | Full type hierarchy; `com.google.adk.*` types are fewer and runtime macro is acceptable | Confirmed in Phase 1 |
+| Commit `generated_types.clj` to repo | Avoids Reflections dependency at runtime or during normal builds | Confirmed in Phase 1 |
+| `generate-types` as explicit build task | Regeneration is intentional, not automatic — protects against accidental overwrites | Confirmed in Phase 1 |
+| Sort AutoValue properties by method name | Ensures deterministic, idempotent code generation | Added in Phase 1 |
 
 ## Evolution
 
@@ -66,4 +68,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-03-22 after initialization*
+*Last updated: 2026-03-22 after Phase 1 (Ship It) completion*
