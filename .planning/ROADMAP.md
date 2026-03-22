@@ -9,10 +9,10 @@
 
 **Covers:** GEN-01, GEN-02, GEN-03, TEST-01, TEST-02, TEST-03, BUILD-01, BUILD-02
 
-**Plans:** 2 plans
+**Plans:** 1/2 plans executed
 
 Plans:
-- [ ] 01-01-PLAN.md — Wire test infrastructure (deftest wrappers, test-runner alias, docstring update)
+- [x] 01-01-PLAN.md — Wire test infrastructure (deftest wrappers, test-runner alias, docstring update)
 - [ ] 01-02-PLAN.md — Track generated_types.clj in git and verify end-to-end build pipeline
 
 **Deliverables:**

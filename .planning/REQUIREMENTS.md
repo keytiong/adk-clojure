@@ -8,14 +8,14 @@
 ### Code Generation
 
 - [ ] **GEN-01**: `generated_types.clj` is committed to the repository
-- [ ] **GEN-02**: `generate-types` build task is documented — explicitly states it must be re-run when the `google-genai` dependency version changes
+- [x] **GEN-02**: `generate-types` build task is documented — explicitly states it must be re-run when the `google-genai` dependency version changes
 - [ ] **GEN-03**: Generator produces deterministic output (idempotent — running twice produces identical file)
 
 ### Testing
 
-- [ ] **TEST-01**: `autovalue_test.clj` uses `deftest` wrappers so tests are discoverable by standard test runners
-- [ ] **TEST-02**: `:test` alias in `deps.edn` includes a test runner (cognitect/test-runner or inline `run-tests`)
-- [ ] **TEST-03**: Round-trip tests pass — `datafy` (Java→map) and `make-object` (map→Java) verified for representative types
+- [x] **TEST-01**: `autovalue_test.clj` uses `deftest` wrappers so tests are discoverable by standard test runners
+- [x] **TEST-02**: `:test` alias in `deps.edn` includes a test runner (cognitect/test-runner or inline `run-tests`)
+- [x] **TEST-03**: Round-trip tests pass — `datafy` (Java→map) and `make-object` (map→Java) verified for representative types
 
 ### Build
 
@@ -46,11 +46,11 @@
 | Requirement | Phase | Status |
 |-------------|-------|--------|
 | GEN-01 | Phase 1 | Pending |
-| GEN-02 | Phase 1 | Pending |
+| GEN-02 | Phase 1 | Complete |
 | GEN-03 | Phase 1 | Pending |
-| TEST-01 | Phase 1 | Pending |
-| TEST-02 | Phase 1 | Pending |
-| TEST-03 | Phase 1 | Pending |
+| TEST-01 | Phase 1 | Complete |
+| TEST-02 | Phase 1 | Complete |
+| TEST-03 | Phase 1 | Complete |
 | BUILD-01 | Phase 1 | Pending |
 | BUILD-02 | Phase 1 | Pending |
 
