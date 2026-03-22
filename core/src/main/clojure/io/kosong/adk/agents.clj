@@ -3,19 +3,19 @@
             [clojure.datafy :refer [datafy]]
             [io.kosong.adk.protocols :as p]
             [io.kosong.adk.utils :refer [optional-datafy-assoc]]
+            [io.kosong.autovalue]
             [io.kosong.java])
   (:import (clojure.lang IFn IPersistentMap)
            (com.google.adk.agents
-             BaseAgent CallbackContext Callbacks$AfterAgentCallback Callbacks$AfterAgentCallbackBase Callbacks$AfterModelCallback Callbacks$AfterModelCallbackBase
-             Callbacks$AfterToolCallback Callbacks$AfterToolCallbackBase Callbacks$BeforeAgentCallback Callbacks$BeforeAgentCallbackBase Callbacks$BeforeModelCallback Callbacks$BeforeModelCallbackBase
-             Callbacks$BeforeToolCallback Callbacks$BeforeToolCallbackBase Instruction Instruction$Provider Instruction$Static InvocationContext ReadonlyContext
-             RunConfig RunConfig$Builder RunConfig$StreamingMode)
+            BaseAgent CallbackContext Callbacks$AfterAgentCallback Callbacks$AfterAgentCallbackBase Callbacks$AfterModelCallback Callbacks$AfterModelCallbackBase
+            Callbacks$AfterToolCallback Callbacks$AfterToolCallbackBase Callbacks$BeforeAgentCallback Callbacks$BeforeAgentCallbackBase Callbacks$BeforeModelCallback Callbacks$BeforeModelCallbackBase
+            Callbacks$BeforeToolCallback Callbacks$BeforeToolCallbackBase Instruction Instruction$Provider Instruction$Static InvocationContext ReadonlyContext
+            RunConfig RunConfig$Builder RunConfig$StreamingMode)
            (com.google.adk.models LlmRequest$Builder LlmResponse)
            (com.google.adk.tools BaseTool ToolContext)
            (com.google.genai.types AudioTranscriptionConfig Content Modality)
            (io.reactivex.rxjava3.core Maybe Single)
            (java.util Map)))
-
 
 (io.kosong.autovalue/register-autovalue-class com.google.adk.agents.LiveRequest)
 

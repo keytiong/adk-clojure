@@ -95,8 +95,8 @@
 (def root-agent
   (adk/llm-agent
     :name "chatbot"
-    ;;:model "docker/ai/qwen3"
-    :model "ollama/qwen3:4b"
+    :model "docker/ai/qwen3"
+    ;;:model "ollama/qwen3.5:9b"
     :tools [#'get-current-time #'get-weather]
     :description "Simple AI assistant to answer user questions."
     :instruction "You are a helpful assistant who can answer user questions"))
