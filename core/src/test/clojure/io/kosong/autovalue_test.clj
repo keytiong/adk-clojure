@@ -1,8 +1,8 @@
 (ns io.kosong.autovalue-test
   (:require
-    [io.kosong.autovalue :as av]
-    [io.kosong.java]
-    [clojure.test :refer [testing is]]))
+   [io.kosong.adk.generated-types]
+   [io.kosong.java]
+   [clojure.test :refer [deftest testing is]]))
 
 (def generate-content-config-obj
   (-> (com.google.genai.types.GenerateContentConfig/builder)
@@ -42,12 +42,12 @@
                          :threshold "BLOCK_ONLY_HIGH"
                          :method    "PROBABILITY"}]})
 
-(av/register-autovalue-package "com.google.genai.types")
+(deftest autovalue-to-map-test
+  (testing "autovalue to map"
+    (is (= (clojure.datafy/datafy generate-content-config-obj)
+           generate-content-config-data))))
 
-(testing "autovalue to map"
-  (is (= (clojure.datafy/datafy generate-content-config-obj)
-         generate-content-config-data)))
-
-(testing "map to autovalue"
-  (let [obj (io.kosong.java/make-object com.google.genai.types.GenerateContentConfig generate-content-config-data)]
-    (is (= obj generate-content-config-obj))))
+(deftest map-to-autovalue-test
+  (testing "map to autovalue"
+    (let [obj (io.kosong.java/make-object com.google.genai.types.GenerateContentConfig generate-content-config-data)]
+      (is (= obj generate-content-config-obj)))))
