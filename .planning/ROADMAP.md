@@ -9,11 +9,11 @@
 
 **Covers:** GEN-01, GEN-02, GEN-03, TEST-01, TEST-02, TEST-03, BUILD-01, BUILD-02
 
-**Plans:** 1/2 plans executed
+**Plans:** 2/2 plans complete
 
 Plans:
 - [x] 01-01-PLAN.md — Wire test infrastructure (deftest wrappers, test-runner alias, docstring update)
-- [ ] 01-02-PLAN.md — Track generated_types.clj in git and verify end-to-end build pipeline
+- [x] 01-02-PLAN.md — Track generated_types.clj in git and verify end-to-end build pipeline
 
 **Deliverables:**
 - `autovalue_test.clj` tests wrapped in `deftest` so any standard test runner discovers them

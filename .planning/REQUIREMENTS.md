@@ -7,9 +7,9 @@
 
 ### Code Generation
 
-- [ ] **GEN-01**: `generated_types.clj` is committed to the repository
+- [x] **GEN-01**: `generated_types.clj` is committed to the repository
 - [x] **GEN-02**: `generate-types` build task is documented — explicitly states it must be re-run when the `google-genai` dependency version changes
-- [ ] **GEN-03**: Generator produces deterministic output (idempotent — running twice produces identical file)
+- [x] **GEN-03**: Generator produces deterministic output (idempotent — running twice produces identical file)
 
 ### Testing
 
@@ -19,8 +19,8 @@
 
 ### Build
 
-- [ ] **BUILD-01**: `jar` task packages `generated_types.clj` from source (no silent regeneration inside `jar`)
-- [ ] **BUILD-02**: End-to-end build verified: `generate-types` → `jar` succeeds without errors
+- [x] **BUILD-01**: `jar` task packages `generated_types.clj` from source (no silent regeneration inside `jar`)
+- [x] **BUILD-02**: End-to-end build verified: `generate-types` → `jar` succeeds without errors
 
 ## v2 Requirements
 
@@ -45,14 +45,14 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| GEN-01 | Phase 1 | Pending |
+| GEN-01 | Phase 1 | Complete |
 | GEN-02 | Phase 1 | Complete |
-| GEN-03 | Phase 1 | Pending |
+| GEN-03 | Phase 1 | Complete |
 | TEST-01 | Phase 1 | Complete |
 | TEST-02 | Phase 1 | Complete |
 | TEST-03 | Phase 1 | Complete |
-| BUILD-01 | Phase 1 | Pending |
-| BUILD-02 | Phase 1 | Pending |
+| BUILD-01 | Phase 1 | Complete |
+| BUILD-02 | Phase 1 | Complete |
 
 **Coverage:**
 - v1 requirements: 8 total
