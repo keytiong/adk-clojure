@@ -1,91 +1,151 @@
-# CONVENTIONS.md — Code Style and Patterns
+# CONVENTIONS.md — Code Conventions
 
-## Naming Conventions
+## Language & Style
 
-- **Kebab-case** throughout: functions, variables, local bindings, filenames
-- **Namespaces** mirror directory structure: `io.kosong.adk.core` → `core/src/main/clojure/io/kosong/adk/core.clj`
-- **Protocol names** use `Into*` prefix for Clojure→Java conversions: `IntoContent`, `IntoAgent`, `IntoTool`
-- **Datafiable** protocol used for Java→Clojure conversions (via `clojure.core.protocols/Datafiable`)
-- **Private vars** use `defn-` (rare); most functions are public by convention
+- **Clojure 1.12.3** — idiomatic functional style
+- **Thread-first** (`->`) used throughout for builder chains and data transformations
+- **Keyword arguments** for all public builder functions (`llm-agent`, `loop-agent`, etc.)
+- **`defn-`** for private functions; `defn` for public API
+- **Docstrings** on all public functions
+- **Type hints** throughout for Java interop (`^String`, `^Builder`, `^LlmAgent`, etc.)
 
-## Code Style
+## Naming
 
-- No explicit formatting tool configured (no cljfmt, zprint config found)
-- Consistent use of `->` and `->>` threading macros for readability
-- `let` bindings preferred over deeply nested expressions
-- Docstrings present on public API functions; tool functions require them for schema generation
+| Thing | Convention | Example |
+|-------|-----------|---------|
+| Namespaces | `io.kosong.adk.*` reverse-domain | `io.kosong.adk.core` |
+| Files | `snake_case.clj` | `agent_registry.clj` |
+| Functions | `kebab-case` | `run-async`, `into-content` |
+| Protocols | `PascalCase` with semantic prefix | `IntoContent`, `IntoAgent` |
+| Java interop protocols | `Into*` prefix | `IntoContent`, `IntoPart` |
+| Java compat protocols | `Datafiable` | (clojure.core.protocols) |
+| Constants/atoms | `kebab-case` with `!` suffix for mutating fns | `load-agent-registry!` |
+| Test vars | `deftest` with descriptive name | |
 
-## Protocol-Based Java Interop Pattern
+## Protocol Pattern (Core Convention)
 
-The central pattern in this codebase:
+All type conversions follow the same bidirectional protocol pattern:
 
 ```clojure
-;; ~30 protocols defined in protocols.clj
-;; Java → Clojure: extend Datafiable
-(extend-protocol Datafiable
+;; Direction 1: Java → Clojure (extend Datafiable)
+(extend-protocol clojure.core.protocols/Datafiable
   SomeJavaClass
   (datafy [^SomeJavaClass x]
-    {:field (.getField x)}))
+    {:field1 (.field1 x)
+     :field2 (.field2 x)}))
 
-;; Clojure → Java: extend Into* protocol
+;; Direction 2: Clojure → Java (extend Into* protocol)
 (extend-protocol IntoSomething
   clojure.lang.IPersistentMap
   (into-something [m]
     (-> (SomeJavaClass/builder)
-        (.field (:field m))
-        (.build))))
+        (.field1 (:field1 m))
+        (.build)))
+
+  String  ; Convenience extension for simple cases
+  (into-something [s]
+    (into-something {:field1 s})))
 ```
 
-## Builder Pattern
+## Java Optional / Collection Handling
 
-Java ADK objects are constructed via builder pattern:
+Use `optional-datafy-assoc` from `utils.clj` for Java Optional, List, Set, Map fields:
+
 ```clojure
-(-> (JavaClass/builder)
-    (.someField value)
-    (.anotherField value)
+(-> {}
+    (optional-datafy-assoc :field (.getField obj))  ; handles Optional
+    (optional-datafy-assoc :items (.getItems obj)))  ; handles List
+```
+
+## Agent Builder Pattern
+
+Public builder functions accept keyword args and return Java objects:
+
+```clojure
+(llm-agent
+  :name "my-agent"
+  :model "gemini-2.0-flash"
+  :instruction "You are helpful"
+  :tools [my-tool-fn]
+  :sub-agents [sub-agent])
+```
+
+Internally, builders use Java builder chains:
+
+```clojure
+(-> (LlmAgent/builder)
+    (.name name)
+    (.model model)
     (.build))
 ```
 
-## Type Hints
+## Tool Definition Convention
 
-- Java method calls use type hints to avoid reflection: `^String`, `^Integer`, `^Content`
-- Used consistently on protocol method parameters for performance
+```clojure
+(defn my-tool
+  "Docstring becomes tool description"
+  [^{:schema {:type "STRING"}} query  ; type metadata → JSON schema
+   tool-context]                       ; auto-injected execution context
+  {:result "..."})  ; map return → structured output
+```
+
+Key rules:
+1. Docstring required (becomes tool description)
+2. `^{:schema {:type "..."}}` on parameters for schema generation
+3. `tool-context` parameter name triggers auto-injection
+4. Return map for structured output; any other value wrapped as `{"result": value}`
+5. Return nil → empty response
+
+## Callback Convention
+
+Callbacks receive a context map and return either nil (no effect) or a modified value:
+
+```clojure
+;; Before-model callback: return nil to proceed, or {:content ...} to override
+(defn my-before-model [callback-context]
+  nil)  ; proceed normally
+
+;; After-agent callback: suppress output
+(defn suppress-output [callback-context]
+  {:role "model" :parts []})  ; override with empty
+```
 
 ## Error Handling
 
-- `try/catch` used at boundaries (WebSocket handlers, HTTP handlers)
-- RxJava `Maybe` types handled via `.blockingGet` in some synchronous paths
-- Errors from async channels propagated as exception objects in event stream
-- No global error handler; each component handles its own exceptions
+- **`ex-info`** with context map for library errors
+- Tool execution errors: logged via `clojure.tools.logging`, not propagated to caller (silent)
+- WebSocket/SSE errors: logged; connection closed on unrecoverable errors
+- No global try/catch; errors bubble to component boundaries
 
 ## Logging
 
-- `clojure.tools.logging` used throughout (wraps SLF4J)
-- Log levels: `log/info`, `log/warn`, `log/error`, `log/debug`
-- Minimal logging — most execution paths are silent
+```clojure
+(require '[clojure.tools.logging :as log])
 
-## Async Patterns
+(log/info "message")
+(log/error e "message with exception")
+(log/debug "debug info")
+```
 
-- `core.async` channels for event streaming
-- `async/go` blocks for non-blocking channel operations
-- `async/<!!` for blocking reads in sync contexts
-- Channel buffers: sliding (16) for output events, blocking (10) for input requests
+## State Management
 
-## Optional/Null Handling
+- **Session state**: `ConcurrentHashMap` (mutable); use `:output-key` on agents to write
+- **Agent registry**: `atom` containing `{name → agent}` map
+- **Component state**: Integrant refs (start/stop lifecycle)
+- Avoid `def` for mutable state; prefer atoms or Integrant components
 
-- `optional-datafy-assoc` utility in `utils.clj` handles Java `Optional`, `List`, `Set`, `Map`
-- Returns `nil` (not exception) when Optional is empty
-- Clojure `nil` used throughout instead of Java `null`
+## Imports / Requires
 
-## Configuration Pattern
+```clojure
+(ns io.kosong.adk.core
+  (:require
+    [io.kosong.adk.protocols :as protocols]
+    [clojure.core.protocols :refer [Datafiable datafy]])
+  (:import
+    [com.google.adk.agents LlmAgent]))
+```
 
-- Clojure maps as configuration everywhere
-- Keyword keys (`:name`, `:model`, `:instruction`)
-- Maps passed to builder functions (e.g., `llm-agent`, `loop-agent`)
-- Integrant used in dev/web layer for component lifecycle (`:system/session-service`, etc.)
-
-## Metadata Conventions
-
-- Tool schemas defined via function parameter metadata: `^{:schema {:type "STRING"}}`
-- Var metadata used to carry ADK-specific information
-- `^:private` used occasionally for implementation details
+- Group `:require` alphabetically by namespace
+- Group `:import` by Java package
+- Prefer aliased requires over `:refer :all`
+- Use `:reload` when requiring in REPL for development
