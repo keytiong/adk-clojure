@@ -23,8 +23,8 @@
 
 (def default-handler
   (reitit.ring/routes
-    (reitit.ring/create-resource-handler {:path "/"})
-    (reitit.ring/create-default-handler)))
+   (reitit.ring/create-resource-handler {:path "/"})
+   (reitit.ring/create-default-handler)))
 
 (defn list-apps
   [app-context req]
@@ -93,10 +93,10 @@
         user-id         (:user-id b)
         new-message     (:new-message b)
         session-context (-> (adk/agent-context
-                              :app-name app-name
-                              :user-id user-id
-                              :session-service (:session-service app-context)
-                              :artifact-service (:artifact-service app-context))
+                             :app-name app-name
+                             :user-id user-id
+                             :session-service (:session-service app-context)
+                             :artifact-service (:artifact-service app-context))
                             (adk/with-session session-id))
         events          (adk/run-async session-context agent new-message run-config)
         xf              (map to-sse-event)]
@@ -116,7 +116,6 @@
     {:status  200
      :headers {"Content-Type" "application/json"}
      :body    (write-json-str spans)}))
-
 
 (defn get-trace-by-session
   [app-context req]
@@ -175,8 +174,7 @@
          :body    (write-json-str {"dotSrc" dot-source})}
         {:status  200
          :headers {"Content-Type" "application/json"}
-         :body    (write-json-str {"dotSrc" "Could not generate graph for this event."})})
-      )))
+         :body    (write-json-str {"dotSrc" "Could not generate graph for this event."})}))))
 
 (defn list-eval-sets
   [app-context req]
@@ -241,15 +239,15 @@
   (let [on-open   (fn [ch req]
                     (when (:websocket? req)
                       (let [app-name        (get-in req [:query-params "app_name"])
-                            user-id         (get-in req [:query-params "user"])
+                            user-id         (get-in req [:query-params "user_id"])
                             session-id      (get-in req [:query-params "session_id"])
                             agent           (get (-> app-context :agent-registry deref) app-name)
                             agent-context   (-> (adk/agent-context
-                                                  :app-name app-name
-                                                  :user-id user-id
-                                                  :agent agent
-                                                  :session-service (:session-service app-context)
-                                                  :artifact-service (:artifact-service app-context)))
+                                                 :app-name app-name
+                                                 :user-id user-id
+                                                 :agent agent
+                                                 :session-service (:session-service app-context)
+                                                 :artifact-service (:artifact-service app-context)))
                             session-context (if (adk/get-session agent-context app-name user-id session-id)
                                               (adk/with-session agent-context session-id)
                                               (adk/with-new-session agent-context {} session-id))
@@ -268,15 +266,13 @@
                     (let [message    (charred.api/read-json text :key-fn csk/->kebab-case-keyword)
                           request-ch (:request-ch process)]
                       (clojure.core.async/put! request-ch message)))
-        on-binary (fn [ch process data]
-                    )]
+        on-binary (fn [ch process data])]
     {:name  ::run-live
      :enter (fn [context]
               (io.pedestal.service.websocket/upgrade-request-to-websocket
-                context
-                {:on-open   on-open
-                 :on-close  on-close
-                 :on-text   on-text
-                 :on-binary on-binary})
-              )}))
+               context
+               {:on-open   on-open
+                :on-close  on-close
+                :on-text   on-text
+                :on-binary on-binary}))}))
 
