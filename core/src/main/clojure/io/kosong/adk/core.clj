@@ -24,12 +24,12 @@
 (defn- resolve-app-name
   [context]
   (or
-    (:app-name context)
+   (:app-name context)
 
-    (when-let [a (:agent context)]
-      (.name a))
+   (when-let [a (:agent context)]
+     (.name a))
 
-    "default"))
+   "default"))
 
 (defn- resolve-user-id
   [context]
@@ -52,14 +52,14 @@
   (let [session-service  (or session-service (io.kosong.adk.sessions/in-memory-session-service))
         artifact-service (or artifact-service (io.kosong.adk.artifacts/in-memory-artifact-service))]
     (cond-> {}
-            (some? session-service) (assoc :session-service session-service)
-            (some? artifact-service) (assoc :artifact-service artifact-service)
-            (some? memory-service) (assoc :memory-service memory-service)
-            (some? plugins) (assoc :plugins plugins)
-            (some? session) (assoc :session session)
-            (some? app-name) (assoc :app-name app-name)
-            (some? user-id) (assoc :user-id user-id)
-            (some? agent) (assoc :agent agent))))
+      (some? session-service) (assoc :session-service session-service)
+      (some? artifact-service) (assoc :artifact-service artifact-service)
+      (some? memory-service) (assoc :memory-service memory-service)
+      (some? plugins) (assoc :plugins plugins)
+      (some? session) (assoc :session session)
+      (some? app-name) (assoc :app-name app-name)
+      (some? user-id) (assoc :user-id user-id)
+      (some? agent) (assoc :agent agent))))
 
 (defn with-new-session
   ([context]
@@ -154,7 +154,7 @@
       (let [after-agent-callback (if (coll? after-agent-callback) after-agent-callback [after-agent-callback])]
         (.afterAgentCallback b ^List (mapv p/into-after-agent-callback after-agent-callback))))
     (when (some? before-model-callback)
-      (let [before-model-callback (if (coll? before-agent-callback) before-model-callback [before-model-callback])]
+      (let [before-model-callback (if (coll? before-model-callback) before-model-callback [before-model-callback])]
         (.beforeModelCallback b ^List (mapv p/into-before-model-callback before-model-callback))))
     (when (some? after-model-callback)
       (let [after-model-callback (if (coll? after-model-callback) after-model-callback [after-model-callback])]
