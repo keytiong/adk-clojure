@@ -423,10 +423,10 @@
     (. b endOfSpeechSensitivity v))
    (clojure.core/when-some
     [v (:prefix-padding-ms data)]
-    (. b prefixPaddingMs v))
+    (. b prefixPaddingMs (int v)))
    (clojure.core/when-some
     [v (:silence-duration-ms data)]
-    (. b silenceDurationMs v))
+    (. b silenceDurationMs (int v)))
    (clojure.core/when-some
     [v (:start-of-speech-sensitivity data)]
     (. b startOfSpeechSensitivity v))
@@ -472,7 +472,7 @@
     (. b ignoreCallHistory v))
    (clojure.core/when-some
     [v (:maximum-remote-calls data)]
-    (. b maximumRemoteCalls v))
+    (. b maximumRemoteCalls (int v)))
    (.build b))))
 
 (clojure.core/extend-type
@@ -514,7 +514,7 @@
       v)))
    (clojure.core/when-some
     [v (:sampling-count data)]
-    (. b samplingCount v))
+    (. b samplingCount (int v)))
    (.build b))))
 
 (clojure.core/extend-type
@@ -836,15 +836,19 @@
    [b (com.google.genai.types.CachedContentUsageMetadata/builder)]
    (clojure.core/when-some
     [v (:audio-duration-seconds data)]
-    (. b audioDurationSeconds v))
-   (clojure.core/when-some [v (:image-count data)] (. b imageCount v))
-   (clojure.core/when-some [v (:text-count data)] (. b textCount v))
+    (. b audioDurationSeconds (int v)))
+   (clojure.core/when-some
+    [v (:image-count data)]
+    (. b imageCount (int v)))
+   (clojure.core/when-some
+    [v (:text-count data)]
+    (. b textCount (int v)))
    (clojure.core/when-some
     [v (:total-token-count data)]
-    (. b totalTokenCount v))
+    (. b totalTokenCount (int v)))
    (clojure.core/when-some
     [v (:video-duration-seconds data)]
-    (. b videoDurationSeconds v))
+    (. b videoDurationSeconds (int v)))
    (.build b))))
 
 (clojure.core/extend-type
@@ -1082,7 +1086,7 @@
      (io.kosong.java/make-object
       com.google.genai.types.GroundingMetadata
       v)))
-   (clojure.core/when-some [v (:index data)] (. b index v))
+   (clojure.core/when-some [v (:index data)] (. b index (int v)))
    (clojure.core/when-some
     [v (:logprobs-result data)]
     (.
@@ -1103,7 +1107,9 @@
         com.google.genai.types.SafetyRating
         x))
       v)))
-   (clojure.core/when-some [v (:token-count data)] (. b tokenCount v))
+   (clojure.core/when-some
+    [v (:token-count data)]
+    (. b tokenCount (int v)))
    (clojure.core/when-some
     [v (:url-context-metadata data)]
     (.
@@ -1225,7 +1231,9 @@
   (clojure.core/instance? clojure.lang.IPersistentMap data)
   (clojure.core/let
    [b (com.google.genai.types.Citation/builder)]
-   (clojure.core/when-some [v (:end-index data)] (. b endIndex v))
+   (clojure.core/when-some
+    [v (:end-index data)]
+    (. b endIndex (int v)))
    (clojure.core/when-some [v (:license data)] (. b license v))
    (clojure.core/when-some
     [v (:publication-date data)]
@@ -1235,7 +1243,9 @@
      (io.kosong.java/make-object
       com.google.genai.types.GoogleTypeDate
       v)))
-   (clojure.core/when-some [v (:start-index data)] (. b startIndex v))
+   (clojure.core/when-some
+    [v (:start-index data)]
+    (. b startIndex (int v)))
    (clojure.core/when-some [v (:title data)] (. b title v))
    (clojure.core/when-some [v (:uri data)] (. b uri v))
    (.build b))))
@@ -1307,10 +1317,10 @@
    [b (com.google.genai.types.ClientOptions/builder)]
    (clojure.core/when-some
     [v (:max-connections data)]
-    (. b maxConnections v))
+    (. b maxConnections (int v)))
    (clojure.core/when-some
     [v (:max-connections-per-host data)]
-    (. b maxConnectionsPerHost v))
+    (. b maxConnectionsPerHost (int v)))
    (clojure.core/when-some
     [v (:proxy-options data)]
     (.
@@ -1660,7 +1670,7 @@
      (io.kosong.java/make-object
       com.google.genai.types.ContentEmbeddingStatistics
       v)))
-   (clojure.core/when-some [v (:values data)] (. b values v))
+   (clojure.core/when-some [v (:values data)] (. b values (float v)))
    (.build b))))
 
 (clojure.core/extend-type
@@ -1688,7 +1698,9 @@
   (clojure.core/instance? clojure.lang.IPersistentMap data)
   (clojure.core/let
    [b (com.google.genai.types.ContentEmbeddingStatistics/builder)]
-   (clojure.core/when-some [v (:token-count data)] (. b tokenCount v))
+   (clojure.core/when-some
+    [v (:token-count data)]
+    (. b tokenCount (float v)))
    (clojure.core/when-some [v (:truncated data)] (. b truncated v))
    (.build b))))
 
@@ -1721,7 +1733,7 @@
    [b (com.google.genai.types.ContentReferenceImage/builder)]
    (clojure.core/when-some
     [v (:reference-id data)]
-    (. b referenceId v))
+    (. b referenceId (int v)))
    (clojure.core/when-some
     [v (:reference-image data)]
     (.
@@ -1848,7 +1860,7 @@
       v)))
    (clojure.core/when-some
     [v (:reference-id data)]
-    (. b referenceId v))
+    (. b referenceId (int v)))
    (clojure.core/when-some
     [v (:reference-image data)]
     (.
@@ -2003,7 +2015,7 @@
    [b (com.google.genai.types.CountTokensResponse/builder)]
    (clojure.core/when-some
     [v (:cached-content-token-count data)]
-    (. b cachedContentTokenCount v))
+    (. b cachedContentTokenCount (int v)))
    (clojure.core/when-some
     [v (:sdk-http-response data)]
     (.
@@ -2014,7 +2026,7 @@
       v)))
    (clojure.core/when-some
     [v (:total-tokens data)]
-    (. b totalTokens v))
+    (. b totalTokens (int v)))
    (.build b))))
 
 (clojure.core/extend-type
@@ -2049,7 +2061,7 @@
    [b (com.google.genai.types.CountTokensResult/builder)]
    (clojure.core/when-some
     [v (:total-tokens data)]
-    (. b totalTokens v))
+    (. b totalTokens (int v)))
    (.build b))))
 
 (clojure.core/extend-type
@@ -2099,7 +2111,7 @@
    (clojure.core/when-some
     [v (:new-session-expire-time data)]
     (. b newSessionExpireTime v))
-   (clojure.core/when-some [v (:uses data)] (. b uses v))
+   (clojure.core/when-some [v (:uses data)] (. b uses (int v)))
    (.build b))))
 
 (clojure.core/extend-type
@@ -2657,10 +2669,14 @@
    (clojure.core/when-some
     [v (:adapter-size data)]
     (. b adapterSize v))
-   (clojure.core/when-some [v (:batch-size data)] (. b batchSize v))
-   (clojure.core/when-some [v (:beta data)] (. b beta v))
+   (clojure.core/when-some
+    [v (:batch-size data)]
+    (. b batchSize (int v)))
+   (clojure.core/when-some [v (:beta data)] (. b beta (float v)))
    (clojure.core/when-some [v (:description data)] (. b description v))
-   (clojure.core/when-some [v (:epoch-count data)] (. b epochCount v))
+   (clojure.core/when-some
+    [v (:epoch-count data)]
+    (. b epochCount (int v)))
    (clojure.core/when-some
     [v (:evaluation-config data)]
     (.
@@ -2683,10 +2699,10 @@
    (clojure.core/when-some [v (:labels data)] (. b labels v))
    (clojure.core/when-some
     [v (:learning-rate data)]
-    (. b learningRate v))
+    (. b learningRate (float v)))
    (clojure.core/when-some
     [v (:learning-rate-multiplier data)]
-    (. b learningRateMultiplier v))
+    (. b learningRateMultiplier (float v)))
    (clojure.core/when-some [v (:method data)] (. b method v))
    (clojure.core/when-some
     [v (:pre-tuned-model-checkpoint-id data)]
@@ -2871,7 +2887,7 @@
    (clojure.core/when-some [v (:key data)] (. b key v))
    (clojure.core/when-some
     [v (:numeric-value data)]
-    (. b numericValue v))
+    (. b numericValue (float v)))
    (clojure.core/when-some
     [v (:string-list-value data)]
     (.
@@ -3774,7 +3790,7 @@
    [b (com.google.genai.types.DynamicRetrievalConfig/builder)]
    (clojure.core/when-some
     [v (:dynamic-threshold data)]
-    (. b dynamicThreshold v))
+    (. b dynamicThreshold (float v)))
    (clojure.core/when-some [v (:mode data)] (. b mode v))
    (.build b))))
 
@@ -3807,11 +3823,13 @@
    (clojure.core/when-some
     [v (:aspect-ratio data)]
     (. b aspectRatio v))
-   (clojure.core/when-some [v (:base-steps data)] (. b baseSteps v))
+   (clojure.core/when-some
+    [v (:base-steps data)]
+    (. b baseSteps (int v)))
    (clojure.core/when-some [v (:edit-mode data)] (. b editMode v))
    (clojure.core/when-some
     [v (:guidance-scale data)]
-    (. b guidanceScale v))
+    (. b guidanceScale (float v)))
    (clojure.core/when-some
     [v (:http-options data)]
     (.
@@ -3833,10 +3851,10 @@
     (. b negativePrompt v))
    (clojure.core/when-some
     [v (:number-of-images data)]
-    (. b numberOfImages v))
+    (. b numberOfImages (int v)))
    (clojure.core/when-some
     [v (:output-compression-quality data)]
-    (. b outputCompressionQuality v))
+    (. b outputCompressionQuality (int v)))
    (clojure.core/when-some
     [v (:output-gcs-uri data)]
     (. b outputGcsUri v))
@@ -3849,7 +3867,7 @@
    (clojure.core/when-some
     [v (:safety-filter-level data)]
     (. b safetyFilterLevel v))
-   (clojure.core/when-some [v (:seed data)] (. b seed v))
+   (clojure.core/when-some [v (:seed data)] (. b seed (int v)))
    (.build b))))
 
 (clojure.core/extend-type
@@ -4078,7 +4096,7 @@
    (clojure.core/when-some [v (:mime-type data)] (. b mimeType v))
    (clojure.core/when-some
     [v (:output-dimensionality data)]
-    (. b outputDimensionality v))
+    (. b outputDimensionality (int v)))
    (clojure.core/when-some [v (:task-type data)] (. b taskType v))
    (clojure.core/when-some [v (:title data)] (. b title v))
    (.build b))))
@@ -4122,7 +4140,7 @@
    [b (com.google.genai.types.EmbedContentMetadata/builder)]
    (clojure.core/when-some
     [v (:billable-character-count data)]
-    (. b billableCharacterCount v))
+    (. b billableCharacterCount (int v)))
    (.build b))))
 
 (clojure.core/extend-type
@@ -4378,7 +4396,7 @@
   (clojure.core/let
    [b (com.google.genai.types.EntityLabel/builder)]
    (clojure.core/when-some [v (:label data)] (. b label v))
-   (clojure.core/when-some [v (:score data)] (. b score v))
+   (clojure.core/when-some [v (:score data)] (. b score (float v)))
    (.build b))))
 
 (clojure.core/extend-type
@@ -4547,7 +4565,7 @@
   (clojure.core/let
    [b (com.google.genai.types.ExternalApiElasticSearchParams/builder)]
    (clojure.core/when-some [v (:index data)] (. b index v))
-   (clojure.core/when-some [v (:num-hits data)] (. b numHits v))
+   (clojure.core/when-some [v (:num-hits data)] (. b numHits (int v)))
    (clojure.core/when-some
     [v (:search-template data)]
     (. b searchTemplate v))
@@ -4797,7 +4815,7 @@
    (clojure.core/when-some
     [v (:metadata-filter data)]
     (. b metadataFilter v))
-   (clojure.core/when-some [v (:top-k data)] (. b topK v))
+   (clojure.core/when-some [v (:top-k data)] (. b topK (int v)))
    (.build b))))
 
 (clojure.core/extend-type
@@ -4885,7 +4903,7 @@
   (clojure.core/instance? clojure.lang.IPersistentMap data)
   (clojure.core/let
    [b (com.google.genai.types.FileStatus/builder)]
-   (clojure.core/when-some [v (:code data)] (. b code v))
+   (clojure.core/when-some [v (:code data)] (. b code (int v)))
    (clojure.core/when-some [v (:details data)] (. b details v))
    (clojure.core/when-some [v (:message data)] (. b message v))
    (.build b))))
@@ -5306,7 +5324,7 @@
      b
      completion
      (io.kosong.java/make-object com.google.genai.types.Content v)))
-   (clojure.core/when-some [v (:score data)] (. b score v))
+   (clojure.core/when-some [v (:score data)] (. b score (float v)))
    (.build b))))
 
 (clojure.core/extend-type
@@ -5350,13 +5368,13 @@
     (. b cachedContent v))
    (clojure.core/when-some
     [v (:candidate-count data)]
-    (. b candidateCount v))
+    (. b candidateCount (int v)))
    (clojure.core/when-some
     [v (:enable-enhanced-civic-answers data)]
     (. b enableEnhancedCivicAnswers v))
    (clojure.core/when-some
     [v (:frequency-penalty data)]
-    (. b frequencyPenalty v))
+    (. b frequencyPenalty (float v)))
    (clojure.core/when-some
     [v (:http-options data)]
     (.
@@ -5374,10 +5392,10 @@
       com.google.genai.types.ImageConfig
       v)))
    (clojure.core/when-some [v (:labels data)] (. b labels v))
-   (clojure.core/when-some [v (:logprobs data)] (. b logprobs v))
+   (clojure.core/when-some [v (:logprobs data)] (. b logprobs (int v)))
    (clojure.core/when-some
     [v (:max-output-tokens data)]
-    (. b maxOutputTokens v))
+    (. b maxOutputTokens (int v)))
    (clojure.core/when-some
     [v (:media-resolution data)]
     (. b mediaResolution v))
@@ -5391,7 +5409,7 @@
       v)))
    (clojure.core/when-some
     [v (:presence-penalty data)]
-    (. b presencePenalty v))
+    (. b presencePenalty (float v)))
    (clojure.core/when-some
     [v (:response-json-schema data)]
     (. b responseJsonSchema v))
@@ -5430,7 +5448,7 @@
         com.google.genai.types.SafetySetting
         x))
       v)))
-   (clojure.core/when-some [v (:seed data)] (. b seed v))
+   (clojure.core/when-some [v (:seed data)] (. b seed (int v)))
    (clojure.core/when-some
     [v (:should-return-http-response data)]
     (. b shouldReturnHttpResponse v))
@@ -5451,7 +5469,9 @@
      b
      systemInstruction
      (io.kosong.java/make-object com.google.genai.types.Content v)))
-   (clojure.core/when-some [v (:temperature data)] (. b temperature v))
+   (clojure.core/when-some
+    [v (:temperature data)]
+    (. b temperature (float v)))
    (clojure.core/when-some
     [v (:thinking-config data)]
     (.
@@ -5476,8 +5496,8 @@
        [x]
        (io.kosong.java/make-object com.google.genai.types.Tool x))
       v)))
-   (clojure.core/when-some [v (:top-k data)] (. b topK v))
-   (clojure.core/when-some [v (:top-p data)] (. b topP v))
+   (clojure.core/when-some [v (:top-k data)] (. b topK (float v)))
+   (clojure.core/when-some [v (:top-p data)] (. b topP (float v)))
    (.build b))))
 
 (clojure.core/extend-type
@@ -5792,10 +5812,10 @@
       v)))
    (clojure.core/when-some
     [v (:cached-content-token-count data)]
-    (. b cachedContentTokenCount v))
+    (. b cachedContentTokenCount (int v)))
    (clojure.core/when-some
     [v (:candidates-token-count data)]
-    (. b candidatesTokenCount v))
+    (. b candidatesTokenCount (int v)))
    (clojure.core/when-some
     [v (:candidates-tokens-details data)]
     (.
@@ -5810,7 +5830,7 @@
       v)))
    (clojure.core/when-some
     [v (:prompt-token-count data)]
-    (. b promptTokenCount v))
+    (. b promptTokenCount (int v)))
    (clojure.core/when-some
     [v (:prompt-tokens-details data)]
     (.
@@ -5825,10 +5845,10 @@
       v)))
    (clojure.core/when-some
     [v (:thoughts-token-count data)]
-    (. b thoughtsTokenCount v))
+    (. b thoughtsTokenCount (int v)))
    (clojure.core/when-some
     [v (:tool-use-prompt-token-count data)]
-    (. b toolUsePromptTokenCount v))
+    (. b toolUsePromptTokenCount (int v)))
    (clojure.core/when-some
     [v (:tool-use-prompt-tokens-details data)]
     (.
@@ -5843,7 +5863,7 @@
       v)))
    (clojure.core/when-some
     [v (:total-token-count data)]
-    (. b totalTokenCount v))
+    (. b totalTokenCount (int v)))
    (clojure.core/when-some
     [v (:traffic-type data)]
     (. b trafficType v))
@@ -5914,7 +5934,7 @@
     (. b enhancePrompt v))
    (clojure.core/when-some
     [v (:guidance-scale data)]
-    (. b guidanceScale v))
+    (. b guidanceScale (float v)))
    (clojure.core/when-some
     [v (:http-options data)]
     (.
@@ -5937,10 +5957,10 @@
     (. b negativePrompt v))
    (clojure.core/when-some
     [v (:number-of-images data)]
-    (. b numberOfImages v))
+    (. b numberOfImages (int v)))
    (clojure.core/when-some
     [v (:output-compression-quality data)]
-    (. b outputCompressionQuality v))
+    (. b outputCompressionQuality (int v)))
    (clojure.core/when-some
     [v (:output-gcs-uri data)]
     (. b outputGcsUri v))
@@ -5953,7 +5973,7 @@
    (clojure.core/when-some
     [v (:safety-filter-level data)]
     (. b safetyFilterLevel v))
-   (clojure.core/when-some [v (:seed data)] (. b seed v))
+   (clojure.core/when-some [v (:seed data)] (. b seed (int v)))
    (.build b))))
 
 (clojure.core/extend-type
@@ -6129,11 +6149,11 @@
     (. b compressionQuality v))
    (clojure.core/when-some
     [v (:duration-seconds data)]
-    (. b durationSeconds v))
+    (. b durationSeconds (int v)))
    (clojure.core/when-some
     [v (:enhance-prompt data)]
     (. b enhancePrompt v))
-   (clojure.core/when-some [v (:fps data)] (. b fps v))
+   (clojure.core/when-some [v (:fps data)] (. b fps (int v)))
    (clojure.core/when-some
     [v (:generate-audio data)]
     (. b generateAudio v))
@@ -6164,7 +6184,7 @@
     (. b negativePrompt v))
    (clojure.core/when-some
     [v (:number-of-videos data)]
-    (. b numberOfVideos v))
+    (. b numberOfVideos (int v)))
    (clojure.core/when-some
     [v (:output-gcs-uri data)]
     (. b outputGcsUri v))
@@ -6187,7 +6207,7 @@
         x))
       v)))
    (clojure.core/when-some [v (:resolution data)] (. b resolution v))
-   (clojure.core/when-some [v (:seed data)] (. b seed v))
+   (clojure.core/when-some [v (:seed data)] (. b seed (int v)))
    (.build b))))
 
 (clojure.core/extend-type
@@ -6369,7 +6389,7 @@
       v)))
    (clojure.core/when-some
     [v (:rai-media-filtered-count data)]
-    (. b raiMediaFilteredCount v))
+    (. b raiMediaFilteredCount (int v)))
    (clojure.core/when-some
     [v (:rai-media-filtered-reasons data)]
     (. b raiMediaFilteredReasons v))
@@ -6569,7 +6589,7 @@
     (. b audioTimestamp v))
    (clojure.core/when-some
     [v (:candidate-count data)]
-    (. b candidateCount v))
+    (. b candidateCount (int v)))
    (clojure.core/when-some
     [v (:enable-affective-dialog data)]
     (. b enableAffectiveDialog v))
@@ -6578,11 +6598,11 @@
     (. b enableEnhancedCivicAnswers v))
    (clojure.core/when-some
     [v (:frequency-penalty data)]
-    (. b frequencyPenalty v))
-   (clojure.core/when-some [v (:logprobs data)] (. b logprobs v))
+    (. b frequencyPenalty (float v)))
+   (clojure.core/when-some [v (:logprobs data)] (. b logprobs (int v)))
    (clojure.core/when-some
     [v (:max-output-tokens data)]
-    (. b maxOutputTokens v))
+    (. b maxOutputTokens (int v)))
    (clojure.core/when-some
     [v (:media-resolution data)]
     (. b mediaResolution v))
@@ -6596,7 +6616,7 @@
       v)))
    (clojure.core/when-some
     [v (:presence-penalty data)]
-    (. b presencePenalty v))
+    (. b presencePenalty (float v)))
    (clojure.core/when-some
     [v (:response-json-schema data)]
     (. b responseJsonSchema v))
@@ -6623,7 +6643,7 @@
      (io.kosong.java/make-object
       com.google.genai.types.GenerationConfigRoutingConfig
       v)))
-   (clojure.core/when-some [v (:seed data)] (. b seed v))
+   (clojure.core/when-some [v (:seed data)] (. b seed (int v)))
    (clojure.core/when-some
     [v (:speech-config data)]
     (.
@@ -6635,7 +6655,9 @@
    (clojure.core/when-some
     [v (:stop-sequences data)]
     (. b stopSequences v))
-   (clojure.core/when-some [v (:temperature data)] (. b temperature v))
+   (clojure.core/when-some
+    [v (:temperature data)]
+    (. b temperature (float v)))
    (clojure.core/when-some
     [v (:thinking-config data)]
     (.
@@ -6644,8 +6666,8 @@
      (io.kosong.java/make-object
       com.google.genai.types.ThinkingConfig
       v)))
-   (clojure.core/when-some [v (:top-k data)] (. b topK v))
-   (clojure.core/when-some [v (:top-p data)] (. b topP v))
+   (clojure.core/when-some [v (:top-k data)] (. b topK (float v)))
+   (clojure.core/when-some [v (:top-p data)] (. b topP (float v)))
    (.build b))))
 
 (clojure.core/extend-type
@@ -7411,7 +7433,7 @@
   (clojure.core/instance? clojure.lang.IPersistentMap data)
   (clojure.core/let
    [b (com.google.genai.types.GoogleRpcStatus/builder)]
-   (clojure.core/when-some [v (:code data)] (. b code v))
+   (clojure.core/when-some [v (:code data)] (. b code (int v)))
    (clojure.core/when-some [v (:details data)] (. b details v))
    (clojure.core/when-some [v (:message data)] (. b message v))
    (.build b))))
@@ -7514,9 +7536,9 @@
   (clojure.core/instance? clojure.lang.IPersistentMap data)
   (clojure.core/let
    [b (com.google.genai.types.GoogleTypeDate/builder)]
-   (clojure.core/when-some [v (:day data)] (. b day v))
-   (clojure.core/when-some [v (:month data)] (. b month v))
-   (clojure.core/when-some [v (:year data)] (. b year v))
+   (clojure.core/when-some [v (:day data)] (. b day (int v)))
+   (clojure.core/when-some [v (:month data)] (. b month (int v)))
+   (clojure.core/when-some [v (:year data)] (. b year (int v)))
    (.build b))))
 
 (clojure.core/extend-type
@@ -7992,10 +8014,10 @@
    [b (com.google.genai.types.GroundingSupport/builder)]
    (clojure.core/when-some
     [v (:confidence-scores data)]
-    (. b confidenceScores v))
+    (. b confidenceScores (float v)))
    (clojure.core/when-some
     [v (:grounding-chunk-indices data)]
-    (. b groundingChunkIndices v))
+    (. b groundingChunkIndices (int v)))
    (clojure.core/when-some
     [v (:segment data)]
     (.
@@ -8042,7 +8064,7 @@
      (io.kosong.java/make-object
       com.google.genai.types.HttpRetryOptions
       v)))
-   (clojure.core/when-some [v (:timeout data)] (. b timeout v))
+   (clojure.core/when-some [v (:timeout data)] (. b timeout (int v)))
    (.build b))))
 
 (clojure.core/extend-type
@@ -8101,11 +8123,11 @@
   (clojure.core/instance? clojure.lang.IPersistentMap data)
   (clojure.core/let
    [b (com.google.genai.types.HttpRetryOptions/builder)]
-   (clojure.core/when-some [v (:attempts data)] (. b attempts v))
+   (clojure.core/when-some [v (:attempts data)] (. b attempts (int v)))
    (clojure.core/when-some [v (:exp-base data)] (. b expBase v))
    (clojure.core/when-some
     [v (:http-status-codes data)]
-    (. b httpStatusCodes v))
+    (. b httpStatusCodes (int v)))
    (clojure.core/when-some
     [v (:initial-delay data)]
     (. b initialDelay v))
@@ -8181,7 +8203,7 @@
    (clojure.core/when-some [v (:image-size data)] (. b imageSize v))
    (clojure.core/when-some
     [v (:output-compression-quality data)]
-    (. b outputCompressionQuality v))
+    (. b outputCompressionQuality (int v)))
    (clojure.core/when-some
     [v (:output-mime-type data)]
     (. b outputMimeType v))
@@ -8554,7 +8576,7 @@
   (clojure.core/instance? clojure.lang.IPersistentMap data)
   (clojure.core/let
    [b (com.google.genai.types.JobError/builder)]
-   (clojure.core/when-some [v (:code data)] (. b code v))
+   (clojure.core/when-some [v (:code data)] (. b code (int v)))
    (clojure.core/when-some [v (:details data)] (. b details v))
    (clojure.core/when-some [v (:message data)] (. b message v))
    (.build b))))
@@ -8619,7 +8641,9 @@
      (io.kosong.java/make-object
       com.google.genai.types.HttpOptions
       v)))
-   (clojure.core/when-some [v (:page-size data)] (. b pageSize v))
+   (clojure.core/when-some
+    [v (:page-size data)]
+    (. b pageSize (int v)))
    (clojure.core/when-some [v (:page-token data)] (. b pageToken v))
    (.build b))))
 
@@ -8747,7 +8771,9 @@
      (io.kosong.java/make-object
       com.google.genai.types.HttpOptions
       v)))
-   (clojure.core/when-some [v (:page-size data)] (. b pageSize v))
+   (clojure.core/when-some
+    [v (:page-size data)]
+    (. b pageSize (int v)))
    (clojure.core/when-some [v (:page-token data)] (. b pageToken v))
    (.build b))))
 
@@ -8876,7 +8902,9 @@
      (io.kosong.java/make-object
       com.google.genai.types.HttpOptions
       v)))
-   (clojure.core/when-some [v (:page-size data)] (. b pageSize v))
+   (clojure.core/when-some
+    [v (:page-size data)]
+    (. b pageSize (int v)))
    (clojure.core/when-some [v (:page-token data)] (. b pageToken v))
    (.build b))))
 
@@ -9005,7 +9033,9 @@
      (io.kosong.java/make-object
       com.google.genai.types.HttpOptions
       v)))
-   (clojure.core/when-some [v (:page-size data)] (. b pageSize v))
+   (clojure.core/when-some
+    [v (:page-size data)]
+    (. b pageSize (int v)))
    (clojure.core/when-some [v (:page-token data)] (. b pageToken v))
    (.build b))))
 
@@ -9132,7 +9162,9 @@
      (io.kosong.java/make-object
       com.google.genai.types.HttpOptions
       v)))
-   (clojure.core/when-some [v (:page-size data)] (. b pageSize v))
+   (clojure.core/when-some
+    [v (:page-size data)]
+    (. b pageSize (int v)))
    (clojure.core/when-some [v (:page-token data)] (. b pageToken v))
    (.build b))))
 
@@ -9256,7 +9288,9 @@
      (io.kosong.java/make-object
       com.google.genai.types.HttpOptions
       v)))
-   (clojure.core/when-some [v (:page-size data)] (. b pageSize v))
+   (clojure.core/when-some
+    [v (:page-size data)]
+    (. b pageSize (int v)))
    (clojure.core/when-some [v (:page-token data)] (. b pageToken v))
    (clojure.core/when-some [v (:query-base data)] (. b queryBase v))
    (.build b))))
@@ -9387,7 +9421,9 @@
      (io.kosong.java/make-object
       com.google.genai.types.HttpOptions
       v)))
-   (clojure.core/when-some [v (:page-size data)] (. b pageSize v))
+   (clojure.core/when-some
+    [v (:page-size data)]
+    (. b pageSize (int v)))
    (clojure.core/when-some [v (:page-token data)] (. b pageToken v))
    (.build b))))
 
@@ -9899,7 +9935,7 @@
       v)))
    (clojure.core/when-some
     [v (:max-output-tokens data)]
-    (. b maxOutputTokens v))
+    (. b maxOutputTokens (int v)))
    (clojure.core/when-some
     [v (:media-resolution data)]
     (. b mediaResolution v))
@@ -9930,7 +9966,7 @@
    (clojure.core/when-some
     [v (:response-modalities data)]
     (. b responseModalities v))
-   (clojure.core/when-some [v (:seed data)] (. b seed v))
+   (clojure.core/when-some [v (:seed data)] (. b seed (int v)))
    (clojure.core/when-some
     [v (:session-resumption data)]
     (.
@@ -9953,7 +9989,9 @@
      b
      systemInstruction
      (io.kosong.java/make-object com.google.genai.types.Content v)))
-   (clojure.core/when-some [v (:temperature data)] (. b temperature v))
+   (clojure.core/when-some
+    [v (:temperature data)]
+    (. b temperature (float v)))
    (clojure.core/when-some
     [v (:thinking-config data)]
     (.
@@ -9972,8 +10010,8 @@
        [x]
        (io.kosong.java/make-object com.google.genai.types.Tool x))
       v)))
-   (clojure.core/when-some [v (:top-k data)] (. b topK v))
-   (clojure.core/when-some [v (:top-p data)] (. b topP v))
+   (clojure.core/when-some [v (:top-k data)] (. b topK (float v)))
+   (clojure.core/when-some [v (:top-p data)] (. b topP (float v)))
    (.build b))))
 
 (clojure.core/extend-type
@@ -10688,9 +10726,9 @@
    [b (com.google.genai.types.LogprobsResultCandidate/builder)]
    (clojure.core/when-some
     [v (:log-probability data)]
-    (. b logProbability v))
+    (. b logProbability (float v)))
    (clojure.core/when-some [v (:token data)] (. b token v))
-   (clojure.core/when-some [v (:token-id data)] (. b tokenId v))
+   (clojure.core/when-some [v (:token-id data)] (. b tokenId (int v)))
    (.build b))))
 
 (clojure.core/extend-type
@@ -10759,11 +10797,11 @@
    [b (com.google.genai.types.MaskReferenceConfig/builder)]
    (clojure.core/when-some
     [v (:mask-dilation data)]
-    (. b maskDilation v))
+    (. b maskDilation (float v)))
    (clojure.core/when-some [v (:mask-mode data)] (. b maskMode v))
    (clojure.core/when-some
     [v (:segmentation-classes data)]
-    (. b segmentationClasses v))
+    (. b segmentationClasses (int v)))
    (.build b))))
 
 (clojure.core/extend-type
@@ -10806,7 +10844,7 @@
       v)))
    (clojure.core/when-some
     [v (:reference-id data)]
-    (. b referenceId v))
+    (. b referenceId (int v)))
    (clojure.core/when-some
     [v (:reference-image data)]
     (.
@@ -10891,7 +10929,9 @@
   (clojure.core/let
    [b (com.google.genai.types.ModalityTokenCount/builder)]
    (clojure.core/when-some [v (:modality data)] (. b modality v))
-   (clojure.core/when-some [v (:token-count data)] (. b tokenCount v))
+   (clojure.core/when-some
+    [v (:token-count data)]
+    (. b tokenCount (int v)))
    (.build b))))
 
 (clojure.core/extend-type
@@ -10948,22 +10988,24 @@
       v)))
    (clojure.core/when-some
     [v (:input-token-limit data)]
-    (. b inputTokenLimit v))
+    (. b inputTokenLimit (int v)))
    (clojure.core/when-some [v (:labels data)] (. b labels v))
    (clojure.core/when-some
     [v (:max-temperature data)]
-    (. b maxTemperature v))
+    (. b maxTemperature (float v)))
    (clojure.core/when-some [v (:name data)] (. b name v))
    (clojure.core/when-some
     [v (:output-token-limit data)]
-    (. b outputTokenLimit v))
+    (. b outputTokenLimit (int v)))
    (clojure.core/when-some
     [v (:supported-actions data)]
     (. b supportedActions v))
-   (clojure.core/when-some [v (:temperature data)] (. b temperature v))
+   (clojure.core/when-some
+    [v (:temperature data)]
+    (. b temperature (float v)))
    (clojure.core/when-some [v (:thinking data)] (. b thinking v))
-   (clojure.core/when-some [v (:top-k data)] (. b topK v))
-   (clojure.core/when-some [v (:top-p data)] (. b topP v))
+   (clojure.core/when-some [v (:top-k data)] (. b topK (int v)))
+   (clojure.core/when-some [v (:top-p data)] (. b topP (float v)))
    (clojure.core/when-some
     [v (:tuned-model-info data)]
     (.
@@ -11250,7 +11292,9 @@
   (clojure.core/let
    [b (com.google.genai.types.PartMediaResolution/builder)]
    (clojure.core/when-some [v (:level data)] (. b level v))
-   (clojure.core/when-some [v (:num-tokens data)] (. b numTokens v))
+   (clojure.core/when-some
+    [v (:num-tokens data)]
+    (. b numTokens (int v)))
    (.build b))))
 
 (clojure.core/extend-type
@@ -11687,7 +11731,7 @@
    [b (com.google.genai.types.ProxyOptions/builder)]
    (clojure.core/when-some [v (:host data)] (. b host v))
    (clojure.core/when-some [v (:password data)] (. b password v))
-   (clojure.core/when-some [v (:port data)] (. b port v))
+   (clojure.core/when-some [v (:port data)] (. b port (int v)))
    (clojure.core/when-some [v (:type data)] (. b type v))
    (clojure.core/when-some [v (:username data)] (. b username v))
    (.build b))))
@@ -11750,8 +11794,12 @@
   (clojure.core/instance? clojure.lang.IPersistentMap data)
   (clojure.core/let
    [b (com.google.genai.types.RagChunkPageSpan/builder)]
-   (clojure.core/when-some [v (:first-page data)] (. b firstPage v))
-   (clojure.core/when-some [v (:last-page data)] (. b lastPage v))
+   (clojure.core/when-some
+    [v (:first-page data)]
+    (. b firstPage (int v)))
+   (clojure.core/when-some
+    [v (:last-page data)]
+    (. b lastPage (int v)))
    (.build b))))
 
 (clojure.core/extend-type
@@ -11805,7 +11853,7 @@
      (io.kosong.java/make-object
       com.google.genai.types.RagRetrievalConfigRanking
       v)))
-   (clojure.core/when-some [v (:top-k data)] (. b topK v))
+   (clojure.core/when-some [v (:top-k data)] (. b topK (int v)))
    (.build b))))
 
 (clojure.core/extend-type
@@ -11876,7 +11924,7 @@
   (clojure.core/instance? clojure.lang.IPersistentMap data)
   (clojure.core/let
    [b (com.google.genai.types.RagRetrievalConfigHybridSearch/builder)]
-   (clojure.core/when-some [v (:alpha data)] (. b alpha v))
+   (clojure.core/when-some [v (:alpha data)] (. b alpha (float v)))
    (.build b))))
 
 (clojure.core/extend-type
@@ -12004,7 +12052,7 @@
    [b (com.google.genai.types.RawReferenceImage/builder)]
    (clojure.core/when-some
     [v (:reference-id data)]
-    (. b referenceId v))
+    (. b referenceId (int v)))
    (clojure.core/when-some
     [v (:reference-image data)]
     (.
@@ -12095,7 +12143,9 @@
    (clojure.core/when-some
     [v (:add-watermark data)]
     (. b addWatermark v))
-   (clojure.core/when-some [v (:base-steps data)] (. b baseSteps v))
+   (clojure.core/when-some
+    [v (:base-steps data)]
+    (. b baseSteps (int v)))
    (clojure.core/when-some
     [v (:enhance-prompt data)]
     (. b enhancePrompt v))
@@ -12110,10 +12160,10 @@
    (clojure.core/when-some [v (:labels data)] (. b labels v))
    (clojure.core/when-some
     [v (:number-of-images data)]
-    (. b numberOfImages v))
+    (. b numberOfImages (int v)))
    (clojure.core/when-some
     [v (:output-compression-quality data)]
-    (. b outputCompressionQuality v))
+    (. b outputCompressionQuality (int v)))
    (clojure.core/when-some
     [v (:output-gcs-uri data)]
     (. b outputGcsUri v))
@@ -12126,7 +12176,7 @@
    (clojure.core/when-some
     [v (:safety-filter-level data)]
     (. b safetyFilterLevel v))
-   (clojure.core/when-some [v (:seed data)] (. b seed v))
+   (clojure.core/when-some [v (:seed data)] (. b seed (int v)))
    (.build b))))
 
 (clojure.core/extend-type
@@ -12330,7 +12380,7 @@
       v)))
    (clojure.core/when-some
     [v (:reference-id data)]
-    (. b referenceId v))
+    (. b referenceId (int v)))
    (clojure.core/when-some
     [v (:reference-image data)]
     (.
@@ -12519,7 +12569,9 @@
    (clojure.core/when-some
     [v (:sdk-response-segments data)]
     (. b sdkResponseSegments v))
-   (clojure.core/when-some [v (:status-code data)] (. b statusCode v))
+   (clojure.core/when-some
+    [v (:status-code data)]
+    (. b statusCode (int v)))
    (.build b))))
 
 (clojure.core/extend-type
@@ -12682,7 +12734,7 @@
    [b (com.google.genai.types.RetrievalMetadata/builder)]
    (clojure.core/when-some
     [v (:google-search-dynamic-retrieval-score data)]
-    (. b googleSearchDynamicRetrievalScore v))
+    (. b googleSearchDynamicRetrievalScore (float v)))
    (.build b))))
 
 (clojure.core/extend-type
@@ -12711,7 +12763,7 @@
    (clojure.core/when-some
     [v (:content-type data)]
     (. b contentType v))
-   (clojure.core/when-some [v (:scores data)] (. b scores v))
+   (clojure.core/when-some [v (:scores data)] (. b scores (float v)))
    (.build b))))
 
 (clojure.core/extend-type
@@ -12748,11 +12800,11 @@
    (clojure.core/when-some [v (:probability data)] (. b probability v))
    (clojure.core/when-some
     [v (:probability-score data)]
-    (. b probabilityScore v))
+    (. b probabilityScore (float v)))
    (clojure.core/when-some [v (:severity data)] (. b severity v))
    (clojure.core/when-some
     [v (:severity-score data)]
-    (. b severityScore v))
+    (. b severityScore (float v)))
    (.build b))))
 
 (clojure.core/extend-type
@@ -12978,9 +13030,15 @@
   (clojure.core/instance? clojure.lang.IPersistentMap data)
   (clojure.core/let
    [b (com.google.genai.types.Segment/builder)]
-   (clojure.core/when-some [v (:end-index data)] (. b endIndex v))
-   (clojure.core/when-some [v (:part-index data)] (. b partIndex v))
-   (clojure.core/when-some [v (:start-index data)] (. b startIndex v))
+   (clojure.core/when-some
+    [v (:end-index data)]
+    (. b endIndex (int v)))
+   (clojure.core/when-some
+    [v (:part-index data)]
+    (. b partIndex (int v)))
+   (clojure.core/when-some
+    [v (:start-index data)]
+    (. b startIndex (int v)))
    (clojure.core/when-some [v (:text data)] (. b text v))
    (.build b))))
 
@@ -13017,10 +13075,10 @@
    [b (com.google.genai.types.SegmentImageConfig/builder)]
    (clojure.core/when-some
     [v (:binary-color-threshold data)]
-    (. b binaryColorThreshold v))
+    (. b binaryColorThreshold (float v)))
    (clojure.core/when-some
     [v (:confidence-threshold data)]
-    (. b confidenceThreshold v))
+    (. b confidenceThreshold (float v)))
    (clojure.core/when-some
     [v (:http-options data)]
     (.
@@ -13032,10 +13090,10 @@
    (clojure.core/when-some [v (:labels data)] (. b labels v))
    (clojure.core/when-some
     [v (:mask-dilation data)]
-    (. b maskDilation v))
+    (. b maskDilation (float v)))
    (clojure.core/when-some
     [v (:max-predictions data)]
-    (. b maxPredictions v))
+    (. b maxPredictions (int v)))
    (clojure.core/when-some [v (:mode data)] (. b mode v))
    (.build b))))
 
@@ -13442,7 +13500,7 @@
       v)))
    (clojure.core/when-some
     [v (:reference-id data)]
-    (. b referenceId v))
+    (. b referenceId (int v)))
    (clojure.core/when-some
     [v (:reference-image data)]
     (.
@@ -13530,7 +13588,7 @@
       v)))
    (clojure.core/when-some
     [v (:reference-id data)]
-    (. b referenceId v))
+    (. b referenceId (int v)))
    (clojure.core/when-some
     [v (:reference-image data)]
     (.
@@ -13992,7 +14050,7 @@
     (. b includeThoughts v))
    (clojure.core/when-some
     [v (:thinking-budget data)]
-    (. b thinkingBudget v))
+    (. b thinkingBudget (int v)))
    (clojure.core/when-some
     [v (:thinking-level data)]
     (. b thinkingLevel v))
@@ -15227,7 +15285,7 @@
       v)))
    (clojure.core/when-some
     [v (:image-preservation-factor data)]
-    (. b imagePreservationFactor v))
+    (. b imagePreservationFactor (float v)))
    (clojure.core/when-some
     [v (:include-rai-reason data)]
     (. b includeRaiReason v))
@@ -15235,10 +15293,10 @@
    (clojure.core/when-some [v (:mode data)] (. b mode v))
    (clojure.core/when-some
     [v (:number-of-images data)]
-    (. b numberOfImages v))
+    (. b numberOfImages (int v)))
    (clojure.core/when-some
     [v (:output-compression-quality data)]
-    (. b outputCompressionQuality v))
+    (. b outputCompressionQuality (int v)))
    (clojure.core/when-some
     [v (:output-gcs-uri data)]
     (. b outputGcsUri v))
@@ -15366,14 +15424,14 @@
       v)))
    (clojure.core/when-some
     [v (:image-preservation-factor data)]
-    (. b imagePreservationFactor v))
+    (. b imagePreservationFactor (float v)))
    (clojure.core/when-some
     [v (:include-rai-reason data)]
     (. b includeRaiReason v))
    (clojure.core/when-some [v (:labels data)] (. b labels v))
    (clojure.core/when-some
     [v (:output-compression-quality data)]
-    (. b outputCompressionQuality v))
+    (. b outputCompressionQuality (int v)))
    (clojure.core/when-some
     [v (:output-gcs-uri data)]
     (. b outputGcsUri v))
@@ -15637,10 +15695,10 @@
       v)))
    (clojure.core/when-some
     [v (:cached-content-token-count data)]
-    (. b cachedContentTokenCount v))
+    (. b cachedContentTokenCount (int v)))
    (clojure.core/when-some
     [v (:prompt-token-count data)]
-    (. b promptTokenCount v))
+    (. b promptTokenCount (int v)))
    (clojure.core/when-some
     [v (:prompt-tokens-details data)]
     (.
@@ -15655,7 +15713,7 @@
       v)))
    (clojure.core/when-some
     [v (:response-token-count data)]
-    (. b responseTokenCount v))
+    (. b responseTokenCount (int v)))
    (clojure.core/when-some
     [v (:response-tokens-details data)]
     (.
@@ -15670,10 +15728,10 @@
       v)))
    (clojure.core/when-some
     [v (:thoughts-token-count data)]
-    (. b thoughtsTokenCount v))
+    (. b thoughtsTokenCount (int v)))
    (clojure.core/when-some
     [v (:tool-use-prompt-token-count data)]
-    (. b toolUsePromptTokenCount v))
+    (. b toolUsePromptTokenCount (int v)))
    (clojure.core/when-some
     [v (:tool-use-prompt-tokens-details data)]
     (.
@@ -15688,7 +15746,7 @@
       v)))
    (clojure.core/when-some
     [v (:total-token-count data)]
-    (. b totalTokenCount v))
+    (. b totalTokenCount (int v)))
    (clojure.core/when-some
     [v (:traffic-type data)]
     (. b trafficType v))
@@ -15842,7 +15900,9 @@
    (clojure.core/when-some [v (:datastore data)] (. b datastore v))
    (clojure.core/when-some [v (:engine data)] (. b engine v))
    (clojure.core/when-some [v (:filter data)] (. b filter v))
-   (clojure.core/when-some [v (:max-results data)] (. b maxResults v))
+   (clojure.core/when-some
+    [v (:max-results data)]
+    (. b maxResults (int v)))
    (.build b))))
 
 (clojure.core/extend-type
@@ -15927,7 +15987,7 @@
       v)))
    (clojure.core/when-some
     [v (:similarity-top-k data)]
-    (. b similarityTopK v))
+    (. b similarityTopK (int v)))
    (clojure.core/when-some
     [v (:store-context data)]
     (. b storeContext v))
@@ -16212,10 +16272,10 @@
    [b (com.google.genai.types.WhiteSpaceConfig/builder)]
    (clojure.core/when-some
     [v (:max-overlap-tokens data)]
-    (. b maxOverlapTokens v))
+    (. b maxOverlapTokens (int v)))
    (clojure.core/when-some
     [v (:max-tokens-per-chunk data)]
-    (. b maxTokensPerChunk v))
+    (. b maxTokensPerChunk (int v)))
    (.build b))))
 
 (clojure.core/extend-type

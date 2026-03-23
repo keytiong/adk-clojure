@@ -201,7 +201,15 @@
             `(. ~b ~prop-sym (~(symbol (.getName actual-type) "valueOf") ~v)))
 
           :else
-          `(. ~b ~prop-sym ~v)))))
+          (let [cast-fn (condp = actual-type
+                          Float        'float
+                          Float/TYPE   'float
+                          Integer      'int
+                          Integer/TYPE 'int
+                          nil)]
+            (if cast-fn
+              `(. ~b ~prop-sym (~cast-fn ~v))
+              `(. ~b ~prop-sym ~v)))))))
 
 (defn- emit-map-to-autovalue
   [cls data]
