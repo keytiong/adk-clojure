@@ -1,54 +1,45 @@
 ---
 gsd_state_version: 1.0
-milestone: v1.0
-milestone_name: milestone
-status: unknown
-stopped_at: Completed 01-02-PLAN.md
-last_updated: "2026-03-22T14:00:44.856Z"
+milestone: v0.2.0
+milestone_name: (planning)
+status: idle
+stopped_at: Completed v0.1.0 milestone
+last_updated: "2026-03-24T00:00:00.000Z"
 progress:
-  total_phases: 1
-  completed_phases: 1
-  total_plans: 2
-  completed_plans: 2
+  total_phases: 0
+  completed_phases: 0
+  total_plans: 0
+  completed_plans: 0
 ---
 
 # Project State
 
 ## Project Reference
 
-See: .planning/PROJECT.md (updated 2026-03-22)
+See: .planning/PROJECT.md (updated 2026-03-24)
 
-**Core value:** Build-time generation of `com.google.genai.types` conversions — no runtime reflection
-**Current focus:** Phase 01 — ship-it
+**Core value:** Conversions between Clojure maps and `com.google.genai.types` Java objects must work correctly and without runtime reflection — generated at build time, committed to the repository.
+**Current focus:** Planning next milestone (v0.2.0)
 
 ## Current Status
 
-- Milestone: v1.0
-- Active phase: 01-ship-it
-- Current Plan: 2/2
-- Last action: Completed 01-02-PLAN.md
+- Milestone: v0.1.0 ✅ SHIPPED 2026-03-22
+- Next milestone: v0.2.0 (not yet defined)
+- Last action: Completed v0.1.0 milestone archival
 
-## Phase Progress
+## Shipped Milestones
 
-| Phase | Name | Status | Plans |
-|-------|------|--------|-------|
-| 1 | Ship It | ✓ Complete | 2/2 |
+| Milestone | Name | Shipped | Phases | Plans |
+|-----------|------|---------|--------|-------|
+| v0.1.0 | Build-Time GenAI Type Generation | 2026-03-22 | 1 | 2 |
 
-## Decisions
+## Next Steps
 
-- Plan 01-01: Used cognitect test-runner v0.5.1 via :exec-fn in :test alias (not :main-opts) for -X invocation only
-- Plan 01-01: Test-runner added as :extra-deps in :test alias to keep dependency scopes correct
-- [Phase 01-02]: Sort AutoValue class properties by method name for deterministic code generation
-- [Phase 01-02]: Committed generated_types.clj (351 types) to git - no runtime reflection needed
+Run `/gsd:new-milestone` to define v0.2.0 goals and requirements.
 
-## Performance Metrics
-
-| Phase | Plan | Duration | Tasks | Files |
-|-------|------|----------|-------|-------|
-| 01-ship-it | 01 | 2min | 2 | 3 |
-| 01-ship-it | 02 | 2min 30sec | 1 | 2 |
-
-## Last Session
-
-- **Stopped at:** Completed 01-02-PLAN.md
-- **Timestamp:** 2026-03-22T13:54:30Z
+Known candidates for v0.2.0:
+- Fix Float vs Double type mismatch in generated types
+- Set up main branch for clean PR workflow
+- Prepare to cut release 0.1.0 (JAR publishing, etc.)
+- CI enforcement for generated file drift (REQUIREMENTS.md CI-01, CI-02)
+- Structural completeness test (REQUIREMENTS.md COV-01)

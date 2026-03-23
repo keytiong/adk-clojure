@@ -31,9 +31,20 @@ _(none — all requirements validated in Phase 1)_
 - `com.google.adk.*` types via build-time generation — runtime macro is acceptable for these
 - Code generation for non-AutoValue Java types — not needed
 
+## Current State
+
+**v0.1.0 shipped** — 2026-03-22. The build pipeline is clean, tests pass via standard runner, and `generated_types.clj` (351 AutoValue types, 16,235 lines) is committed to the repository. No runtime reflection dependency.
+
+**Tech stack:** Clojure 1.12.3, Java 17+, `clojure.tools.build`, cognitect test-runner v0.5.1, `org.reflections/reflections` (generate-time only)
+
+**Known issues / next focus:**
+- Float vs Double type mismatch in generated types (todo: pending)
+- CI enforcement not yet in place (v2 requirement: CI-01, CI-02)
+- Structural completeness test missing (v2 requirement: COV-01)
+
 ## Context
 
-This is an in-progress task in the `develop` branch of adk-clojure. The codebase uses Google's ADK Java library with AutoValue for value types. The `autovalue.clj` namespace uses the Reflections library to scan for `@AutoValue`-annotated classes at generation time, then emits static Clojure forms — so the generated file has no reflection dependency at runtime. The `:generate` alias is only needed when running `generate-types`, not during normal builds or at runtime.
+The codebase uses Google's ADK Java library with AutoValue for value types. The `autovalue.clj` namespace uses the Reflections library to scan for `@AutoValue`-annotated classes at generation time, then emits static Clojure forms — so the generated file has no reflection dependency at runtime. The `:generate` alias is only needed when running `generate-types`, not during normal builds or at runtime.
 
 ## Constraints
 
@@ -68,4 +79,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-03-22 after Phase 1 (Ship It) completion*
+*Last updated: 2026-03-24 after v0.1.0 milestone*
