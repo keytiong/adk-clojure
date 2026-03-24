@@ -1,6 +1,7 @@
 # Clojure Agent Development Kit (ADK)
 
 [![Clojars Project](https://img.shields.io/clojars/v/io.kosong.adk/adk-clojure.svg?include_prereleases)](https://clojars.org/io.kosong.adk/adk-clojure)
+[![Hypercommit](https://img.shields.io/badge/Hypercommit-DB2475)](https://hypercommit.com/adk-clojure)
 
 A Clojure wrapper for Google's Java [Agent Development Kit (ADK)](https://github.com/google/adk-java), providing idiomatic Clojure interfaces for building AI agents.
 ## Overview
