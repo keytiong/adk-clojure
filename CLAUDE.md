@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is adk-clojure, a Clojure wrapper for Google's Agent Development Kit (ADK) Java library. It provides idiomatic Clojure abstractions for building AI agents with Google's Generative AI models. The project consists of two main libraries (core and dev) plus several example agents.
+This is adk-clojure, a Clojure wrapper for Google's Agent Development Kit (ADK) Java library. It provides idiomatic Clojure abstractions for building AI agents with Google's Generative AI models. The project consists of two main libraries (core and dev), an experimental module, plus several example agents.
 
 **Requirements:** Java 17+, Clojure 1.12.3
 
@@ -74,9 +74,9 @@ clojure -X:adk-web
 The architecture uses Clojure protocols extensively to provide seamless bidirectional conversion between Clojure data structures and Google ADK Java objects. This pattern is central to the entire codebase:
 
 **Protocols** (`core/src/main/clojure/io/kosong/adk/protocols.clj`):
-- Define ~30 conversion protocols organized by domain
-- Agent-related: `IntoAgent`, `IntoTool`, `IntoInstruction`, `IntoRunConfig`, callback protocols
-- Type-related: `IntoPart`, `IntoContent`, `IntoBlob`, `IntoSchema`, `IntoFunctionCall`, etc.
+- Define 11 conversion protocols organized by domain
+- Agent-related: `IntoAgent`, `IntoTool`, `IntoInstruction`, callback protocols (`IntoBeforeModelCallback`, `IntoAfterModelCallback`, `IntoBeforeAgentCallback`, `IntoAfterAgentCallback`, `IntoBeforeToolCallback`, `IntoAfterToolCallback`)
+- Event-related: `IntoEvent`, `IntoEventActions`
 - All conversions flow through these protocols for consistency
 
 **Type Implementations** (`core/src/main/clojure/io/kosong/adk/types.clj`):
@@ -173,6 +173,7 @@ The web framework (`dev`) uses:
 - `:system/artifact-service` - Artifact storage
 - `:system/agent-registry` - Agent registration (atom-based)
 - `:system/telemetry` - OpenTelemetry integration
+- `:system/app-context` - Context holding service refs (session-service, artifact-service, agent-registry, telemetry)
 - `:system/http-server` - Pedestal server with Reitit routing
 
 **Agent Registry Pattern**:
@@ -182,11 +183,19 @@ The web framework (`dev`) uses:
 - Agents are identified by their `.name` property
 
 **HTTP Endpoints**:
-- `POST /api/sessions/{app-name}/{user-id}` - Create session
-- `GET /api/sessions/{app-name}/{user-id}` - List sessions
-- `POST /api/run/sse` - Run agent with Server-Sent Events streaming
-- `GET /api/run_live` - Run agent with WebSocket bidirectional live streaming (query params: app_name, user_id, session_id)
-- `GET /api/graph/{app-name}/{user-id}/{session-id}/{event-id}` - Agent graph visualization
+- `POST /apps/:app-name/users/:user-id/sessions` - Create session
+- `GET /apps/:app-name/users/:user-id/sessions` - List sessions
+- `GET /apps/:app-name/users/:user-id/sessions/:session-id` - Get session
+- `DELETE /apps/:app-name/users/:user-id/sessions/:session-id` - Delete session
+- `POST /run_sse` - Run agent with Server-Sent Events streaming (body: `{app-name, user-id, session-id, new-message, streaming}`)
+- `GET /run_live` - Run agent with WebSocket bidirectional live streaming (query params: app_name, user_id, session_id)
+- `GET /apps/:app-name/users/:user-id/sessions/:session-id/events/:event-id/graph` - Agent graph visualization
+- `GET /debug/trace/:event-id` - Get trace spans by event ID
+- `GET /debug/trace/session/:session-id` - Get trace spans by session ID
+- `GET /list-apps` - List registered apps
+- `GET /index.html` - Frontend UI
+- `GET /apps/:app-name/eval_sets` - List eval sets (stub)
+- `GET /apps/:app-name/eval_results` - List eval results (stub)
 
 ### Event Streaming with core.async
 
@@ -230,7 +239,7 @@ The `run-live` function provides real-time bidirectional communication between c
 - `event-ch`: Sliding buffer (16) - drops oldest events if consumer is slow
 - `request-ch`: Blocking buffer (10) - applies backpressure to prevent overwhelming agent
 
-**WebSocket Endpoint** (`/run_live`):
+**WebSocket Endpoint** (`GET /run_live`):
 - Query params: `app_name`, `user_id`, `session_id`
 - Client → Server: JSON LiveRequest objects
 - Server → Client: JSON Event objects
@@ -305,22 +314,33 @@ Common pattern in `dev/system.clj`: Register OpenAI-compatible endpoints (Ollama
 
 **core/src/main/clojure/io/kosong/adk/**:
 - `core.clj` - Main API (agent builders, run functions, context management)
-- `protocols.clj` - Conversion protocols between Clojure and Java types
-- `types.clj` - Datafiable implementations and type conversions for Google GenAI types
+- `protocols.clj` - Conversion protocols between Clojure and Java types (11 protocols)
+- `types.clj` - Type conversion implementations
 - `agents.clj` - Agent callback implementations and RunConfig builders
 - `tools.clj` - Tool protocol implementations (Var→Tool, Agent→Tool)
 - `models.clj` - LLM registry and request/response conversions
-- `events.clj` - Event and EventActions conversions
-- `sessions.clj` - Session service wrappers
+- `events.clj` - Event and EventActions conversions (datafy + IntoEvent)
+- `sessions.clj` - Session service wrappers (in-memory + Vertex AI)
+- `artifacts.clj` - Artifact service wrapper (in-memory)
+- `runner.clj` - Live request queue bridge for run-live streaming
 - `utils.clj` - Helper functions (`optional-datafy-assoc` for handling Java Optional/List/Set/Map)
+- `generated_types.clj` - Auto-generated Clojure source for Google GenAI AutoValue types
+
+**core/src/main/clojure/io/kosong/**:
+- `java.clj` - `make-object` multi-method for creating Java instances from maps
 
 **dev/src/main/clojure/io/kosong/adk/web/**:
 - `web.clj` - Integrant system configuration and lifecycle
-- `handlers.clj` - HTTP request handlers
+- `handlers.clj` - HTTP request handlers (SSE, WebSocket, session CRUD)
 - `routes.clj` - Reitit route definitions
-- `agent_registry.clj` - Agent discovery and registration
-- `http_server.clj` - Pedestal server setup
-- `telemetry.clj` - OpenTelemetry configuration
+- `agent_registry.clj` - Agent discovery and registration (root-agent scanning)
+- `agent_graph.clj` - Graphviz DOT graph generation for agent visualization
+- `http_server.clj` - Pedestal server setup with Reitit routing
+- `telemetry.clj` - OpenTelemetry configuration and trace storage
+
+**Other modules**:
+- `experimental/` - Experimental features and utilities
+- `dev-resources/` - Development resources with sample `system.clj` for LLM factory registration
 
 ## Important Patterns and Conventions
 
@@ -335,6 +355,8 @@ In examples like blog-writer, callbacks can suppress output to prevent intermedi
 (adk/llm-agent
   :after-agent-callback suppress-output-callback)
 ```
+
+The callback receives a map with keys like `:agent-name`, `:state`, `:invocation-id`, `:branch`, `:user-content`. Returning `{:role "model" :parts []}` suppresses the output event.
 
 ### Validation Checker Pattern
 
@@ -358,8 +380,8 @@ The `:escalate` action triggers loop exit; otherwise it retries.
 
 ### State vs Artifacts
 
-- **State**: Mutable session data (ConcurrentHashMap), for agent-to-agent communication
-- **Artifacts**: Immutable blobs (files, images, audio), for storing/retrieving media
+- **State**: Mutable session data (`ConcurrentHashMap`), for agent-to-agent communication and persistent key/value storage within a session
+- **Artifacts**: Immutable blobs (files, images, audio), for storing/retrieving media. Accessible via `artifact-service` in the runner context
 
 ### Instruction Sources
 
@@ -373,6 +395,17 @@ Instructions can be static strings or dynamic providers:
 :instruction (fn [context]
                (str "You are assisting " (:user-id context)))
 ```
+
+Dynamic instructions return a `Single<String>` via the `Instruction$Provider` pattern.
+
+### Adding Telemetry
+
+Telemetry is automatically enabled when using the web framework. Spans are associated with:
+- Sessions (via session-id)
+- Events (via event-id)
+- Accessible via `/debug/trace/:event-id` and `/debug/trace/session/:session-id`
+
+Traces store spans for `call_llm`, `send_data`, and `tool_response` events.
 
 ## Common Development Patterns
 
@@ -408,9 +441,3 @@ Instructions can be static strings or dynamic providers:
 ;; The LLM will generate function calls to sub-agents
 ```
 
-### Adding Telemetry
-
-Telemetry is automatically enabled when using the web framework. Spans are associated with:
-- Sessions (via session-id)
-- Events (via event-id)
-- Accessible via `/api/telemetry/trace/by-event/{event-id}`
