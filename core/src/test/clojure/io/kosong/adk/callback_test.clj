@@ -243,56 +243,110 @@
 ;; ---------------------------------------------------------------------------
 ;; T1.3.5  before-tool-callback fires with invocation context, tool, input
 ;; ---------------------------------------------------------------------------
-;; TODO: strengthen — mock LLM needs to emit function calls for callbacks to fire
+;; T1.3.5  before-tool-callback fires with invocation context, tool, input
+;; ---------------------------------------------------------------------------
 
 (deftest before-tool-callback-fires
-  (testing "before-tool callback is registered and agent runs with tools"
+  (testing "before-tool callback fires with invocation context, tool, input, and tool-context"
     (clear-log!)
     (mock-llm/clear-llm-requests!)
-    (mock-llm/register-mock-llm! "mock-bt/.*" "Mock response")
+
+    (defn bt-echo-tool
+      "before-tool echo tool"
+      [^{:schema {:type "STRING"}} message]
+      {:echoed message})
+
+    (mock-llm/register-mock-llm-with-call! "mock-bt/.*" "bt-echo-tool" {"message" "hello"})
+
     (let [agent (adk/llm-agent
                  :name "before-tool-test"
                  :model "mock-bt/test"
-                 :before-tool-callback (fn [_ctx _tool _input _tool-ctx]
-                                         (swap! callback-log conj :before-tool)
+                 :tools [#'bt-echo-tool]
+                 :before-tool-callback (fn [ctx tool input tool-ctx]
+                                         (swap! callback-log conj
+                                                {:bt-ctx ctx
+                                                 :bt-tool tool
+                                                 :bt-input input
+                                                 :bt-tool-ctx tool-ctx})
                                          nil))]
       (dorun (adk/run (make-context {}) agent user-message {}))
-      (is (some? (mock-llm/request-count))
-          "agent ran without error"))))
+
+      ;; Verify the before-tool callback actually fired
+      (is (= 1 (count @callback-log))
+          "before-tool callback was invoked exactly once")
+
+      (let [entry (first @callback-log)]
+        (is (map? (:bt-ctx entry))
+            "invocation context is a datafied map")
+        (is (some? (:bt-input entry))
+            "input is present (Java Map from function call args)")
+        (is (= "hello" (get (:bt-input entry) "message"))
+            "input matches the function-call args")))))
 
 ;; ---------------------------------------------------------------------------
 ;; T1.3.6  after-tool-callback fires with invocation context, tool, input, response
 ;; ---------------------------------------------------------------------------
-;; TODO: strengthen — mock LLM needs to emit function calls for callbacks to fire
 
 (deftest after-tool-callback-fires
-  (testing "after-tool callback is registered and agent runs with tools"
+  (testing "after-tool callback fires with invocation context, tool, input, tool-context, and response"
     (clear-log!)
     (mock-llm/clear-llm-requests!)
-    (mock-llm/register-mock-llm! "mock-at/.*" "Mock response")
+
+    (defn at-echo-tool
+      "after-tool echo tool"
+      [^{:schema {:type "STRING"}} message]
+      {:echoed message})
+
+    (mock-llm/register-mock-llm-with-call! "mock-at/.*" "at-echo-tool" {"message" "world"})
+
     (let [agent (adk/llm-agent
                  :name "after-tool-test"
                  :model "mock-at/test"
-                 :after-tool-callback (fn [_ctx _tool _input _tool-ctx _response]
-                                        (swap! callback-log conj :after-tool)
+                 :tools [#'at-echo-tool]
+                 :after-tool-callback (fn [ctx tool input tool-ctx response]
+                                        (swap! callback-log conj
+                                               {:at-ctx ctx
+                                                :at-tool tool
+                                                :at-input input
+                                                :at-tool-ctx tool-ctx
+                                                :at-response response})
                                         nil))]
       (dorun (adk/run (make-context {}) agent user-message {}))
-      (is (some? (mock-llm/request-count))
-          "agent ran without error"))))
+
+      ;; Verify the after-tool callback actually fired
+      (is (= 1 (count @callback-log))
+          "after-tool callback was invoked exactly once")
+
+      (let [entry (first @callback-log)]
+        (is (map? (:at-ctx entry))
+            "invocation context is a datafied map")
+        (is (some? (:at-input entry))
+            "input is present (Java Map from function call args)")
+        (is (some? (:at-response entry))
+            "response is present")
+        (is (= "world" (get (:at-response entry) "echoed"))
+            "response contains the tool's return value")))))
 
 ;; ---------------------------------------------------------------------------
 ;; T1.3.7  Multiple before-tool / after-tool callbacks fire in order
 ;; ---------------------------------------------------------------------------
-;; TODO: strengthen — mock LLM needs to emit function calls for callbacks to fire
 
 (deftest multiple-tool-callbacks-fire-in-order
-  (testing "multiple before-tool and after-tool callbacks are registered"
+  (testing "multiple before-tool and after-tool callbacks fire in registration order"
     (clear-log!)
     (mock-llm/clear-llm-requests!)
-    (mock-llm/register-mock-llm! "mock-multi-tool/.*" "Mock response")
+
+    (defn multi-tool-callback-tool
+      "multi tool callback tool"
+      [^{:schema {:type "STRING"}} x]
+      {:result x})
+
+    (mock-llm/register-mock-llm-with-call! "mock-multi-tool/.*" "multi-tool-callback-tool" {"x" "v"})
+
     (let [agent (adk/llm-agent
                  :name "multi-tool-callback-test"
                  :model "mock-multi-tool/test"
+                 :tools [#'multi-tool-callback-tool]
                  :before-tool-callback [(fn [& _]
                                           (swap! callback-log conj :bt-1)
                                           nil)
@@ -306,8 +360,10 @@
                                          (swap! callback-log conj :at-2)
                                          nil)])]
       (dorun (adk/run (make-context {}) agent user-message {}))
-      (is (some? (mock-llm/request-count))
-          "agent ran without error"))))
+
+      ;; Verify all callbacks fired in order: before-tool 1, before-tool 2, after-tool 1, after-tool 2
+      (is (= [:bt-1 :bt-2 :at-1 :at-2] @callback-log)
+          "callbacks fire in registration order"))))
 
 ;; ---------------------------------------------------------------------------
 ;; T1.3.8  into-instruction with String produces Static instruction

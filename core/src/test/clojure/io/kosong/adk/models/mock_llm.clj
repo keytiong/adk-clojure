@@ -45,7 +45,14 @@
     (map? p)
     (cond
       (:function-call p)
-      (Part/fromFunctionCall (:function-call p) (or (:args p) {}))
+      (let [fc (:function-call p)
+            name (if (instance? FunctionCall fc)
+                   (.getName ^FunctionCall fc)
+                   (name fc))
+            args-map (or (:args p) {})
+            args-j   (reduce (fn [m [k v]] (.put m (name k) (str v)) m)
+                             (java.util.HashMap.) args-map)]
+        (Part/fromFunctionCall name args-j))
 
       (:text p)
       (Part/fromText (:text p))
@@ -152,10 +159,9 @@
   "Build an LlmResponse with a single function call."
   ([tool-name] (function-call-response tool-name {}))
   ([tool-name args]
-   (let [fc (-> (FunctionCall/builder)
-                (.name tool-name)
-                (.id (str (java.util.UUID/randomUUID))))
-         part (Part/fromFunctionCall fc (java.util.HashMap. args))
+   (let [args-j (reduce (fn [m [k v]] (.put m (name k) (str v)) m)
+                        (java.util.HashMap.) args)
+         part   (Part/fromFunctionCall tool-name args-j)
          content (-> (Content/builder)
                      (.role "model")
                      (.parts (into-array Part [part]))
