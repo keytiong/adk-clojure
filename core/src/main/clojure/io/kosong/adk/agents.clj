@@ -10,7 +10,7 @@
             BaseAgent CallbackContext Callbacks$AfterAgentCallback Callbacks$AfterAgentCallbackBase Callbacks$AfterModelCallback Callbacks$AfterModelCallbackBase
             Callbacks$AfterToolCallback Callbacks$AfterToolCallbackBase Callbacks$BeforeAgentCallback Callbacks$BeforeAgentCallbackBase Callbacks$BeforeModelCallback Callbacks$BeforeModelCallbackBase
             Callbacks$BeforeToolCallback Callbacks$BeforeToolCallbackBase Instruction Instruction$Provider Instruction$Static InvocationContext ReadonlyContext
-            RunConfig RunConfig$Builder RunConfig$StreamingMode)
+            RunConfig RunConfig$Builder RunConfig$StreamingMode RunConfig$ToolExecutionMode)
            (com.google.adk.models LlmRequest$Builder LlmResponse)
            (com.google.adk.tools BaseTool ToolContext)
            (com.google.genai.types AudioTranscriptionConfig Content Modality)
@@ -187,7 +187,7 @@
     (when (some? max-llm-calls)
       (.setMaxLlmCalls b max-llm-calls))
     (when (some? tool-execution-mode)
-      (.setToolExecutionMode b tool-execution-mode))
+      (.setToolExecutionMode b (RunConfig$ToolExecutionMode/valueOf tool-execution-mode)))
     (when (some? response-modalities)
       (.setResponseModalities b (mapv (fn [^String x] (Modality. x)) response-modalities)))
     (when (some? save-input-blobs-as-artifact)

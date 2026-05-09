@@ -154,7 +154,7 @@
   ([tool-name args]
    (let [fc (-> (FunctionCall/builder)
                 (.name tool-name)
-                (.build))
+                (.id (str (java.util.UUID/randomUUID))))
          part (Part/fromFunctionCall fc (java.util.HashMap. args))
          content (-> (Content/builder)
                      (.role "model")
@@ -162,7 +162,7 @@
                      (.build))]
      (-> (LlmResponse/builder)
          (.content content)
-         (.turnComplete true)
+         (.turnComplete false)
          (.build)))))
 
 (defn- text-response
@@ -170,9 +170,9 @@
   [text]
   (-> (LlmResponse/builder)
       (.content (-> (Content/builder)
-                     (.role "model")
-                     (.parts (into-array Part [(Part/fromText text)]))
-                     (.build)))
+                    (.role "model")
+                    (.parts (into-array Part [(Part/fromText text)]))
+                    (.build)))
       (.turnComplete true)
       (.build)))
 
