@@ -32,9 +32,8 @@
     (let [agent (adk/loop-agent :name "l5" :max-iterations 42)
           field (.getDeclaredField (class agent) "maxIterations")]
       (.setAccessible field true)
-      (let [^java.util.Optional opt (.get field agent)]
-        (is (.isPresent opt) "maxIterations should be present")
-        (is (= 42 (.get opt)) "maxIterations should be 42")))))
+      (let [^Integer max-iterations (.get field agent)]
+        (is (= 42 max-iterations) "maxIterations should be 42")))))
 
 ;; ---------------------------------------------------------------------------
 ;; T1.1.2  sequential-agent sets name, description, sub-agents
@@ -82,7 +81,7 @@
   (testing "base-agent with after-agent-callback stores callbacks"
     (let [agent (adk/base-agent :name "b5"
                                 :after-agent-callback (fn [_] nil))]
-      (is (.isPresent (.afterAgentCallback agent))))))
+      (is (some? (.afterAgentCallback agent))))))
 
 ;; ---------------------------------------------------------------------------
 ;; T1.1.4  with-session retrieves existing session by ID

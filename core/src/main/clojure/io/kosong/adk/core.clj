@@ -5,6 +5,7 @@
             [clojure.tools.logging :as log]
             [io.kosong.java])
   (:import (com.google.adk.agents Instruction LlmAgent LoopAgent RunConfig RunConfig$StreamingMode SequentialAgent)
+           (com.google.adk.plugins Plugin)
            (com.google.adk.runner Runner)
            (com.google.adk.sessions Session)
            (com.google.genai.types Content GenerateContentConfig Schema)
@@ -24,12 +25,12 @@
 (defn- resolve-app-name
   [context]
   (or
-   (:app-name context)
+    (:app-name context)
 
-   (when-let [a (:agent context)]
-     (.name a))
+    (when-let [a (:agent context)]
+      (.name a))
 
-   "default"))
+    "default"))
 
 (defn- resolve-user-id
   [context]
@@ -52,14 +53,14 @@
   (let [session-service  (or session-service (io.kosong.adk.sessions/in-memory-session-service))
         artifact-service (or artifact-service (io.kosong.adk.artifacts/in-memory-artifact-service))]
     (cond-> {}
-      (some? session-service) (assoc :session-service session-service)
-      (some? artifact-service) (assoc :artifact-service artifact-service)
-      (some? memory-service) (assoc :memory-service memory-service)
-      (some? plugins) (assoc :plugins plugins)
-      (some? session) (assoc :session session)
-      (some? app-name) (assoc :app-name app-name)
-      (some? user-id) (assoc :user-id user-id)
-      (some? agent) (assoc :agent agent))))
+            (some? session-service) (assoc :session-service session-service)
+            (some? artifact-service) (assoc :artifact-service artifact-service)
+            (some? memory-service) (assoc :memory-service memory-service)
+            (some? plugins) (assoc :plugins plugins)
+            (some? session) (assoc :session session)
+            (some? app-name) (assoc :app-name app-name)
+            (some? user-id) (assoc :user-id user-id)
+            (some? agent) (assoc :agent agent))))
 
 (defn with-new-session
   ([context]
@@ -187,7 +188,7 @@
       (let [sub-agents (if (coll? sub-agents) sub-agents [sub-agents])]
         (.subAgents b ^List (mapv p/into-agent sub-agents))))
     (when (some? max-iterations)
-      (.maxIterations b ^Integer max-iterations))
+      (.maxIterations b (int max-iterations)))
     (when (some? before-agent-callback)
       (let [before-agent-callback (if (coll? before-agent-callback) before-agent-callback [before-agent-callback])]
         (.beforeAgentCallback b ^List (mapv p/into-before-agent-callback before-agent-callback))))
@@ -263,7 +264,7 @@
    (let [session-service       (:session-service context)
          artifact-service      (:artifact-service context)
          memory-service        (:memory-service context)
-         plugins               (:plugins context)
+         plugins               (if (some? (:plugins context)) (into-array Plugin (:plugins context)) (into-array Plugin []))
          app-name              (resolve-app-name context)
          ^Session session      (get-or-create-session context)
          runner                (-> (Runner/builder)
@@ -290,7 +291,8 @@
          on-complete           (reify io.reactivex.rxjava3.functions.Action
                                  (run [_]
                                    (async/close! event-ch)))
-         event-flow            (.runAsync runner session content run-config)
+         session-key           (.sessionKey session)
+         event-flow            (.runAsync runner session-key content run-config)
          _disposable           (.subscribe event-flow on-next on-error on-complete)]
      event-ch)))
 
@@ -333,7 +335,9 @@
    (let [session-service       (:session-service context)
          artifact-service      (:artifact-service context)
          memory-service        (:memory-service context)
-         plugins               (:plugins context)
+         plugins               (if (some? (:plugins context))
+                                 (into-array Plugin (:plugins context))
+                                 (into-array Plugin []))
          app-name              (resolve-app-name context)
          ^Session session      (get-or-create-session context)
          runner                (-> (Runner/builder)

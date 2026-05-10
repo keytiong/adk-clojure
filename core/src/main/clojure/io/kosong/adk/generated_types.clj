@@ -48,6 +48,148 @@
 
 (clojure.core/defmethod
  io.kosong.java/make-object
+ com.google.genai.types.AggregationOutput
+ [_cls data]
+ (clojure.core/cond
+  (clojure.core/instance?
+   com.google.genai.types.AggregationOutput
+   data)
+  data
+  (clojure.core/instance? clojure.lang.IPersistentMap data)
+  (clojure.core/let
+   [b (com.google.genai.types.AggregationOutput/builder)]
+   (clojure.core/when-some
+    [v (:aggregation-results data)]
+    (.
+     b
+     aggregationResults
+     (clojure.core/mapv
+      (clojure.core/fn
+       [x]
+       (io.kosong.java/make-object
+        com.google.genai.types.AggregationResult
+        x))
+      v)))
+   (clojure.core/when-some
+    [v (:dataset data)]
+    (.
+     b
+     dataset
+     (io.kosong.java/make-object
+      com.google.genai.types.EvaluationDataset
+      v)))
+   (.build b))))
+
+(clojure.core/extend-type
+ com.google.genai.types.AggregationOutput
+ clojure.core.protocols/Datafiable
+ (clojure.datafy/datafy
+  [x]
+  (clojure.core/->
+   (clojure.core/transient {})
+   (io.kosong.autovalue/optional-datafy-assoc
+    :aggregation-results
+    (. x aggregationResults))
+   (io.kosong.autovalue/optional-datafy-assoc :dataset (. x dataset))
+   (clojure.core/persistent!))))
+
+(clojure.core/defmethod
+ io.kosong.java/make-object
+ com.google.genai.types.AggregationResult
+ [_cls data]
+ (clojure.core/cond
+  (clojure.core/instance?
+   com.google.genai.types.AggregationResult
+   data)
+  data
+  (clojure.core/instance? clojure.lang.IPersistentMap data)
+  (clojure.core/let
+   [b (com.google.genai.types.AggregationResult/builder)]
+   (clojure.core/when-some
+    [v (:aggregation-metric data)]
+    (. b aggregationMetric v))
+   (clojure.core/when-some
+    [v (:bleu-metric-value data)]
+    (.
+     b
+     bleuMetricValue
+     (io.kosong.java/make-object
+      com.google.genai.types.BleuMetricValue
+      v)))
+   (clojure.core/when-some
+    [v (:custom-code-execution-result data)]
+    (.
+     b
+     customCodeExecutionResult
+     (io.kosong.java/make-object
+      com.google.genai.types.CustomCodeExecutionResult
+      v)))
+   (clojure.core/when-some
+    [v (:exact-match-metric-value data)]
+    (.
+     b
+     exactMatchMetricValue
+     (io.kosong.java/make-object
+      com.google.genai.types.ExactMatchMetricValue
+      v)))
+   (clojure.core/when-some
+    [v (:pairwise-metric-result data)]
+    (.
+     b
+     pairwiseMetricResult
+     (io.kosong.java/make-object
+      com.google.genai.types.PairwiseMetricResult
+      v)))
+   (clojure.core/when-some
+    [v (:pointwise-metric-result data)]
+    (.
+     b
+     pointwiseMetricResult
+     (io.kosong.java/make-object
+      com.google.genai.types.PointwiseMetricResult
+      v)))
+   (clojure.core/when-some
+    [v (:rouge-metric-value data)]
+    (.
+     b
+     rougeMetricValue
+     (io.kosong.java/make-object
+      com.google.genai.types.RougeMetricValue
+      v)))
+   (.build b))))
+
+(clojure.core/extend-type
+ com.google.genai.types.AggregationResult
+ clojure.core.protocols/Datafiable
+ (clojure.datafy/datafy
+  [x]
+  (clojure.core/->
+   (clojure.core/transient {})
+   (io.kosong.autovalue/optional-datafy-assoc
+    :aggregation-metric
+    (. x aggregationMetric))
+   (io.kosong.autovalue/optional-datafy-assoc
+    :bleu-metric-value
+    (. x bleuMetricValue))
+   (io.kosong.autovalue/optional-datafy-assoc
+    :custom-code-execution-result
+    (. x customCodeExecutionResult))
+   (io.kosong.autovalue/optional-datafy-assoc
+    :exact-match-metric-value
+    (. x exactMatchMetricValue))
+   (io.kosong.autovalue/optional-datafy-assoc
+    :pairwise-metric-result
+    (. x pairwiseMetricResult))
+   (io.kosong.autovalue/optional-datafy-assoc
+    :pointwise-metric-result
+    (. x pointwiseMetricResult))
+   (io.kosong.autovalue/optional-datafy-assoc
+    :rouge-metric-value
+    (. x rougeMetricValue))
+   (clojure.core/persistent!))))
+
+(clojure.core/defmethod
+ io.kosong.java/make-object
  com.google.genai.types.ApiAuth
  [_cls data]
  (clojure.core/cond
@@ -166,6 +308,9 @@
   (clojure.core/instance? clojure.lang.IPersistentMap data)
   (clojure.core/let
    [b (com.google.genai.types.AudioTranscriptionConfig/builder)]
+   (clojure.core/when-some
+    [v (:language-codes data)]
+    (. b languageCodes v))
    (.build b))))
 
 (clojure.core/extend-type
@@ -175,6 +320,9 @@
   [x]
   (clojure.core/->
    (clojure.core/transient {})
+   (io.kosong.autovalue/optional-datafy-assoc
+    :language-codes
+    (. x languageCodes))
    (clojure.core/persistent!))))
 
 (clojure.core/defmethod
@@ -187,6 +335,7 @@
   (clojure.core/instance? clojure.lang.IPersistentMap data)
   (clojure.core/let
    [b (com.google.genai.types.AuthConfig/builder)]
+   (clojure.core/when-some [v (:api-key data)] (. b apiKey v))
    (clojure.core/when-some
     [v (:api-key-config data)]
     (.
@@ -237,6 +386,7 @@
   [x]
   (clojure.core/->
    (clojure.core/transient {})
+   (io.kosong.autovalue/optional-datafy-assoc :api-key (. x apiKey))
    (io.kosong.autovalue/optional-datafy-assoc
     :api-key-config
     (. x apiKeyConfig))
@@ -733,6 +883,81 @@
    (io.kosong.autovalue/optional-datafy-assoc
     :inlined-requests
     (. x inlinedRequests))
+   (clojure.core/persistent!))))
+
+(clojure.core/defmethod
+ io.kosong.java/make-object
+ com.google.genai.types.BigQuerySource
+ [_cls data]
+ (clojure.core/cond
+  (clojure.core/instance? com.google.genai.types.BigQuerySource data)
+  data
+  (clojure.core/instance? clojure.lang.IPersistentMap data)
+  (clojure.core/let
+   [b (com.google.genai.types.BigQuerySource/builder)]
+   (clojure.core/when-some [v (:input-uri data)] (. b inputUri v))
+   (.build b))))
+
+(clojure.core/extend-type
+ com.google.genai.types.BigQuerySource
+ clojure.core.protocols/Datafiable
+ (clojure.datafy/datafy
+  [x]
+  (clojure.core/->
+   (clojure.core/transient {})
+   (io.kosong.autovalue/optional-datafy-assoc
+    :input-uri
+    (. x inputUri))
+   (clojure.core/persistent!))))
+
+(clojure.core/defmethod
+ io.kosong.java/make-object
+ com.google.genai.types.BleuMetricValue
+ [_cls data]
+ (clojure.core/cond
+  (clojure.core/instance? com.google.genai.types.BleuMetricValue data)
+  data
+  (clojure.core/instance? clojure.lang.IPersistentMap data)
+  (clojure.core/let
+   [b (com.google.genai.types.BleuMetricValue/builder)]
+   (clojure.core/when-some [v (:score data)] (. b score (float v)))
+   (.build b))))
+
+(clojure.core/extend-type
+ com.google.genai.types.BleuMetricValue
+ clojure.core.protocols/Datafiable
+ (clojure.datafy/datafy
+  [x]
+  (clojure.core/->
+   (clojure.core/transient {})
+   (io.kosong.autovalue/optional-datafy-assoc :score (. x score))
+   (clojure.core/persistent!))))
+
+(clojure.core/defmethod
+ io.kosong.java/make-object
+ com.google.genai.types.BleuSpec
+ [_cls data]
+ (clojure.core/cond
+  (clojure.core/instance? com.google.genai.types.BleuSpec data)
+  data
+  (clojure.core/instance? clojure.lang.IPersistentMap data)
+  (clojure.core/let
+   [b (com.google.genai.types.BleuSpec/builder)]
+   (clojure.core/when-some
+    [v (:use-effective-order data)]
+    (. b useEffectiveOrder v))
+   (.build b))))
+
+(clojure.core/extend-type
+ com.google.genai.types.BleuSpec
+ clojure.core.protocols/Datafiable
+ (clojure.datafy/datafy
+  [x]
+  (clojure.core/->
+   (clojure.core/transient {})
+   (io.kosong.autovalue/optional-datafy-assoc
+    :use-effective-order
+    (. x useEffectiveOrder))
    (clojure.core/persistent!))))
 
 (clojure.core/defmethod
@@ -1361,6 +1586,7 @@
   (clojure.core/instance? clojure.lang.IPersistentMap data)
   (clojure.core/let
    [b (com.google.genai.types.CodeExecutionResult/builder)]
+   (clojure.core/when-some [v (:id data)] (. b id v))
    (clojure.core/when-some [v (:outcome data)] (. b outcome v))
    (clojure.core/when-some [v (:output data)] (. b output v))
    (.build b))))
@@ -1372,6 +1598,7 @@
   [x]
   (clojure.core/->
    (clojure.core/transient {})
+   (io.kosong.autovalue/optional-datafy-assoc :id (. x id))
    (io.kosong.autovalue/optional-datafy-assoc :outcome (. x outcome))
    (io.kosong.autovalue/optional-datafy-assoc :output (. x output))
    (clojure.core/persistent!))))
@@ -1419,6 +1646,35 @@
    (io.kosong.autovalue/optional-datafy-assoc
     :successful-forecast-point-count
     (. x successfulForecastPointCount))
+   (clojure.core/persistent!))))
+
+(clojure.core/defmethod
+ io.kosong.java/make-object
+ com.google.genai.types.ComputationBasedMetricSpec
+ [_cls data]
+ (clojure.core/cond
+  (clojure.core/instance?
+   com.google.genai.types.ComputationBasedMetricSpec
+   data)
+  data
+  (clojure.core/instance? clojure.lang.IPersistentMap data)
+  (clojure.core/let
+   [b (com.google.genai.types.ComputationBasedMetricSpec/builder)]
+   (clojure.core/when-some [v (:parameters data)] (. b parameters v))
+   (clojure.core/when-some [v (:type data)] (. b type v))
+   (.build b))))
+
+(clojure.core/extend-type
+ com.google.genai.types.ComputationBasedMetricSpec
+ clojure.core.protocols/Datafiable
+ (clojure.datafy/datafy
+  [x]
+  (clojure.core/->
+   (clojure.core/transient {})
+   (io.kosong.autovalue/optional-datafy-assoc
+    :parameters
+    (. x parameters))
+   (io.kosong.autovalue/optional-datafy-assoc :type (. x type))
    (clojure.core/persistent!))))
 
 (clojure.core/defmethod
@@ -2670,10 +2926,24 @@
     [v (:adapter-size data)]
     (. b adapterSize v))
    (clojure.core/when-some
+    [v (:base-teacher-model data)]
+    (. b baseTeacherModel v))
+   (clojure.core/when-some
     [v (:batch-size data)]
     (. b batchSize (int v)))
    (clojure.core/when-some [v (:beta data)] (. b beta (float v)))
+   (clojure.core/when-some
+    [v (:custom-base-model data)]
+    (. b customBaseModel v))
    (clojure.core/when-some [v (:description data)] (. b description v))
+   (clojure.core/when-some
+    [v (:encryption-spec data)]
+    (.
+     b
+     encryptionSpec
+     (io.kosong.java/make-object
+      com.google.genai.types.EncryptionSpec
+      v)))
    (clojure.core/when-some
     [v (:epoch-count data)]
     (. b epochCount (int v)))
@@ -2704,12 +2974,20 @@
     [v (:learning-rate-multiplier data)]
     (. b learningRateMultiplier (float v)))
    (clojure.core/when-some [v (:method data)] (. b method v))
+   (clojure.core/when-some [v (:output-uri data)] (. b outputUri v))
    (clojure.core/when-some
     [v (:pre-tuned-model-checkpoint-id data)]
     (. b preTunedModelCheckpointId v))
    (clojure.core/when-some
+    [v (:sft-loss-weight-multiplier data)]
+    (. b sftLossWeightMultiplier (float v)))
+   (clojure.core/when-some
     [v (:tuned-model-display-name data)]
     (. b tunedModelDisplayName v))
+   (clojure.core/when-some
+    [v (:tuned-teacher-model-source data)]
+    (. b tunedTeacherModelSource v))
+   (clojure.core/when-some [v (:tuning-mode data)] (. b tuningMode v))
    (clojure.core/when-some
     [v (:validation-dataset data)]
     (.
@@ -2731,12 +3009,21 @@
     :adapter-size
     (. x adapterSize))
    (io.kosong.autovalue/optional-datafy-assoc
+    :base-teacher-model
+    (. x baseTeacherModel))
+   (io.kosong.autovalue/optional-datafy-assoc
     :batch-size
     (. x batchSize))
    (io.kosong.autovalue/optional-datafy-assoc :beta (. x beta))
    (io.kosong.autovalue/optional-datafy-assoc
+    :custom-base-model
+    (. x customBaseModel))
+   (io.kosong.autovalue/optional-datafy-assoc
     :description
     (. x description))
+   (io.kosong.autovalue/optional-datafy-assoc
+    :encryption-spec
+    (. x encryptionSpec))
    (io.kosong.autovalue/optional-datafy-assoc
     :epoch-count
     (. x epochCount))
@@ -2758,11 +3045,23 @@
     (. x learningRateMultiplier))
    (io.kosong.autovalue/optional-datafy-assoc :method (. x method))
    (io.kosong.autovalue/optional-datafy-assoc
+    :output-uri
+    (. x outputUri))
+   (io.kosong.autovalue/optional-datafy-assoc
     :pre-tuned-model-checkpoint-id
     (. x preTunedModelCheckpointId))
    (io.kosong.autovalue/optional-datafy-assoc
+    :sft-loss-weight-multiplier
+    (. x sftLossWeightMultiplier))
+   (io.kosong.autovalue/optional-datafy-assoc
     :tuned-model-display-name
     (. x tunedModelDisplayName))
+   (io.kosong.autovalue/optional-datafy-assoc
+    :tuned-teacher-model-source
+    (. x tunedTeacherModelSource))
+   (io.kosong.autovalue/optional-datafy-assoc
+    :tuning-mode
+    (. x tuningMode))
    (io.kosong.autovalue/optional-datafy-assoc
     :validation-dataset
     (. x validationDataset))
@@ -2876,6 +3175,60 @@
 
 (clojure.core/defmethod
  io.kosong.java/make-object
+ com.google.genai.types.CustomCodeExecutionResult
+ [_cls data]
+ (clojure.core/cond
+  (clojure.core/instance?
+   com.google.genai.types.CustomCodeExecutionResult
+   data)
+  data
+  (clojure.core/instance? clojure.lang.IPersistentMap data)
+  (clojure.core/let
+   [b (com.google.genai.types.CustomCodeExecutionResult/builder)]
+   (clojure.core/when-some [v (:score data)] (. b score (float v)))
+   (.build b))))
+
+(clojure.core/extend-type
+ com.google.genai.types.CustomCodeExecutionResult
+ clojure.core.protocols/Datafiable
+ (clojure.datafy/datafy
+  [x]
+  (clojure.core/->
+   (clojure.core/transient {})
+   (io.kosong.autovalue/optional-datafy-assoc :score (. x score))
+   (clojure.core/persistent!))))
+
+(clojure.core/defmethod
+ io.kosong.java/make-object
+ com.google.genai.types.CustomCodeExecutionSpec
+ [_cls data]
+ (clojure.core/cond
+  (clojure.core/instance?
+   com.google.genai.types.CustomCodeExecutionSpec
+   data)
+  data
+  (clojure.core/instance? clojure.lang.IPersistentMap data)
+  (clojure.core/let
+   [b (com.google.genai.types.CustomCodeExecutionSpec/builder)]
+   (clojure.core/when-some
+    [v (:evaluation-function data)]
+    (. b evaluationFunction v))
+   (.build b))))
+
+(clojure.core/extend-type
+ com.google.genai.types.CustomCodeExecutionSpec
+ clojure.core.protocols/Datafiable
+ (clojure.datafy/datafy
+  [x]
+  (clojure.core/->
+   (clojure.core/transient {})
+   (io.kosong.autovalue/optional-datafy-assoc
+    :evaluation-function
+    (. x evaluationFunction))
+   (clojure.core/persistent!))))
+
+(clojure.core/defmethod
+ io.kosong.java/make-object
  com.google.genai.types.CustomMetadata
  [_cls data]
  (clojure.core/cond
@@ -2916,6 +3269,65 @@
    (io.kosong.autovalue/optional-datafy-assoc
     :string-value
     (. x stringValue))
+   (clojure.core/persistent!))))
+
+(clojure.core/defmethod
+ io.kosong.java/make-object
+ com.google.genai.types.CustomOutput
+ [_cls data]
+ (clojure.core/cond
+  (clojure.core/instance? com.google.genai.types.CustomOutput data)
+  data
+  (clojure.core/instance? clojure.lang.IPersistentMap data)
+  (clojure.core/let
+   [b (com.google.genai.types.CustomOutput/builder)]
+   (clojure.core/when-some
+    [v (:raw-outputs data)]
+    (.
+     b
+     rawOutputs
+     (io.kosong.java/make-object com.google.genai.types.RawOutput v)))
+   (.build b))))
+
+(clojure.core/extend-type
+ com.google.genai.types.CustomOutput
+ clojure.core.protocols/Datafiable
+ (clojure.datafy/datafy
+  [x]
+  (clojure.core/->
+   (clojure.core/transient {})
+   (io.kosong.autovalue/optional-datafy-assoc
+    :raw-outputs
+    (. x rawOutputs))
+   (clojure.core/persistent!))))
+
+(clojure.core/defmethod
+ io.kosong.java/make-object
+ com.google.genai.types.CustomOutputFormatConfig
+ [_cls data]
+ (clojure.core/cond
+  (clojure.core/instance?
+   com.google.genai.types.CustomOutputFormatConfig
+   data)
+  data
+  (clojure.core/instance? clojure.lang.IPersistentMap data)
+  (clojure.core/let
+   [b (com.google.genai.types.CustomOutputFormatConfig/builder)]
+   (clojure.core/when-some
+    [v (:return-raw-output data)]
+    (. b returnRawOutput v))
+   (.build b))))
+
+(clojure.core/extend-type
+ com.google.genai.types.CustomOutputFormatConfig
+ clojure.core.protocols/Datafiable
+ (clojure.datafy/datafy
+  [x]
+  (clojure.core/->
+   (clojure.core/transient {})
+   (io.kosong.autovalue/optional-datafy-assoc
+    :return-raw-output
+    (. x returnRawOutput))
    (clojure.core/persistent!))))
 
 (clojure.core/defmethod
@@ -3009,6 +3421,12 @@
   (clojure.core/let
    [b (com.google.genai.types.DatasetStats/builder)]
    (clojure.core/when-some
+    [v (:dropped-example-indices data)]
+    (. b droppedExampleIndices v))
+   (clojure.core/when-some
+    [v (:dropped-example-reasons data)]
+    (. b droppedExampleReasons v))
+   (clojure.core/when-some
     [v (:total-billable-character-count data)]
     (. b totalBillableCharacterCount v))
    (clojure.core/when-some
@@ -3063,6 +3481,12 @@
   [x]
   (clojure.core/->
    (clojure.core/transient {})
+   (io.kosong.autovalue/optional-datafy-assoc
+    :dropped-example-indices
+    (. x droppedExampleIndices))
+   (io.kosong.autovalue/optional-datafy-assoc
+    :dropped-example-reasons
+    (. x droppedExampleReasons))
    (io.kosong.autovalue/optional-datafy-assoc
     :total-billable-character-count
     (. x totalBillableCharacterCount))
@@ -3682,6 +4106,119 @@
 
 (clojure.core/defmethod
  io.kosong.java/make-object
+ com.google.genai.types.DistillationHyperParameters
+ [_cls data]
+ (clojure.core/cond
+  (clojure.core/instance?
+   com.google.genai.types.DistillationHyperParameters
+   data)
+  data
+  (clojure.core/instance? clojure.lang.IPersistentMap data)
+  (clojure.core/let
+   [b (com.google.genai.types.DistillationHyperParameters/builder)]
+   (clojure.core/when-some
+    [v (:adapter-size data)]
+    (. b adapterSize v))
+   (clojure.core/when-some [v (:epoch-count data)] (. b epochCount v))
+   (clojure.core/when-some
+    [v (:learning-rate-multiplier data)]
+    (. b learningRateMultiplier v))
+   (.build b))))
+
+(clojure.core/extend-type
+ com.google.genai.types.DistillationHyperParameters
+ clojure.core.protocols/Datafiable
+ (clojure.datafy/datafy
+  [x]
+  (clojure.core/->
+   (clojure.core/transient {})
+   (io.kosong.autovalue/optional-datafy-assoc
+    :adapter-size
+    (. x adapterSize))
+   (io.kosong.autovalue/optional-datafy-assoc
+    :epoch-count
+    (. x epochCount))
+   (io.kosong.autovalue/optional-datafy-assoc
+    :learning-rate-multiplier
+    (. x learningRateMultiplier))
+   (clojure.core/persistent!))))
+
+(clojure.core/defmethod
+ io.kosong.java/make-object
+ com.google.genai.types.DistillationSpec
+ [_cls data]
+ (clojure.core/cond
+  (clojure.core/instance? com.google.genai.types.DistillationSpec data)
+  data
+  (clojure.core/instance? clojure.lang.IPersistentMap data)
+  (clojure.core/let
+   [b (com.google.genai.types.DistillationSpec/builder)]
+   (clojure.core/when-some
+    [v (:base-teacher-model data)]
+    (. b baseTeacherModel v))
+   (clojure.core/when-some
+    [v (:hyper-parameters data)]
+    (.
+     b
+     hyperParameters
+     (io.kosong.java/make-object
+      com.google.genai.types.DistillationHyperParameters
+      v)))
+   (clojure.core/when-some
+    [v (:pipeline-root-directory data)]
+    (. b pipelineRootDirectory v))
+   (clojure.core/when-some
+    [v (:prompt-dataset-uri data)]
+    (. b promptDatasetUri v))
+   (clojure.core/when-some
+    [v (:student-model data)]
+    (. b studentModel v))
+   (clojure.core/when-some
+    [v (:training-dataset-uri data)]
+    (. b trainingDatasetUri v))
+   (clojure.core/when-some
+    [v (:tuned-teacher-model-source data)]
+    (. b tunedTeacherModelSource v))
+   (clojure.core/when-some
+    [v (:validation-dataset-uri data)]
+    (. b validationDatasetUri v))
+   (.build b))))
+
+(clojure.core/extend-type
+ com.google.genai.types.DistillationSpec
+ clojure.core.protocols/Datafiable
+ (clojure.datafy/datafy
+  [x]
+  (clojure.core/->
+   (clojure.core/transient {})
+   (io.kosong.autovalue/optional-datafy-assoc
+    :base-teacher-model
+    (. x baseTeacherModel))
+   (io.kosong.autovalue/optional-datafy-assoc
+    :hyper-parameters
+    (. x hyperParameters))
+   (io.kosong.autovalue/optional-datafy-assoc
+    :pipeline-root-directory
+    (. x pipelineRootDirectory))
+   (io.kosong.autovalue/optional-datafy-assoc
+    :prompt-dataset-uri
+    (. x promptDatasetUri))
+   (io.kosong.autovalue/optional-datafy-assoc
+    :student-model
+    (. x studentModel))
+   (io.kosong.autovalue/optional-datafy-assoc
+    :training-dataset-uri
+    (. x trainingDatasetUri))
+   (io.kosong.autovalue/optional-datafy-assoc
+    :tuned-teacher-model-source
+    (. x tunedTeacherModelSource))
+   (io.kosong.autovalue/optional-datafy-assoc
+    :validation-dataset-uri
+    (. x validationDatasetUri))
+   (clojure.core/persistent!))))
+
+(clojure.core/defmethod
+ io.kosong.java/make-object
  com.google.genai.types.Document
  [_cls data]
  (clojure.core/cond
@@ -4202,6 +4739,64 @@
 
 (clojure.core/defmethod
  io.kosong.java/make-object
+ com.google.genai.types.EmbedContentParametersPrivate
+ [_cls data]
+ (clojure.core/cond
+  (clojure.core/instance?
+   com.google.genai.types.EmbedContentParametersPrivate
+   data)
+  data
+  (clojure.core/instance? clojure.lang.IPersistentMap data)
+  (clojure.core/let
+   [b (com.google.genai.types.EmbedContentParametersPrivate/builder)]
+   (clojure.core/when-some
+    [v (:config data)]
+    (.
+     b
+     config
+     (io.kosong.java/make-object
+      com.google.genai.types.EmbedContentConfig
+      v)))
+   (clojure.core/when-some
+    [v (:content data)]
+    (.
+     b
+     content
+     (io.kosong.java/make-object com.google.genai.types.Content v)))
+   (clojure.core/when-some
+    [v (:contents data)]
+    (.
+     b
+     contents
+     (clojure.core/mapv
+      (clojure.core/fn
+       [x]
+       (io.kosong.java/make-object com.google.genai.types.Content x))
+      v)))
+   (clojure.core/when-some
+    [v (:embedding-api-type data)]
+    (. b embeddingApiType v))
+   (clojure.core/when-some [v (:model data)] (. b model v))
+   (.build b))))
+
+(clojure.core/extend-type
+ com.google.genai.types.EmbedContentParametersPrivate
+ clojure.core.protocols/Datafiable
+ (clojure.datafy/datafy
+  [x]
+  (clojure.core/->
+   (clojure.core/transient {})
+   (io.kosong.autovalue/optional-datafy-assoc :config (. x config))
+   (io.kosong.autovalue/optional-datafy-assoc :content (. x content))
+   (io.kosong.autovalue/optional-datafy-assoc :contents (. x contents))
+   (io.kosong.autovalue/optional-datafy-assoc
+    :embedding-api-type
+    (. x embeddingApiType))
+   (io.kosong.autovalue/optional-datafy-assoc :model (. x model))
+   (clojure.core/persistent!))))
+
+(clojure.core/defmethod
+ io.kosong.java/make-object
  com.google.genai.types.EmbedContentResponse
  [_cls data]
  (clojure.core/cond
@@ -4412,6 +5007,110 @@
 
 (clojure.core/defmethod
  io.kosong.java/make-object
+ com.google.genai.types.EvaluateDatasetResponse
+ [_cls data]
+ (clojure.core/cond
+  (clojure.core/instance?
+   com.google.genai.types.EvaluateDatasetResponse
+   data)
+  data
+  (clojure.core/instance? clojure.lang.IPersistentMap data)
+  (clojure.core/let
+   [b (com.google.genai.types.EvaluateDatasetResponse/builder)]
+   (clojure.core/when-some
+    [v (:aggregation-output data)]
+    (.
+     b
+     aggregationOutput
+     (io.kosong.java/make-object
+      com.google.genai.types.AggregationOutput
+      v)))
+   (clojure.core/when-some
+    [v (:output-info data)]
+    (.
+     b
+     outputInfo
+     (io.kosong.java/make-object com.google.genai.types.OutputInfo v)))
+   (.build b))))
+
+(clojure.core/extend-type
+ com.google.genai.types.EvaluateDatasetResponse
+ clojure.core.protocols/Datafiable
+ (clojure.datafy/datafy
+  [x]
+  (clojure.core/->
+   (clojure.core/transient {})
+   (io.kosong.autovalue/optional-datafy-assoc
+    :aggregation-output
+    (. x aggregationOutput))
+   (io.kosong.autovalue/optional-datafy-assoc
+    :output-info
+    (. x outputInfo))
+   (clojure.core/persistent!))))
+
+(clojure.core/defmethod
+ io.kosong.java/make-object
+ com.google.genai.types.EvaluateDatasetRun
+ [_cls data]
+ (clojure.core/cond
+  (clojure.core/instance?
+   com.google.genai.types.EvaluateDatasetRun
+   data)
+  data
+  (clojure.core/instance? clojure.lang.IPersistentMap data)
+  (clojure.core/let
+   [b (com.google.genai.types.EvaluateDatasetRun/builder)]
+   (clojure.core/when-some
+    [v (:checkpoint-id data)]
+    (. b checkpointId v))
+   (clojure.core/when-some
+    [v (:error data)]
+    (.
+     b
+     error
+     (io.kosong.java/make-object
+      com.google.genai.types.GoogleRpcStatus
+      v)))
+   (clojure.core/when-some
+    [v (:evaluate-dataset-response data)]
+    (.
+     b
+     evaluateDatasetResponse
+     (io.kosong.java/make-object
+      com.google.genai.types.EvaluateDatasetResponse
+      v)))
+   (clojure.core/when-some
+    [v (:evaluation-run data)]
+    (. b evaluationRun v))
+   (clojure.core/when-some
+    [v (:operation-name data)]
+    (. b operationName v))
+   (.build b))))
+
+(clojure.core/extend-type
+ com.google.genai.types.EvaluateDatasetRun
+ clojure.core.protocols/Datafiable
+ (clojure.datafy/datafy
+  [x]
+  (clojure.core/->
+   (clojure.core/transient {})
+   (io.kosong.autovalue/optional-datafy-assoc
+    :checkpoint-id
+    (. x checkpointId))
+   (io.kosong.autovalue/optional-datafy-assoc :error (. x error))
+   (io.kosong.autovalue/optional-datafy-assoc
+    :evaluate-dataset-response
+    (. x evaluateDatasetResponse))
+   (io.kosong.autovalue/optional-datafy-assoc
+    :evaluation-run
+    (. x evaluationRun))
+   (io.kosong.autovalue/optional-datafy-assoc
+    :operation-name
+    (. x operationName))
+   (clojure.core/persistent!))))
+
+(clojure.core/defmethod
+ io.kosong.java/make-object
  com.google.genai.types.EvaluationConfig
  [_cls data]
  (clojure.core/cond
@@ -4429,6 +5128,14 @@
       com.google.genai.types.AutoraterConfig
       v)))
    (clojure.core/when-some
+    [v (:inference-generation-config data)]
+    (.
+     b
+     inferenceGenerationConfig
+     (io.kosong.java/make-object
+      com.google.genai.types.GenerationConfig
+      v)))
+   (clojure.core/when-some
     [v (:metrics data)]
     (.
      b
@@ -4436,7 +5143,9 @@
      (clojure.core/mapv
       (clojure.core/fn
        [x]
-       (io.kosong.java/make-object com.google.genai.types.Metric x))
+       (io.kosong.java/make-object
+        com.google.genai.types.UnifiedMetric
+        x))
       v)))
    (clojure.core/when-some
     [v (:output-config data)]
@@ -4458,10 +5167,81 @@
    (io.kosong.autovalue/optional-datafy-assoc
     :autorater-config
     (. x autoraterConfig))
+   (io.kosong.autovalue/optional-datafy-assoc
+    :inference-generation-config
+    (. x inferenceGenerationConfig))
    (io.kosong.autovalue/optional-datafy-assoc :metrics (. x metrics))
    (io.kosong.autovalue/optional-datafy-assoc
     :output-config
     (. x outputConfig))
+   (clojure.core/persistent!))))
+
+(clojure.core/defmethod
+ io.kosong.java/make-object
+ com.google.genai.types.EvaluationDataset
+ [_cls data]
+ (clojure.core/cond
+  (clojure.core/instance?
+   com.google.genai.types.EvaluationDataset
+   data)
+  data
+  (clojure.core/instance? clojure.lang.IPersistentMap data)
+  (clojure.core/let
+   [b (com.google.genai.types.EvaluationDataset/builder)]
+   (clojure.core/when-some
+    [v (:bigquery-source data)]
+    (.
+     b
+     bigquerySource
+     (io.kosong.java/make-object
+      com.google.genai.types.BigQuerySource
+      v)))
+   (clojure.core/when-some
+    [v (:gcs-source data)]
+    (.
+     b
+     gcsSource
+     (io.kosong.java/make-object com.google.genai.types.GcsSource v)))
+   (.build b))))
+
+(clojure.core/extend-type
+ com.google.genai.types.EvaluationDataset
+ clojure.core.protocols/Datafiable
+ (clojure.datafy/datafy
+  [x]
+  (clojure.core/->
+   (clojure.core/transient {})
+   (io.kosong.autovalue/optional-datafy-assoc
+    :bigquery-source
+    (. x bigquerySource))
+   (io.kosong.autovalue/optional-datafy-assoc
+    :gcs-source
+    (. x gcsSource))
+   (clojure.core/persistent!))))
+
+(clojure.core/defmethod
+ io.kosong.java/make-object
+ com.google.genai.types.ExactMatchMetricValue
+ [_cls data]
+ (clojure.core/cond
+  (clojure.core/instance?
+   com.google.genai.types.ExactMatchMetricValue
+   data)
+  data
+  (clojure.core/instance? clojure.lang.IPersistentMap data)
+  (clojure.core/let
+   [b (com.google.genai.types.ExactMatchMetricValue/builder)]
+   (clojure.core/when-some [v (:score data)] (. b score (float v)))
+   (.build b))))
+
+(clojure.core/extend-type
+ com.google.genai.types.ExactMatchMetricValue
+ clojure.core.protocols/Datafiable
+ (clojure.datafy/datafy
+  [x]
+  (clojure.core/->
+   (clojure.core/transient {})
+   (io.kosong.autovalue/optional-datafy-assoc :score (. x score))
    (clojure.core/persistent!))))
 
 (clojure.core/defmethod
@@ -4475,6 +5255,7 @@
   (clojure.core/let
    [b (com.google.genai.types.ExecutableCode/builder)]
    (clojure.core/when-some [v (:code data)] (. b code v))
+   (clojure.core/when-some [v (:id data)] (. b id v))
    (clojure.core/when-some [v (:language data)] (. b language v))
    (.build b))))
 
@@ -4486,6 +5267,7 @@
   (clojure.core/->
    (clojure.core/transient {})
    (io.kosong.autovalue/optional-datafy-assoc :code (. x code))
+   (io.kosong.autovalue/optional-datafy-assoc :id (. x id))
    (io.kosong.autovalue/optional-datafy-assoc :language (. x language))
    (clojure.core/persistent!))))
 
@@ -4922,6 +5704,52 @@
 
 (clojure.core/defmethod
  io.kosong.java/make-object
+ com.google.genai.types.FullFineTuningSpec
+ [_cls data]
+ (clojure.core/cond
+  (clojure.core/instance?
+   com.google.genai.types.FullFineTuningSpec
+   data)
+  data
+  (clojure.core/instance? clojure.lang.IPersistentMap data)
+  (clojure.core/let
+   [b (com.google.genai.types.FullFineTuningSpec/builder)]
+   (clojure.core/when-some
+    [v (:hyper-parameters data)]
+    (.
+     b
+     hyperParameters
+     (io.kosong.java/make-object
+      com.google.genai.types.SupervisedHyperParameters
+      v)))
+   (clojure.core/when-some
+    [v (:training-dataset-uri data)]
+    (. b trainingDatasetUri v))
+   (clojure.core/when-some
+    [v (:validation-dataset-uri data)]
+    (. b validationDatasetUri v))
+   (.build b))))
+
+(clojure.core/extend-type
+ com.google.genai.types.FullFineTuningSpec
+ clojure.core.protocols/Datafiable
+ (clojure.datafy/datafy
+  [x]
+  (clojure.core/->
+   (clojure.core/transient {})
+   (io.kosong.autovalue/optional-datafy-assoc
+    :hyper-parameters
+    (. x hyperParameters))
+   (io.kosong.autovalue/optional-datafy-assoc
+    :training-dataset-uri
+    (. x trainingDatasetUri))
+   (io.kosong.autovalue/optional-datafy-assoc
+    :validation-dataset-uri
+    (. x validationDatasetUri))
+   (clojure.core/persistent!))))
+
+(clojure.core/defmethod
+ io.kosong.java/make-object
  com.google.genai.types.FunctionCall
  [_cls data]
  (clojure.core/cond
@@ -5258,6 +6086,29 @@
 
 (clojure.core/defmethod
  io.kosong.java/make-object
+ com.google.genai.types.GcsSource
+ [_cls data]
+ (clojure.core/cond
+  (clojure.core/instance? com.google.genai.types.GcsSource data)
+  data
+  (clojure.core/instance? clojure.lang.IPersistentMap data)
+  (clojure.core/let
+   [b (com.google.genai.types.GcsSource/builder)]
+   (clojure.core/when-some [v (:uris data)] (. b uris v))
+   (.build b))))
+
+(clojure.core/extend-type
+ com.google.genai.types.GcsSource
+ clojure.core.protocols/Datafiable
+ (clojure.datafy/datafy
+  [x]
+  (clojure.core/->
+   (clojure.core/transient {})
+   (io.kosong.autovalue/optional-datafy-assoc :uris (. x uris))
+   (clojure.core/persistent!))))
+
+(clojure.core/defmethod
+ io.kosong.java/make-object
  com.google.genai.types.GeminiPreferenceExample
  [_cls data]
  (clojure.core/cond
@@ -5400,6 +6251,14 @@
     [v (:media-resolution data)]
     (. b mediaResolution v))
    (clojure.core/when-some
+    [v (:model-armor-config data)]
+    (.
+     b
+     modelArmorConfig
+     (io.kosong.java/make-object
+      com.google.genai.types.ModelArmorConfig
+      v)))
+   (clojure.core/when-some
     [v (:model-selection-config data)]
     (.
      b
@@ -5539,6 +6398,9 @@
    (io.kosong.autovalue/optional-datafy-assoc
     :media-resolution
     (. x mediaResolution))
+   (io.kosong.autovalue/optional-datafy-assoc
+    :model-armor-config
+    (. x modelArmorConfig))
    (io.kosong.autovalue/optional-datafy-assoc
     :model-selection-config
     (. x modelSelectionConfig))
@@ -7467,6 +8329,14 @@
     [v (:exclude-domains data)]
     (. b excludeDomains v))
    (clojure.core/when-some
+    [v (:search-types data)]
+    (.
+     b
+     searchTypes
+     (io.kosong.java/make-object
+      com.google.genai.types.SearchTypes
+      v)))
+   (clojure.core/when-some
     [v (:time-range-filter data)]
     (.
      b
@@ -7487,6 +8357,9 @@
    (io.kosong.autovalue/optional-datafy-assoc
     :exclude-domains
     (. x excludeDomains))
+   (io.kosong.autovalue/optional-datafy-assoc
+    :search-types
+    (. x searchTypes))
    (io.kosong.autovalue/optional-datafy-assoc
     :time-range-filter
     (. x timeRangeFilter))
@@ -7564,6 +8437,14 @@
   (clojure.core/let
    [b (com.google.genai.types.GroundingChunk/builder)]
    (clojure.core/when-some
+    [v (:image data)]
+    (.
+     b
+     image
+     (io.kosong.java/make-object
+      com.google.genai.types.GroundingChunkImage
+      v)))
+   (clojure.core/when-some
     [v (:maps data)]
     (.
      b
@@ -7596,11 +8477,47 @@
   [x]
   (clojure.core/->
    (clojure.core/transient {})
+   (io.kosong.autovalue/optional-datafy-assoc :image (. x image))
    (io.kosong.autovalue/optional-datafy-assoc :maps (. x maps))
    (io.kosong.autovalue/optional-datafy-assoc
     :retrieved-context
     (. x retrievedContext))
    (io.kosong.autovalue/optional-datafy-assoc :web (. x web))
+   (clojure.core/persistent!))))
+
+(clojure.core/defmethod
+ io.kosong.java/make-object
+ com.google.genai.types.GroundingChunkImage
+ [_cls data]
+ (clojure.core/cond
+  (clojure.core/instance?
+   com.google.genai.types.GroundingChunkImage
+   data)
+  data
+  (clojure.core/instance? clojure.lang.IPersistentMap data)
+  (clojure.core/let
+   [b (com.google.genai.types.GroundingChunkImage/builder)]
+   (clojure.core/when-some [v (:domain data)] (. b domain v))
+   (clojure.core/when-some [v (:image-uri data)] (. b imageUri v))
+   (clojure.core/when-some [v (:source-uri data)] (. b sourceUri v))
+   (clojure.core/when-some [v (:title data)] (. b title v))
+   (.build b))))
+
+(clojure.core/extend-type
+ com.google.genai.types.GroundingChunkImage
+ clojure.core.protocols/Datafiable
+ (clojure.datafy/datafy
+  [x]
+  (clojure.core/->
+   (clojure.core/transient {})
+   (io.kosong.autovalue/optional-datafy-assoc :domain (. x domain))
+   (io.kosong.autovalue/optional-datafy-assoc
+    :image-uri
+    (. x imageUri))
+   (io.kosong.autovalue/optional-datafy-assoc
+    :source-uri
+    (. x sourceUri))
+   (io.kosong.autovalue/optional-datafy-assoc :title (. x title))
    (clojure.core/persistent!))))
 
 (clojure.core/defmethod
@@ -7662,6 +8579,18 @@
     [v (:flag-content-uri data)]
     (. b flagContentUri v))
    (clojure.core/when-some
+    [v (:review-snippet data)]
+    (.
+     b
+     reviewSnippet
+     (clojure.core/mapv
+      (clojure.core/fn
+       [x]
+       (io.kosong.java/make-object
+        com.google.genai.types.GroundingChunkMapsPlaceAnswerSourcesReviewSnippet
+        x))
+      v)))
+   (clojure.core/when-some
     [v (:review-snippets data)]
     (.
      b
@@ -7685,6 +8614,9 @@
    (io.kosong.autovalue/optional-datafy-assoc
     :flag-content-uri
     (. x flagContentUri))
+   (io.kosong.autovalue/optional-datafy-assoc
+    :review-snippet
+    (. x reviewSnippet))
    (io.kosong.autovalue/optional-datafy-assoc
     :review-snippets
     (. x reviewSnippets))
@@ -7900,6 +8832,9 @@
         x))
       v)))
    (clojure.core/when-some
+    [v (:image-search-queries data)]
+    (. b imageSearchQueries v))
+   (clojure.core/when-some
     [v (:retrieval-metadata data)]
     (.
      b
@@ -7951,6 +8886,9 @@
    (io.kosong.autovalue/optional-datafy-assoc
     :grounding-supports
     (. x groundingSupports))
+   (io.kosong.autovalue/optional-datafy-assoc
+    :image-search-queries
+    (. x imageSearchQueries))
    (io.kosong.autovalue/optional-datafy-assoc
     :retrieval-metadata
     (. x retrievalMetadata))
@@ -8054,6 +8992,9 @@
    [b (com.google.genai.types.HttpOptions/builder)]
    (clojure.core/when-some [v (:api-version data)] (. b apiVersion v))
    (clojure.core/when-some [v (:base-url data)] (. b baseUrl v))
+   (clojure.core/when-some
+    [v (:base-url-resource-scope data)]
+    (. b baseUrlResourceScope v))
    (clojure.core/when-some [v (:extra-body data)] (. b extraBody v))
    (clojure.core/when-some [v (:headers data)] (. b headers v))
    (clojure.core/when-some
@@ -8078,6 +9019,9 @@
     :api-version
     (. x apiVersion))
    (io.kosong.autovalue/optional-datafy-assoc :base-url (. x baseUrl))
+   (io.kosong.autovalue/optional-datafy-assoc
+    :base-url-resource-scope
+    (. x baseUrlResourceScope))
    (io.kosong.autovalue/optional-datafy-assoc
     :extra-body
     (. x extraBody))
@@ -8200,6 +9144,14 @@
    (clojure.core/when-some
     [v (:aspect-ratio data)]
     (. b aspectRatio v))
+   (clojure.core/when-some
+    [v (:image-output-options data)]
+    (.
+     b
+     imageOutputOptions
+     (io.kosong.java/make-object
+      com.google.genai.types.ImageConfigImageOutputOptions
+      v)))
    (clojure.core/when-some [v (:image-size data)] (. b imageSize v))
    (clojure.core/when-some
     [v (:output-compression-quality data)]
@@ -8210,6 +9162,9 @@
    (clojure.core/when-some
     [v (:person-generation data)]
     (. b personGeneration v))
+   (clojure.core/when-some
+    [v (:prominent-people data)]
+    (. b prominentPeople v))
    (.build b))))
 
 (clojure.core/extend-type
@@ -8223,6 +9178,9 @@
     :aspect-ratio
     (. x aspectRatio))
    (io.kosong.autovalue/optional-datafy-assoc
+    :image-output-options
+    (. x imageOutputOptions))
+   (io.kosong.autovalue/optional-datafy-assoc
     :image-size
     (. x imageSize))
    (io.kosong.autovalue/optional-datafy-assoc
@@ -8234,6 +9192,63 @@
    (io.kosong.autovalue/optional-datafy-assoc
     :person-generation
     (. x personGeneration))
+   (io.kosong.autovalue/optional-datafy-assoc
+    :prominent-people
+    (. x prominentPeople))
+   (clojure.core/persistent!))))
+
+(clojure.core/defmethod
+ io.kosong.java/make-object
+ com.google.genai.types.ImageConfigImageOutputOptions
+ [_cls data]
+ (clojure.core/cond
+  (clojure.core/instance?
+   com.google.genai.types.ImageConfigImageOutputOptions
+   data)
+  data
+  (clojure.core/instance? clojure.lang.IPersistentMap data)
+  (clojure.core/let
+   [b (com.google.genai.types.ImageConfigImageOutputOptions/builder)]
+   (clojure.core/when-some
+    [v (:compression-quality data)]
+    (. b compressionQuality (int v)))
+   (clojure.core/when-some [v (:mime-type data)] (. b mimeType v))
+   (.build b))))
+
+(clojure.core/extend-type
+ com.google.genai.types.ImageConfigImageOutputOptions
+ clojure.core.protocols/Datafiable
+ (clojure.datafy/datafy
+  [x]
+  (clojure.core/->
+   (clojure.core/transient {})
+   (io.kosong.autovalue/optional-datafy-assoc
+    :compression-quality
+    (. x compressionQuality))
+   (io.kosong.autovalue/optional-datafy-assoc
+    :mime-type
+    (. x mimeType))
+   (clojure.core/persistent!))))
+
+(clojure.core/defmethod
+ io.kosong.java/make-object
+ com.google.genai.types.ImageSearch
+ [_cls data]
+ (clojure.core/cond
+  (clojure.core/instance? com.google.genai.types.ImageSearch data)
+  data
+  (clojure.core/instance? clojure.lang.IPersistentMap data)
+  (clojure.core/let
+   [b (com.google.genai.types.ImageSearch/builder)]
+   (.build b))))
+
+(clojure.core/extend-type
+ com.google.genai.types.ImageSearch
+ clojure.core.protocols/Datafiable
+ (clojure.datafy/datafy
+  [x]
+  (clojure.core/->
+   (clojure.core/transient {})
    (clojure.core/persistent!))))
 
 (clojure.core/defmethod
@@ -8518,6 +9533,7 @@
      b
      error
      (io.kosong.java/make-object com.google.genai.types.JobError v)))
+   (clojure.core/when-some [v (:metadata data)] (. b metadata v))
    (clojure.core/when-some
     [v (:response data)]
     (.
@@ -8536,7 +9552,42 @@
   (clojure.core/->
    (clojure.core/transient {})
    (io.kosong.autovalue/optional-datafy-assoc :error (. x error))
+   (io.kosong.autovalue/optional-datafy-assoc :metadata (. x metadata))
    (io.kosong.autovalue/optional-datafy-assoc :response (. x response))
+   (clojure.core/persistent!))))
+
+(clojure.core/defmethod
+ io.kosong.java/make-object
+ com.google.genai.types.InternalRegisterFilesParameters
+ [_cls data]
+ (clojure.core/cond
+  (clojure.core/instance?
+   com.google.genai.types.InternalRegisterFilesParameters
+   data)
+  data
+  (clojure.core/instance? clojure.lang.IPersistentMap data)
+  (clojure.core/let
+   [b (com.google.genai.types.InternalRegisterFilesParameters/builder)]
+   (clojure.core/when-some
+    [v (:config data)]
+    (.
+     b
+     config
+     (io.kosong.java/make-object
+      com.google.genai.types.RegisterFilesConfig
+      v)))
+   (clojure.core/when-some [v (:uris data)] (. b uris v))
+   (.build b))))
+
+(clojure.core/extend-type
+ com.google.genai.types.InternalRegisterFilesParameters
+ clojure.core.protocols/Datafiable
+ (clojure.datafy/datafy
+  [x]
+  (clojure.core/->
+   (clojure.core/transient {})
+   (io.kosong.autovalue/optional-datafy-assoc :config (. x config))
+   (io.kosong.autovalue/optional-datafy-assoc :uris (. x uris))
    (clojure.core/persistent!))))
 
 (clojure.core/defmethod
@@ -8591,6 +9642,86 @@
    (io.kosong.autovalue/optional-datafy-assoc :code (. x code))
    (io.kosong.autovalue/optional-datafy-assoc :details (. x details))
    (io.kosong.autovalue/optional-datafy-assoc :message (. x message))
+   (clojure.core/persistent!))))
+
+(clojure.core/defmethod
+ io.kosong.java/make-object
+ com.google.genai.types.LLMBasedMetricSpec
+ [_cls data]
+ (clojure.core/cond
+  (clojure.core/instance?
+   com.google.genai.types.LLMBasedMetricSpec
+   data)
+  data
+  (clojure.core/instance? clojure.lang.IPersistentMap data)
+  (clojure.core/let
+   [b (com.google.genai.types.LLMBasedMetricSpec/builder)]
+   (clojure.core/when-some
+    [v (:additional-config data)]
+    (. b additionalConfig v))
+   (clojure.core/when-some
+    [v (:judge-autorater-config data)]
+    (.
+     b
+     judgeAutoraterConfig
+     (io.kosong.java/make-object
+      com.google.genai.types.AutoraterConfig
+      v)))
+   (clojure.core/when-some
+    [v (:metric-prompt-template data)]
+    (. b metricPromptTemplate v))
+   (clojure.core/when-some
+    [v (:predefined-rubric-generation-spec data)]
+    (.
+     b
+     predefinedRubricGenerationSpec
+     (io.kosong.java/make-object
+      com.google.genai.types.PredefinedMetricSpec
+      v)))
+   (clojure.core/when-some
+    [v (:rubric-generation-spec data)]
+    (.
+     b
+     rubricGenerationSpec
+     (io.kosong.java/make-object
+      com.google.genai.types.RubricGenerationSpec
+      v)))
+   (clojure.core/when-some
+    [v (:rubric-group-key data)]
+    (. b rubricGroupKey v))
+   (clojure.core/when-some
+    [v (:system-instruction data)]
+    (. b systemInstruction v))
+   (.build b))))
+
+(clojure.core/extend-type
+ com.google.genai.types.LLMBasedMetricSpec
+ clojure.core.protocols/Datafiable
+ (clojure.datafy/datafy
+  [x]
+  (clojure.core/->
+   (clojure.core/transient {})
+   (io.kosong.autovalue/optional-datafy-assoc
+    :additional-config
+    (. x additionalConfig))
+   (io.kosong.autovalue/optional-datafy-assoc
+    :judge-autorater-config
+    (. x judgeAutoraterConfig))
+   (io.kosong.autovalue/optional-datafy-assoc
+    :metric-prompt-template
+    (. x metricPromptTemplate))
+   (io.kosong.autovalue/optional-datafy-assoc
+    :predefined-rubric-generation-spec
+    (. x predefinedRubricGenerationSpec))
+   (io.kosong.autovalue/optional-datafy-assoc
+    :rubric-generation-spec
+    (. x rubricGenerationSpec))
+   (io.kosong.autovalue/optional-datafy-assoc
+    :rubric-group-key
+    (. x rubricGroupKey))
+   (io.kosong.autovalue/optional-datafy-assoc
+    :system-instruction
+    (. x systemInstruction))
    (clojure.core/persistent!))))
 
 (clojure.core/defmethod
@@ -10493,6 +11624,14 @@
       com.google.genai.types.UsageMetadata
       v)))
    (clojure.core/when-some
+    [v (:voice-activity data)]
+    (.
+     b
+     voiceActivity
+     (io.kosong.java/make-object
+      com.google.genai.types.VoiceActivity
+      v)))
+   (clojure.core/when-some
     [v (:voice-activity-detection-signal data)]
     (.
      b
@@ -10528,6 +11667,9 @@
    (io.kosong.autovalue/optional-datafy-assoc
     :usage-metadata
     (. x usageMetadata))
+   (io.kosong.autovalue/optional-datafy-assoc
+    :voice-activity
+    (. x voiceActivity))
    (io.kosong.autovalue/optional-datafy-assoc
     :voice-activity-detection-signal
     (. x voiceActivityDetectionSignal))
@@ -10877,6 +12019,40 @@
 
 (clojure.core/defmethod
  io.kosong.java/make-object
+ com.google.genai.types.McpServer
+ [_cls data]
+ (clojure.core/cond
+  (clojure.core/instance? com.google.genai.types.McpServer data)
+  data
+  (clojure.core/instance? clojure.lang.IPersistentMap data)
+  (clojure.core/let
+   [b (com.google.genai.types.McpServer/builder)]
+   (clojure.core/when-some [v (:name data)] (. b name v))
+   (clojure.core/when-some
+    [v (:streamable-http-transport data)]
+    (.
+     b
+     streamableHttpTransport
+     (io.kosong.java/make-object
+      com.google.genai.types.StreamableHttpTransport
+      v)))
+   (.build b))))
+
+(clojure.core/extend-type
+ com.google.genai.types.McpServer
+ clojure.core.protocols/Datafiable
+ (clojure.datafy/datafy
+  [x]
+  (clojure.core/->
+   (clojure.core/transient {})
+   (io.kosong.autovalue/optional-datafy-assoc :name (. x name))
+   (io.kosong.autovalue/optional-datafy-assoc
+    :streamable-http-transport
+    (. x streamableHttpTransport))
+   (clojure.core/persistent!))))
+
+(clojure.core/defmethod
+ io.kosong.java/make-object
  com.google.genai.types.Metric
  [_cls data]
  (clojure.core/cond
@@ -11067,6 +12243,39 @@
 
 (clojure.core/defmethod
  io.kosong.java/make-object
+ com.google.genai.types.ModelArmorConfig
+ [_cls data]
+ (clojure.core/cond
+  (clojure.core/instance? com.google.genai.types.ModelArmorConfig data)
+  data
+  (clojure.core/instance? clojure.lang.IPersistentMap data)
+  (clojure.core/let
+   [b (com.google.genai.types.ModelArmorConfig/builder)]
+   (clojure.core/when-some
+    [v (:prompt-template-name data)]
+    (. b promptTemplateName v))
+   (clojure.core/when-some
+    [v (:response-template-name data)]
+    (. b responseTemplateName v))
+   (.build b))))
+
+(clojure.core/extend-type
+ com.google.genai.types.ModelArmorConfig
+ clojure.core.protocols/Datafiable
+ (clojure.datafy/datafy
+  [x]
+  (clojure.core/->
+   (clojure.core/transient {})
+   (io.kosong.autovalue/optional-datafy-assoc
+    :prompt-template-name
+    (. x promptTemplateName))
+   (io.kosong.autovalue/optional-datafy-assoc
+    :response-template-name
+    (. x responseTemplateName))
+   (clojure.core/persistent!))))
+
+(clojure.core/defmethod
+ io.kosong.java/make-object
  com.google.genai.types.ModelSelectionConfig
  [_cls data]
  (clojure.core/cond
@@ -11166,6 +12375,135 @@
 
 (clojure.core/defmethod
  io.kosong.java/make-object
+ com.google.genai.types.OutputInfo
+ [_cls data]
+ (clojure.core/cond
+  (clojure.core/instance? com.google.genai.types.OutputInfo data)
+  data
+  (clojure.core/instance? clojure.lang.IPersistentMap data)
+  (clojure.core/let
+   [b (com.google.genai.types.OutputInfo/builder)]
+   (clojure.core/when-some
+    [v (:gcs-output-directory data)]
+    (. b gcsOutputDirectory v))
+   (.build b))))
+
+(clojure.core/extend-type
+ com.google.genai.types.OutputInfo
+ clojure.core.protocols/Datafiable
+ (clojure.datafy/datafy
+  [x]
+  (clojure.core/->
+   (clojure.core/transient {})
+   (io.kosong.autovalue/optional-datafy-assoc
+    :gcs-output-directory
+    (. x gcsOutputDirectory))
+   (clojure.core/persistent!))))
+
+(clojure.core/defmethod
+ io.kosong.java/make-object
+ com.google.genai.types.PairwiseMetricResult
+ [_cls data]
+ (clojure.core/cond
+  (clojure.core/instance?
+   com.google.genai.types.PairwiseMetricResult
+   data)
+  data
+  (clojure.core/instance? clojure.lang.IPersistentMap data)
+  (clojure.core/let
+   [b (com.google.genai.types.PairwiseMetricResult/builder)]
+   (clojure.core/when-some
+    [v (:custom-output data)]
+    (.
+     b
+     customOutput
+     (io.kosong.java/make-object
+      com.google.genai.types.CustomOutput
+      v)))
+   (clojure.core/when-some [v (:explanation data)] (. b explanation v))
+   (clojure.core/when-some
+    [v (:pairwise-choice data)]
+    (. b pairwiseChoice v))
+   (.build b))))
+
+(clojure.core/extend-type
+ com.google.genai.types.PairwiseMetricResult
+ clojure.core.protocols/Datafiable
+ (clojure.datafy/datafy
+  [x]
+  (clojure.core/->
+   (clojure.core/transient {})
+   (io.kosong.autovalue/optional-datafy-assoc
+    :custom-output
+    (. x customOutput))
+   (io.kosong.autovalue/optional-datafy-assoc
+    :explanation
+    (. x explanation))
+   (io.kosong.autovalue/optional-datafy-assoc
+    :pairwise-choice
+    (. x pairwiseChoice))
+   (clojure.core/persistent!))))
+
+(clojure.core/defmethod
+ io.kosong.java/make-object
+ com.google.genai.types.PairwiseMetricSpec
+ [_cls data]
+ (clojure.core/cond
+  (clojure.core/instance?
+   com.google.genai.types.PairwiseMetricSpec
+   data)
+  data
+  (clojure.core/instance? clojure.lang.IPersistentMap data)
+  (clojure.core/let
+   [b (com.google.genai.types.PairwiseMetricSpec/builder)]
+   (clojure.core/when-some
+    [v (:baseline-response-field-name data)]
+    (. b baselineResponseFieldName v))
+   (clojure.core/when-some
+    [v (:candidate-response-field-name data)]
+    (. b candidateResponseFieldName v))
+   (clojure.core/when-some
+    [v (:custom-output-format-config data)]
+    (.
+     b
+     customOutputFormatConfig
+     (io.kosong.java/make-object
+      com.google.genai.types.CustomOutputFormatConfig
+      v)))
+   (clojure.core/when-some
+    [v (:metric-prompt-template data)]
+    (. b metricPromptTemplate v))
+   (clojure.core/when-some
+    [v (:system-instruction data)]
+    (. b systemInstruction v))
+   (.build b))))
+
+(clojure.core/extend-type
+ com.google.genai.types.PairwiseMetricSpec
+ clojure.core.protocols/Datafiable
+ (clojure.datafy/datafy
+  [x]
+  (clojure.core/->
+   (clojure.core/transient {})
+   (io.kosong.autovalue/optional-datafy-assoc
+    :baseline-response-field-name
+    (. x baselineResponseFieldName))
+   (io.kosong.autovalue/optional-datafy-assoc
+    :candidate-response-field-name
+    (. x candidateResponseFieldName))
+   (io.kosong.autovalue/optional-datafy-assoc
+    :custom-output-format-config
+    (. x customOutputFormatConfig))
+   (io.kosong.autovalue/optional-datafy-assoc
+    :metric-prompt-template
+    (. x metricPromptTemplate))
+   (io.kosong.autovalue/optional-datafy-assoc
+    :system-instruction
+    (. x systemInstruction))
+   (clojure.core/persistent!))))
+
+(clojure.core/defmethod
+ io.kosong.java/make-object
  com.google.genai.types.Part
  [_cls data]
  (clojure.core/cond
@@ -11232,6 +12570,20 @@
     [v (:thought-signature data)]
     (. b thoughtSignature v))
    (clojure.core/when-some
+    [v (:tool-call data)]
+    (.
+     b
+     toolCall
+     (io.kosong.java/make-object com.google.genai.types.ToolCall v)))
+   (clojure.core/when-some
+    [v (:tool-response data)]
+    (.
+     b
+     toolResponse
+     (io.kosong.java/make-object
+      com.google.genai.types.ToolResponse
+      v)))
+   (clojure.core/when-some
     [v (:video-metadata data)]
     (.
      b
@@ -11274,6 +12626,12 @@
    (io.kosong.autovalue/optional-datafy-assoc
     :thought-signature
     (. x thoughtSignature))
+   (io.kosong.autovalue/optional-datafy-assoc
+    :tool-call
+    (. x toolCall))
+   (io.kosong.autovalue/optional-datafy-assoc
+    :tool-response
+    (. x toolResponse))
    (io.kosong.autovalue/optional-datafy-assoc
     :video-metadata
     (. x videoMetadata))
@@ -11404,6 +12762,92 @@
 
 (clojure.core/defmethod
  io.kosong.java/make-object
+ com.google.genai.types.PointwiseMetricResult
+ [_cls data]
+ (clojure.core/cond
+  (clojure.core/instance?
+   com.google.genai.types.PointwiseMetricResult
+   data)
+  data
+  (clojure.core/instance? clojure.lang.IPersistentMap data)
+  (clojure.core/let
+   [b (com.google.genai.types.PointwiseMetricResult/builder)]
+   (clojure.core/when-some
+    [v (:custom-output data)]
+    (.
+     b
+     customOutput
+     (io.kosong.java/make-object
+      com.google.genai.types.CustomOutput
+      v)))
+   (clojure.core/when-some [v (:explanation data)] (. b explanation v))
+   (clojure.core/when-some [v (:score data)] (. b score (float v)))
+   (.build b))))
+
+(clojure.core/extend-type
+ com.google.genai.types.PointwiseMetricResult
+ clojure.core.protocols/Datafiable
+ (clojure.datafy/datafy
+  [x]
+  (clojure.core/->
+   (clojure.core/transient {})
+   (io.kosong.autovalue/optional-datafy-assoc
+    :custom-output
+    (. x customOutput))
+   (io.kosong.autovalue/optional-datafy-assoc
+    :explanation
+    (. x explanation))
+   (io.kosong.autovalue/optional-datafy-assoc :score (. x score))
+   (clojure.core/persistent!))))
+
+(clojure.core/defmethod
+ io.kosong.java/make-object
+ com.google.genai.types.PointwiseMetricSpec
+ [_cls data]
+ (clojure.core/cond
+  (clojure.core/instance?
+   com.google.genai.types.PointwiseMetricSpec
+   data)
+  data
+  (clojure.core/instance? clojure.lang.IPersistentMap data)
+  (clojure.core/let
+   [b (com.google.genai.types.PointwiseMetricSpec/builder)]
+   (clojure.core/when-some
+    [v (:custom-output-format-config data)]
+    (.
+     b
+     customOutputFormatConfig
+     (io.kosong.java/make-object
+      com.google.genai.types.CustomOutputFormatConfig
+      v)))
+   (clojure.core/when-some
+    [v (:metric-prompt-template data)]
+    (. b metricPromptTemplate v))
+   (clojure.core/when-some
+    [v (:system-instruction data)]
+    (. b systemInstruction v))
+   (.build b))))
+
+(clojure.core/extend-type
+ com.google.genai.types.PointwiseMetricSpec
+ clojure.core.protocols/Datafiable
+ (clojure.datafy/datafy
+  [x]
+  (clojure.core/->
+   (clojure.core/transient {})
+   (io.kosong.autovalue/optional-datafy-assoc
+    :custom-output-format-config
+    (. x customOutputFormatConfig))
+   (io.kosong.autovalue/optional-datafy-assoc
+    :metric-prompt-template
+    (. x metricPromptTemplate))
+   (io.kosong.autovalue/optional-datafy-assoc
+    :system-instruction
+    (. x systemInstruction))
+   (clojure.core/persistent!))))
+
+(clojure.core/defmethod
+ io.kosong.java/make-object
  com.google.genai.types.PreTunedModel
  [_cls data]
  (clojure.core/cond
@@ -11468,6 +12912,41 @@
 
 (clojure.core/defmethod
  io.kosong.java/make-object
+ com.google.genai.types.PredefinedMetricSpec
+ [_cls data]
+ (clojure.core/cond
+  (clojure.core/instance?
+   com.google.genai.types.PredefinedMetricSpec
+   data)
+  data
+  (clojure.core/instance? clojure.lang.IPersistentMap data)
+  (clojure.core/let
+   [b (com.google.genai.types.PredefinedMetricSpec/builder)]
+   (clojure.core/when-some
+    [v (:metric-spec-name data)]
+    (. b metricSpecName v))
+   (clojure.core/when-some
+    [v (:metric-spec-parameters data)]
+    (. b metricSpecParameters v))
+   (.build b))))
+
+(clojure.core/extend-type
+ com.google.genai.types.PredefinedMetricSpec
+ clojure.core.protocols/Datafiable
+ (clojure.datafy/datafy
+  [x]
+  (clojure.core/->
+   (clojure.core/transient {})
+   (io.kosong.autovalue/optional-datafy-assoc
+    :metric-spec-name
+    (. x metricSpecName))
+   (io.kosong.autovalue/optional-datafy-assoc
+    :metric-spec-parameters
+    (. x metricSpecParameters))
+   (clojure.core/persistent!))))
+
+(clojure.core/defmethod
+ io.kosong.java/make-object
  com.google.genai.types.PreferenceOptimizationDataStats
  [_cls data]
  (clojure.core/cond
@@ -11478,6 +12957,12 @@
   (clojure.core/instance? clojure.lang.IPersistentMap data)
   (clojure.core/let
    [b (com.google.genai.types.PreferenceOptimizationDataStats/builder)]
+   (clojure.core/when-some
+    [v (:dropped-example-indices data)]
+    (. b droppedExampleIndices v))
+   (clojure.core/when-some
+    [v (:dropped-example-reasons data)]
+    (. b droppedExampleReasons v))
    (clojure.core/when-some
     [v (:score-variance-per-example-distribution data)]
     (.
@@ -11540,6 +13025,12 @@
   [x]
   (clojure.core/->
    (clojure.core/transient {})
+   (io.kosong.autovalue/optional-datafy-assoc
+    :dropped-example-indices
+    (. x droppedExampleIndices))
+   (io.kosong.autovalue/optional-datafy-assoc
+    :dropped-example-reasons
+    (. x droppedExampleReasons))
    (io.kosong.autovalue/optional-datafy-assoc
     :score-variance-per-example-distribution
     (. x scoreVariancePerExampleDistribution))
@@ -12040,6 +13531,31 @@
 
 (clojure.core/defmethod
  io.kosong.java/make-object
+ com.google.genai.types.RawOutput
+ [_cls data]
+ (clojure.core/cond
+  (clojure.core/instance? com.google.genai.types.RawOutput data)
+  data
+  (clojure.core/instance? clojure.lang.IPersistentMap data)
+  (clojure.core/let
+   [b (com.google.genai.types.RawOutput/builder)]
+   (clojure.core/when-some [v (:raw-output data)] (. b rawOutput v))
+   (.build b))))
+
+(clojure.core/extend-type
+ com.google.genai.types.RawOutput
+ clojure.core.protocols/Datafiable
+ (clojure.datafy/datafy
+  [x]
+  (clojure.core/->
+   (clojure.core/transient {})
+   (io.kosong.autovalue/optional-datafy-assoc
+    :raw-output
+    (. x rawOutput))
+   (clojure.core/persistent!))))
+
+(clojure.core/defmethod
+ io.kosong.java/make-object
  com.google.genai.types.RawReferenceImage
  [_cls data]
  (clojure.core/cond
@@ -12440,6 +13956,91 @@
 
 (clojure.core/defmethod
  io.kosong.java/make-object
+ com.google.genai.types.RegisterFilesConfig
+ [_cls data]
+ (clojure.core/cond
+  (clojure.core/instance?
+   com.google.genai.types.RegisterFilesConfig
+   data)
+  data
+  (clojure.core/instance? clojure.lang.IPersistentMap data)
+  (clojure.core/let
+   [b (com.google.genai.types.RegisterFilesConfig/builder)]
+   (clojure.core/when-some
+    [v (:http-options data)]
+    (.
+     b
+     httpOptions
+     (io.kosong.java/make-object
+      com.google.genai.types.HttpOptions
+      v)))
+   (clojure.core/when-some
+    [v (:should-return-http-response data)]
+    (. b shouldReturnHttpResponse v))
+   (.build b))))
+
+(clojure.core/extend-type
+ com.google.genai.types.RegisterFilesConfig
+ clojure.core.protocols/Datafiable
+ (clojure.datafy/datafy
+  [x]
+  (clojure.core/->
+   (clojure.core/transient {})
+   (io.kosong.autovalue/optional-datafy-assoc
+    :http-options
+    (. x httpOptions))
+   (io.kosong.autovalue/optional-datafy-assoc
+    :should-return-http-response
+    (. x shouldReturnHttpResponse))
+   (clojure.core/persistent!))))
+
+(clojure.core/defmethod
+ io.kosong.java/make-object
+ com.google.genai.types.RegisterFilesResponse
+ [_cls data]
+ (clojure.core/cond
+  (clojure.core/instance?
+   com.google.genai.types.RegisterFilesResponse
+   data)
+  data
+  (clojure.core/instance? clojure.lang.IPersistentMap data)
+  (clojure.core/let
+   [b (com.google.genai.types.RegisterFilesResponse/builder)]
+   (clojure.core/when-some
+    [v (:files data)]
+    (.
+     b
+     files
+     (clojure.core/mapv
+      (clojure.core/fn
+       [x]
+       (io.kosong.java/make-object com.google.genai.types.File x))
+      v)))
+   (clojure.core/when-some
+    [v (:sdk-http-response data)]
+    (.
+     b
+     sdkHttpResponse
+     (io.kosong.java/make-object
+      com.google.genai.types.HttpResponse
+      v)))
+   (.build b))))
+
+(clojure.core/extend-type
+ com.google.genai.types.RegisterFilesResponse
+ clojure.core.protocols/Datafiable
+ (clojure.datafy/datafy
+  [x]
+  (clojure.core/->
+   (clojure.core/transient {})
+   (io.kosong.autovalue/optional-datafy-assoc :files (. x files))
+   (io.kosong.autovalue/optional-datafy-assoc
+    :sdk-http-response
+    (. x sdkHttpResponse))
+   (clojure.core/persistent!))))
+
+(clojure.core/defmethod
+ io.kosong.java/make-object
  com.google.genai.types.ReplayFile
  [_cls data]
  (clojure.core/cond
@@ -12751,6 +14352,116 @@
 
 (clojure.core/defmethod
  io.kosong.java/make-object
+ com.google.genai.types.RougeMetricValue
+ [_cls data]
+ (clojure.core/cond
+  (clojure.core/instance? com.google.genai.types.RougeMetricValue data)
+  data
+  (clojure.core/instance? clojure.lang.IPersistentMap data)
+  (clojure.core/let
+   [b (com.google.genai.types.RougeMetricValue/builder)]
+   (clojure.core/when-some [v (:score data)] (. b score (float v)))
+   (.build b))))
+
+(clojure.core/extend-type
+ com.google.genai.types.RougeMetricValue
+ clojure.core.protocols/Datafiable
+ (clojure.datafy/datafy
+  [x]
+  (clojure.core/->
+   (clojure.core/transient {})
+   (io.kosong.autovalue/optional-datafy-assoc :score (. x score))
+   (clojure.core/persistent!))))
+
+(clojure.core/defmethod
+ io.kosong.java/make-object
+ com.google.genai.types.RougeSpec
+ [_cls data]
+ (clojure.core/cond
+  (clojure.core/instance? com.google.genai.types.RougeSpec data)
+  data
+  (clojure.core/instance? clojure.lang.IPersistentMap data)
+  (clojure.core/let
+   [b (com.google.genai.types.RougeSpec/builder)]
+   (clojure.core/when-some [v (:rouge-type data)] (. b rougeType v))
+   (clojure.core/when-some
+    [v (:split-summaries data)]
+    (. b splitSummaries v))
+   (clojure.core/when-some [v (:use-stemmer data)] (. b useStemmer v))
+   (.build b))))
+
+(clojure.core/extend-type
+ com.google.genai.types.RougeSpec
+ clojure.core.protocols/Datafiable
+ (clojure.datafy/datafy
+  [x]
+  (clojure.core/->
+   (clojure.core/transient {})
+   (io.kosong.autovalue/optional-datafy-assoc
+    :rouge-type
+    (. x rougeType))
+   (io.kosong.autovalue/optional-datafy-assoc
+    :split-summaries
+    (. x splitSummaries))
+   (io.kosong.autovalue/optional-datafy-assoc
+    :use-stemmer
+    (. x useStemmer))
+   (clojure.core/persistent!))))
+
+(clojure.core/defmethod
+ io.kosong.java/make-object
+ com.google.genai.types.RubricGenerationSpec
+ [_cls data]
+ (clojure.core/cond
+  (clojure.core/instance?
+   com.google.genai.types.RubricGenerationSpec
+   data)
+  data
+  (clojure.core/instance? clojure.lang.IPersistentMap data)
+  (clojure.core/let
+   [b (com.google.genai.types.RubricGenerationSpec/builder)]
+   (clojure.core/when-some
+    [v (:model-config data)]
+    (.
+     b
+     modelConfig
+     (io.kosong.java/make-object
+      com.google.genai.types.AutoraterConfig
+      v)))
+   (clojure.core/when-some
+    [v (:prompt-template data)]
+    (. b promptTemplate v))
+   (clojure.core/when-some
+    [v (:rubric-content-type data)]
+    (. b rubricContentType v))
+   (clojure.core/when-some
+    [v (:rubric-type-ontology data)]
+    (. b rubricTypeOntology v))
+   (.build b))))
+
+(clojure.core/extend-type
+ com.google.genai.types.RubricGenerationSpec
+ clojure.core.protocols/Datafiable
+ (clojure.datafy/datafy
+  [x]
+  (clojure.core/->
+   (clojure.core/transient {})
+   (io.kosong.autovalue/optional-datafy-assoc
+    :model-config
+    (. x modelConfig))
+   (io.kosong.autovalue/optional-datafy-assoc
+    :prompt-template
+    (. x promptTemplate))
+   (io.kosong.autovalue/optional-datafy-assoc
+    :rubric-content-type
+    (. x rubricContentType))
+   (io.kosong.autovalue/optional-datafy-assoc
+    :rubric-type-ontology
+    (. x rubricTypeOntology))
+   (clojure.core/persistent!))))
+
+(clojure.core/defmethod
+ io.kosong.java/make-object
  com.google.genai.types.SafetyAttributes
  [_cls data]
  (clojure.core/cond
@@ -13018,6 +14729,47 @@
     :rendered-content
     (. x renderedContent))
    (io.kosong.autovalue/optional-datafy-assoc :sdk-blob (. x sdkBlob))
+   (clojure.core/persistent!))))
+
+(clojure.core/defmethod
+ io.kosong.java/make-object
+ com.google.genai.types.SearchTypes
+ [_cls data]
+ (clojure.core/cond
+  (clojure.core/instance? com.google.genai.types.SearchTypes data)
+  data
+  (clojure.core/instance? clojure.lang.IPersistentMap data)
+  (clojure.core/let
+   [b (com.google.genai.types.SearchTypes/builder)]
+   (clojure.core/when-some
+    [v (:image-search data)]
+    (.
+     b
+     imageSearch
+     (io.kosong.java/make-object
+      com.google.genai.types.ImageSearch
+      v)))
+   (clojure.core/when-some
+    [v (:web-search data)]
+    (.
+     b
+     webSearch
+     (io.kosong.java/make-object com.google.genai.types.WebSearch v)))
+   (.build b))))
+
+(clojure.core/extend-type
+ com.google.genai.types.SearchTypes
+ clojure.core.protocols/Datafiable
+ (clojure.datafy/datafy
+  [x]
+  (clojure.core/->
+   (clojure.core/transient {})
+   (io.kosong.autovalue/optional-datafy-assoc
+    :image-search
+    (. x imageSearch))
+   (io.kosong.autovalue/optional-datafy-assoc
+    :web-search
+    (. x webSearch))
    (clojure.core/persistent!))))
 
 (clojure.core/defmethod
@@ -13424,6 +15176,47 @@
    (io.kosong.autovalue/optional-datafy-assoc
     :voice-config
     (. x voiceConfig))
+   (clojure.core/persistent!))))
+
+(clojure.core/defmethod
+ io.kosong.java/make-object
+ com.google.genai.types.StreamableHttpTransport
+ [_cls data]
+ (clojure.core/cond
+  (clojure.core/instance?
+   com.google.genai.types.StreamableHttpTransport
+   data)
+  data
+  (clojure.core/instance? clojure.lang.IPersistentMap data)
+  (clojure.core/let
+   [b (com.google.genai.types.StreamableHttpTransport/builder)]
+   (clojure.core/when-some [v (:headers data)] (. b headers v))
+   (clojure.core/when-some
+    [v (:sse-read-timeout data)]
+    (. b sseReadTimeout v))
+   (clojure.core/when-some
+    [v (:terminate-on-close data)]
+    (. b terminateOnClose v))
+   (clojure.core/when-some [v (:timeout data)] (. b timeout v))
+   (clojure.core/when-some [v (:url data)] (. b url v))
+   (.build b))))
+
+(clojure.core/extend-type
+ com.google.genai.types.StreamableHttpTransport
+ clojure.core.protocols/Datafiable
+ (clojure.datafy/datafy
+  [x]
+  (clojure.core/->
+   (clojure.core/transient {})
+   (io.kosong.autovalue/optional-datafy-assoc :headers (. x headers))
+   (io.kosong.autovalue/optional-datafy-assoc
+    :sse-read-timeout
+    (. x sseReadTimeout))
+   (io.kosong.autovalue/optional-datafy-assoc
+    :terminate-on-close
+    (. x terminateOnClose))
+   (io.kosong.autovalue/optional-datafy-assoc :timeout (. x timeout))
+   (io.kosong.autovalue/optional-datafy-assoc :url (. x url))
    (clojure.core/persistent!))))
 
 (clojure.core/defmethod
@@ -14179,6 +15972,24 @@
       com.google.genai.types.GoogleSearchRetrieval
       v)))
    (clojure.core/when-some
+    [v (:mcp-servers data)]
+    (.
+     b
+     mcpServers
+     (clojure.core/mapv
+      (clojure.core/fn
+       [x]
+       (io.kosong.java/make-object com.google.genai.types.McpServer x))
+      v)))
+   (clojure.core/when-some
+    [v (:parallel-ai-search data)]
+    (.
+     b
+     parallelAiSearch
+     (io.kosong.java/make-object
+      com.google.genai.types.ToolParallelAiSearch
+      v)))
+   (clojure.core/when-some
     [v (:retrieval data)]
     (.
      b
@@ -14227,11 +16038,46 @@
     :google-search-retrieval
     (. x googleSearchRetrieval))
    (io.kosong.autovalue/optional-datafy-assoc
+    :mcp-servers
+    (. x mcpServers))
+   (io.kosong.autovalue/optional-datafy-assoc
+    :parallel-ai-search
+    (. x parallelAiSearch))
+   (io.kosong.autovalue/optional-datafy-assoc
     :retrieval
     (. x retrieval))
    (io.kosong.autovalue/optional-datafy-assoc
     :url-context
     (. x urlContext))
+   (clojure.core/persistent!))))
+
+(clojure.core/defmethod
+ io.kosong.java/make-object
+ com.google.genai.types.ToolCall
+ [_cls data]
+ (clojure.core/cond
+  (clojure.core/instance? com.google.genai.types.ToolCall data)
+  data
+  (clojure.core/instance? clojure.lang.IPersistentMap data)
+  (clojure.core/let
+   [b (com.google.genai.types.ToolCall/builder)]
+   (clojure.core/when-some [v (:args data)] (. b args v))
+   (clojure.core/when-some [v (:id data)] (. b id v))
+   (clojure.core/when-some [v (:tool-type data)] (. b toolType v))
+   (.build b))))
+
+(clojure.core/extend-type
+ com.google.genai.types.ToolCall
+ clojure.core.protocols/Datafiable
+ (clojure.datafy/datafy
+  [x]
+  (clojure.core/->
+   (clojure.core/transient {})
+   (io.kosong.autovalue/optional-datafy-assoc :args (. x args))
+   (io.kosong.autovalue/optional-datafy-assoc :id (. x id))
+   (io.kosong.autovalue/optional-datafy-assoc
+    :tool-type
+    (. x toolType))
    (clojure.core/persistent!))))
 
 (clojure.core/defmethod
@@ -14276,6 +16122,9 @@
       com.google.genai.types.FunctionCallingConfig
       v)))
    (clojure.core/when-some
+    [v (:include-server-side-tool-invocations data)]
+    (. b includeServerSideToolInvocations v))
+   (clojure.core/when-some
     [v (:retrieval-config data)]
     (.
      b
@@ -14296,8 +16145,71 @@
     :function-calling-config
     (. x functionCallingConfig))
    (io.kosong.autovalue/optional-datafy-assoc
+    :include-server-side-tool-invocations
+    (. x includeServerSideToolInvocations))
+   (io.kosong.autovalue/optional-datafy-assoc
     :retrieval-config
     (. x retrievalConfig))
+   (clojure.core/persistent!))))
+
+(clojure.core/defmethod
+ io.kosong.java/make-object
+ com.google.genai.types.ToolParallelAiSearch
+ [_cls data]
+ (clojure.core/cond
+  (clojure.core/instance?
+   com.google.genai.types.ToolParallelAiSearch
+   data)
+  data
+  (clojure.core/instance? clojure.lang.IPersistentMap data)
+  (clojure.core/let
+   [b (com.google.genai.types.ToolParallelAiSearch/builder)]
+   (clojure.core/when-some [v (:api-key data)] (. b apiKey v))
+   (clojure.core/when-some
+    [v (:custom-configs data)]
+    (. b customConfigs v))
+   (.build b))))
+
+(clojure.core/extend-type
+ com.google.genai.types.ToolParallelAiSearch
+ clojure.core.protocols/Datafiable
+ (clojure.datafy/datafy
+  [x]
+  (clojure.core/->
+   (clojure.core/transient {})
+   (io.kosong.autovalue/optional-datafy-assoc :api-key (. x apiKey))
+   (io.kosong.autovalue/optional-datafy-assoc
+    :custom-configs
+    (. x customConfigs))
+   (clojure.core/persistent!))))
+
+(clojure.core/defmethod
+ io.kosong.java/make-object
+ com.google.genai.types.ToolResponse
+ [_cls data]
+ (clojure.core/cond
+  (clojure.core/instance? com.google.genai.types.ToolResponse data)
+  data
+  (clojure.core/instance? clojure.lang.IPersistentMap data)
+  (clojure.core/let
+   [b (com.google.genai.types.ToolResponse/builder)]
+   (clojure.core/when-some [v (:id data)] (. b id v))
+   (clojure.core/when-some [v (:response data)] (. b response v))
+   (clojure.core/when-some [v (:tool-type data)] (. b toolType v))
+   (.build b))))
+
+(clojure.core/extend-type
+ com.google.genai.types.ToolResponse
+ clojure.core.protocols/Datafiable
+ (clojure.datafy/datafy
+  [x]
+  (clojure.core/->
+   (clojure.core/transient {})
+   (io.kosong.autovalue/optional-datafy-assoc :id (. x id))
+   (io.kosong.autovalue/optional-datafy-assoc :response (. x response))
+   (io.kosong.autovalue/optional-datafy-assoc
+    :tool-type
+    (. x toolType))
    (clojure.core/persistent!))))
 
 (clojure.core/defmethod
@@ -14573,6 +16485,14 @@
     (. b customBaseModel v))
    (clojure.core/when-some [v (:description data)] (. b description v))
    (clojure.core/when-some
+    [v (:distillation-spec data)]
+    (.
+     b
+     distillationSpec
+     (io.kosong.java/make-object
+      com.google.genai.types.DistillationSpec
+      v)))
+   (clojure.core/when-some
     [v (:encryption-spec data)]
     (.
      b
@@ -14590,6 +16510,18 @@
       com.google.genai.types.GoogleRpcStatus
       v)))
    (clojure.core/when-some
+    [v (:evaluate-dataset-runs data)]
+    (.
+     b
+     evaluateDatasetRuns
+     (clojure.core/mapv
+      (clojure.core/fn
+       [x]
+       (io.kosong.java/make-object
+        com.google.genai.types.EvaluateDatasetRun
+        x))
+      v)))
+   (clojure.core/when-some
     [v (:evaluation-config data)]
     (.
      b
@@ -14598,6 +16530,14 @@
       com.google.genai.types.EvaluationConfig
       v)))
    (clojure.core/when-some [v (:experiment data)] (. b experiment v))
+   (clojure.core/when-some
+    [v (:full-fine-tuning-spec data)]
+    (.
+     b
+     fullFineTuningSpec
+     (io.kosong.java/make-object
+      com.google.genai.types.FullFineTuningSpec
+      v)))
    (clojure.core/when-some [v (:labels data)] (. b labels v))
    (clojure.core/when-some [v (:name data)] (. b name v))
    (clojure.core/when-some [v (:output-uri data)] (. b outputUri v))
@@ -14666,6 +16606,9 @@
      (io.kosong.java/make-object
       com.google.genai.types.TuningDataStats
       v)))
+   (clojure.core/when-some
+    [v (:tuning-job-state data)]
+    (. b tuningJobState v))
    (clojure.core/when-some [v (:update-time data)] (. b updateTime v))
    (clojure.core/when-some
     [v (:veo-tuning-spec data)]
@@ -14697,16 +16640,25 @@
     :description
     (. x description))
    (io.kosong.autovalue/optional-datafy-assoc
+    :distillation-spec
+    (. x distillationSpec))
+   (io.kosong.autovalue/optional-datafy-assoc
     :encryption-spec
     (. x encryptionSpec))
    (io.kosong.autovalue/optional-datafy-assoc :end-time (. x endTime))
    (io.kosong.autovalue/optional-datafy-assoc :error (. x error))
+   (io.kosong.autovalue/optional-datafy-assoc
+    :evaluate-dataset-runs
+    (. x evaluateDatasetRuns))
    (io.kosong.autovalue/optional-datafy-assoc
     :evaluation-config
     (. x evaluationConfig))
    (io.kosong.autovalue/optional-datafy-assoc
     :experiment
     (. x experiment))
+   (io.kosong.autovalue/optional-datafy-assoc
+    :full-fine-tuning-spec
+    (. x fullFineTuningSpec))
    (io.kosong.autovalue/optional-datafy-assoc :labels (. x labels))
    (io.kosong.autovalue/optional-datafy-assoc :name (. x name))
    (io.kosong.autovalue/optional-datafy-assoc
@@ -14746,6 +16698,9 @@
    (io.kosong.autovalue/optional-datafy-assoc
     :tuning-data-stats
     (. x tuningDataStats))
+   (io.kosong.autovalue/optional-datafy-assoc
+    :tuning-job-state
+    (. x tuningJobState))
    (io.kosong.autovalue/optional-datafy-assoc
     :update-time
     (. x updateTime))
@@ -14823,6 +16778,100 @@
    (io.kosong.autovalue/optional-datafy-assoc
     :vertex-dataset-resource
     (. x vertexDatasetResource))
+   (clojure.core/persistent!))))
+
+(clojure.core/defmethod
+ io.kosong.java/make-object
+ com.google.genai.types.UnifiedMetric
+ [_cls data]
+ (clojure.core/cond
+  (clojure.core/instance? com.google.genai.types.UnifiedMetric data)
+  data
+  (clojure.core/instance? clojure.lang.IPersistentMap data)
+  (clojure.core/let
+   [b (com.google.genai.types.UnifiedMetric/builder)]
+   (clojure.core/when-some
+    [v (:bleu-spec data)]
+    (.
+     b
+     bleuSpec
+     (io.kosong.java/make-object com.google.genai.types.BleuSpec v)))
+   (clojure.core/when-some
+    [v (:computation-based-metric-spec data)]
+    (.
+     b
+     computationBasedMetricSpec
+     (io.kosong.java/make-object
+      com.google.genai.types.ComputationBasedMetricSpec
+      v)))
+   (clojure.core/when-some
+    [v (:custom-code-execution-spec data)]
+    (.
+     b
+     customCodeExecutionSpec
+     (io.kosong.java/make-object
+      com.google.genai.types.CustomCodeExecutionSpec
+      v)))
+   (clojure.core/when-some
+    [v (:llm-based-metric-spec data)]
+    (.
+     b
+     llmBasedMetricSpec
+     (io.kosong.java/make-object
+      com.google.genai.types.LLMBasedMetricSpec
+      v)))
+   (clojure.core/when-some
+    [v (:pointwise-metric-spec data)]
+    (.
+     b
+     pointwiseMetricSpec
+     (io.kosong.java/make-object
+      com.google.genai.types.PointwiseMetricSpec
+      v)))
+   (clojure.core/when-some
+    [v (:predefined-metric-spec data)]
+    (.
+     b
+     predefinedMetricSpec
+     (io.kosong.java/make-object
+      com.google.genai.types.PredefinedMetricSpec
+      v)))
+   (clojure.core/when-some
+    [v (:rouge-spec data)]
+    (.
+     b
+     rougeSpec
+     (io.kosong.java/make-object com.google.genai.types.RougeSpec v)))
+   (.build b))))
+
+(clojure.core/extend-type
+ com.google.genai.types.UnifiedMetric
+ clojure.core.protocols/Datafiable
+ (clojure.datafy/datafy
+  [x]
+  (clojure.core/->
+   (clojure.core/transient {})
+   (io.kosong.autovalue/optional-datafy-assoc
+    :bleu-spec
+    (. x bleuSpec))
+   (io.kosong.autovalue/optional-datafy-assoc
+    :computation-based-metric-spec
+    (. x computationBasedMetricSpec))
+   (io.kosong.autovalue/optional-datafy-assoc
+    :custom-code-execution-spec
+    (. x customCodeExecutionSpec))
+   (io.kosong.autovalue/optional-datafy-assoc
+    :llm-based-metric-spec
+    (. x llmBasedMetricSpec))
+   (io.kosong.autovalue/optional-datafy-assoc
+    :pointwise-metric-spec
+    (. x pointwiseMetricSpec))
+   (io.kosong.autovalue/optional-datafy-assoc
+    :predefined-metric-spec
+    (. x predefinedMetricSpec))
+   (io.kosong.autovalue/optional-datafy-assoc
+    :rouge-spec
+    (. x rougeSpec))
    (clojure.core/persistent!))))
 
 (clojure.core/defmethod
@@ -15811,6 +17860,9 @@
     [v (:learning-rate-multiplier data)]
     (. b learningRateMultiplier v))
    (clojure.core/when-some [v (:tuning-task data)] (. b tuningTask v))
+   (clojure.core/when-some
+    [v (:veo-data-mixture-ratio data)]
+    (. b veoDataMixtureRatio v))
    (.build b))))
 
 (clojure.core/extend-type
@@ -15829,6 +17881,9 @@
    (io.kosong.autovalue/optional-datafy-assoc
     :tuning-task
     (. x tuningTask))
+   (io.kosong.autovalue/optional-datafy-assoc
+    :veo-data-mixture-ratio
+    (. x veoDataMixtureRatio))
    (clojure.core/persistent!))))
 
 (clojure.core/defmethod
@@ -16190,6 +18245,33 @@
 
 (clojure.core/defmethod
  io.kosong.java/make-object
+ com.google.genai.types.VoiceActivity
+ [_cls data]
+ (clojure.core/cond
+  (clojure.core/instance? com.google.genai.types.VoiceActivity data)
+  data
+  (clojure.core/instance? clojure.lang.IPersistentMap data)
+  (clojure.core/let
+   [b (com.google.genai.types.VoiceActivity/builder)]
+   (clojure.core/when-some
+    [v (:voice-activity-type data)]
+    (. b voiceActivityType v))
+   (.build b))))
+
+(clojure.core/extend-type
+ com.google.genai.types.VoiceActivity
+ clojure.core.protocols/Datafiable
+ (clojure.datafy/datafy
+  [x]
+  (clojure.core/->
+   (clojure.core/transient {})
+   (io.kosong.autovalue/optional-datafy-assoc
+    :voice-activity-type
+    (. x voiceActivityType))
+   (clojure.core/persistent!))))
+
+(clojure.core/defmethod
+ io.kosong.java/make-object
  com.google.genai.types.VoiceActivityDetectionSignal
  [_cls data]
  (clojure.core/cond
@@ -16258,6 +18340,27 @@
    (io.kosong.autovalue/optional-datafy-assoc
     :replicated-voice-config
     (. x replicatedVoiceConfig))
+   (clojure.core/persistent!))))
+
+(clojure.core/defmethod
+ io.kosong.java/make-object
+ com.google.genai.types.WebSearch
+ [_cls data]
+ (clojure.core/cond
+  (clojure.core/instance? com.google.genai.types.WebSearch data)
+  data
+  (clojure.core/instance? clojure.lang.IPersistentMap data)
+  (clojure.core/let
+   [b (com.google.genai.types.WebSearch/builder)]
+   (.build b))))
+
+(clojure.core/extend-type
+ com.google.genai.types.WebSearch
+ clojure.core.protocols/Datafiable
+ (clojure.datafy/datafy
+  [x]
+  (clojure.core/->
+   (clojure.core/transient {})
    (clojure.core/persistent!))))
 
 (clojure.core/defmethod
