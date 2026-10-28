@@ -5,6 +5,7 @@
   and partial responses using a real LLM backend."
   (:require [clojure.test :refer [deftest is testing]]
             [io.kosong.adk.core :as adk]
+            [io.kosong.adk.integration.setup]
             [io.kosong.adk.sessions :as sessions]
             [clojure.core.async :as async]))
 

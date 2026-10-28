@@ -5,6 +5,7 @@
   org.clojure/clojure       {:mvn/version "1.12.3"}
   org.clojure/core.async    {:mvn/version "1.9.808-alpha1"}
   com.google.adk/google-adk {:mvn/version "1.0.0"}
+  com.google.adk/google-adk-langchain4j {:mvn/version "1.0.0"}
   dev.langchain4j/langchain4j-open-ai {:mvn/version "1.4.0"}}
 
  :aliases

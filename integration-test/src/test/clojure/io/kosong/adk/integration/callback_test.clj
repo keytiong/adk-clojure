@@ -1,7 +1,8 @@
 (ns io.kosong.adk.integration.callback-test
   "Integration tests for callback behavior with real LLM."
   (:require [clojure.test :refer [deftest is testing]]
-            [io.kosong.adk.core :as adk]))
+            [io.kosong.adk.core :as adk]
+            [io.kosong.adk.integration.setup]))
 
 (def callback-log (atom []))
 
@@ -52,7 +53,9 @@
   (let [context (-> (adk/agent-context :app-name "callback-test"
                                        :user-id "test-user")
                    (adk/with-new-session))]
-    (adk/run context agent message {})))
+    ;; adk/run is lazy; force the full run so callbacks actually fire before
+    ;; assertions inspect the log.
+    (doall (adk/run context agent message {}))))
 
 ;; ============================================================================
 ;; Test: before-agent callback
@@ -164,23 +167,23 @@
       (let [logged-callbacks (map :callback-name @callback-log)]
         (let [last-before-agent
               (or (last (keep-indexed
-                         #(when (= :before-agent %2) %1))
-                        logged-callbacks)
+                         #(when (= :before-agent %2) %1)
+                         logged-callbacks))
                   -1)
               last-before-model
               (or (last (keep-indexed
-                         #(when (= :before-model %2) %1))
-                        logged-callbacks)
+                         #(when (= :before-model %2) %1)
+                         logged-callbacks))
                   -1)
               last-after-model
               (or (last (keep-indexed
-                         #(when (= :after-model %2) %1))
-                        logged-callbacks)
+                         #(when (= :after-model %2) %1)
+                         logged-callbacks))
                   -1)
               last-after-agent
               (or (last (keep-indexed
-                         #(when (= :after-agent %2) %1))
-                        logged-callbacks)
+                         #(when (= :after-agent %2) %1)
+                         logged-callbacks))
                   -1)]
           (is (> last-before-agent -1) "before-agent fired")
           (is (> last-before-model -1) "before-model fired")
@@ -224,16 +227,21 @@
 (deftest multiple-callbacks
   (testing "multiple callbacks of the same type all fire"
     (reset-callback-log!)
+    ;; ADK semantics: a callback returning a non-nil response short-circuits
+    ;; the chain, so logging callbacks must return nil to let all fire.
     (let [agent (adk/llm-agent :name "multi-callback-test"
                               :model "ollama/qwen3:8b"
                               :instruction "Be concise."
                               :after-agent-callback
                               [(fn [ctx]
-                                 (log-callback! :after-agent-1 ctx))
+                                 (log-callback! :after-agent-1 ctx)
+                                 nil)
                                (fn [ctx]
-                                 (log-callback! :after-agent-2 ctx))
+                                 (log-callback! :after-agent-2 ctx)
+                                 nil)
                                (fn [ctx]
-                                 (log-callback! :after-agent-3 ctx))])]
+                                 (log-callback! :after-agent-3 ctx)
+                                 nil)])]
       (let [events (run-agent-with-log agent "Brief answer: yes.")]
         (is (some? events))
         (let [cb1-events (filter #(= :after-agent-1 (:callback-name %)) @callback-log)
@@ -259,7 +267,7 @@
           context (-> (adk/agent-context :app-name "callback-test"
                                         :user-id "test-user")
                       (adk/with-new-session {:test-key "test-value"}))]
-      (let [events (adk/run context agent "Test with state." {})]
+      (let [events (doall (adk/run context agent "Test with state." {}))]
         (is (some? events))
         (let [after-events
               (filter #(= :after-agent (:callback-name %)) @callback-log)]

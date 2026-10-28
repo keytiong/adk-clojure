@@ -5,6 +5,7 @@
   using a real LLM backend (Vertex AI primary, Ollama fallback)."
   (:require [clojure.test :refer [deftest is testing]]
             [io.kosong.adk.core :as adk]
+            [io.kosong.adk.integration.setup]
             [io.kosong.adk.sessions :as sessions]))
 
 (def test-app-name "adk-integration")

@@ -1,7 +1,8 @@
 (ns io.kosong.adk.integration.agent-test
   "Integration tests for agent execution with real LLM."
   (:require [clojure.test :refer [deftest is testing]]
-            [io.kosong.adk.core :as adk]))
+            [io.kosong.adk.core :as adk]
+            [io.kosong.adk.integration.setup]))
 
 (defn echo-tool
   [^{:schema {:title "message" :description "The message to echo back" :type "STRING"}}
@@ -49,14 +50,16 @@
                         :instruction "Do work."
                         :model "test-model")
           validation-agent (adk/base-agent
+                            :name "validation-checker"
                             :run-async-fn (fn [context]
                                             (if (= (:state context)
                                                    {:done true})
                                               {:actions {:escalate true}}
                                               {})))]
-      (let [loop-agent (adk/loop-agent
-                        :sub-agents [worker-agent validation-agent]
-                        :max-iterations 3)]
+          (let [loop-agent (adk/loop-agent
+                            :name "test-loop"
+                            :sub-agents [worker-agent validation-agent]
+                            :max-iterations 3)]
         (is (some? loop-agent))))))
 
 ;; Test: Sequential agent flow
