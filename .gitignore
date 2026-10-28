@@ -15,3 +15,5 @@ target/
 .cpcache/
 .idea/
 .clj-kondo/
+.lsp/
+.omp/
