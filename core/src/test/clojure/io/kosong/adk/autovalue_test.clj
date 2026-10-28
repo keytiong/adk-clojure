@@ -4,7 +4,7 @@
   (:require
    [clojure.datafy :refer [datafy]]
    [clojure.test :refer [deftest testing is]]
-   [io.kosong.adk.generated-types]
+   [io.kosong.genai.types]
    [io.kosong.autovalue :as autovalue]
    [io.kosong.java]))
 

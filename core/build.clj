@@ -40,7 +40,8 @@
 
 (defn generate-types
   "Generate static Clojure source for AutoValue types in com.google.genai.types.
-  The generated file (generated_types.clj) is committed to the repository.
+  The generated file (src/generated/clojure/io/kosong/genai/types.clj,
+  namespace io.kosong.genai.types) is committed to the repository.
   Re-run this task when the google-genai dependency version changes in deps.edn.
   Run with: clojure -T:build generate-types"
   [_]
@@ -55,6 +56,6 @@
                                           (require 'io.kosong.autovalue)
                                           (io.kosong.autovalue/generate-source-file
                                            "com.google.genai.types"
-                                           'io.kosong.adk.generated-types
-                                           "src/generated/clojure/io/kosong/adk/generated_types.clj")))]})]
+                                           'io.kosong.genai.types
+                                           "src/generated/clojure/io/kosong/genai/types.clj")))]})]
     (b/process cmd)))

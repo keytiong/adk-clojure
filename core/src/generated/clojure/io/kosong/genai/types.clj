@@ -1,5 +1,5 @@
 (ns
- io.kosong.adk.generated-types
+ io.kosong.genai.types
  (:require
   [io.kosong.autovalue :refer [optional-datafy-assoc]]
   [io.kosong.java]))

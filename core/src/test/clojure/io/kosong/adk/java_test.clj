@@ -3,7 +3,7 @@
   `io.kosong.java/make-object-able?`."
   (:require
    [clojure.test :refer [deftest testing is]]
-   [io.kosong.adk.generated-types] ;; registers all defmethods for GenAI types
+   [io.kosong.genai.types] ;; registers all defmethods for GenAI types
    [io.kosong.java :as java]))
 
 ;; ---------------------------------------------------------------------------

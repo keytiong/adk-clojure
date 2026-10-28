@@ -434,7 +434,7 @@ Common pattern in `dev/system.clj`: Register OpenAI-compatible endpoints (Ollama
 - `artifacts.clj` - Artifact service wrapper (in-memory)
 - `runner.clj` - Live request queue bridge for run-live streaming
 - `utils.clj` - Helper functions (`optional-datafy-assoc` for handling Java Optional/List/Set/Map)
-- `core/src/generated/clojure/io/kosong/adk/generated_types.clj` - Auto-generated Clojure source for Google GenAI AutoValue types (tracked in git; regenerate with `clojure -T:build generate-types`, never hand-edit)
+- `core/src/generated/clojure/io/kosong/genai/types.clj` - Auto-generated Clojure source (ns `io.kosong.genai.types`) for Google GenAI AutoValue types (tracked in git; regenerate with `clojure -T:build generate-types`, never hand-edit)
 
 **core/src/main/clojure/io/kosong/**:
 - `java.clj` - `make-object` multi-method for creating Java instances from Clojure maps
@@ -465,9 +465,9 @@ Common pattern in `dev/system.clj`: Register OpenAI-compatible endpoints (Ollama
 - **Enum support:** String enum values (e.g., `"BLOCK_ONLY_HIGH"`) are resolved to Java enum constants
 - **Optional fields:** Missing keys are simply omitted (builder defaults apply)
 
-Implemented methods are auto-generated in `core/src/generated/clojure/io/kosong/adk/generated_types.clj` for all `com.google.genai.types.*` AutoValue classes (separate source root; regenerate with `clojure -T:build generate-types`). Check availability with `(io.kosong.java/make-object-able? SomeClass)`.
+Implemented methods are auto-generated in `core/src/generated/clojure/io/kosong/genai/types.clj` (ns `io.kosong.genai.types`) for all `com.google.genai.types.*` AutoValue classes (separate source root; regenerate with `clojure -T:build generate-types`). Check availability with `(io.kosong.java/make-object-able? SomeClass)`.
 
-**Bidirectional pattern:** `make-object` (map → Java) pairs with `datafy` (Java → map), so you can round-trip GenAI objects freely. Together with `generated_types.clj`, this covers all `com.google.genai.types.*` types.
+**Bidirectional pattern:** `make-object` (map → Java) pairs with `datafy` (Java → map), so you can round-trip GenAI objects freely. Together with the generated `io.kosong.genai.types` namespace, this covers all `com.google.genai.types.*` types.
 
 **dev/src/main/clojure/io/kosong/adk/web/**:
 - `web.clj` - Integrant system configuration and lifecycle

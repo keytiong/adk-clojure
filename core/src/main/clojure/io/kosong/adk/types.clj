@@ -1,2 +1,2 @@
 (ns io.kosong.adk.types
-  (:require [io.kosong.adk.generated-types]))
+  (:require [io.kosong.genai.types]))

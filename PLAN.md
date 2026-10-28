@@ -175,7 +175,7 @@ v1.0.0 is the first stable release with significant architectural changes. Upgra
 #### A.8.3 `close()` method
 - [ ] Optionally add `close()` override if ClojureAgent has resources to clean up
 
-### A.9 Regenerate `generated_types.clj` (Estimate: 1 day)
+### A.9 Regenerate `io.kosong.genai.types` (`core/src/generated/clojure/io/kosong/genai/types.clj`) (Estimate: 1 day)
 
 - [ ] Run `cd core && clojure -T:build generate-types`
 - [ ] Review generated file for any breaking changes in datafy/make-object
@@ -326,7 +326,7 @@ v1.2.0 adds ChatCompletion support and more analytics. The delta from 1.0.0 is s
 - [x] Verify `optional-type?` works for classes with @Nullable fields
 - [ ] Register new autovalue types: `EventsCompactionConfig`, `ContextCacheConfig`, `SessionKey`
 
-### `core/src/main/clojure/io/kosong/adk/generated_types.clj`
+### `core/src/generated/clojure/io/kosong/genai/types.clj` (ns `io.kosong.genai.types`)
 - [ ] Regenerate via `clojure -T:build generate-types`
 
 ### `core/src/main/java/io/kosong/adk/agents/ClojureAgent.java`
@@ -366,7 +366,7 @@ v1.2.0 adds ChatCompletion support and more analytics. The delta from 1.0.0 is s
 2. **Phase 1**: Update deps.edn only, commit as WIP
 3. **Phase 2**: Fix compile errors (State, LlmAgent, InvocationContext)
 4. **Phase 3**: Add new callback protocols
-5. **Phase 4**: Regenerate generated_types.clj
+5. **Phase 4**: Regenerate `io.kosong.genai.types` generated source
 6. **Phase 5**: Update examples and tests
 7. **Phase 6**: Integration testing
 8. **Tag** after successful v1.0.0 upgrade: `git tag v1.0.0-based`
