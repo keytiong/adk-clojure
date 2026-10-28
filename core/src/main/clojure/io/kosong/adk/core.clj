@@ -4,7 +4,7 @@
             [io.kosong.adk.protocols :as p]
             [clojure.tools.logging :as log]
             [io.kosong.java])
-  (:import (com.google.adk.agents Instruction LlmAgent LoopAgent RunConfig RunConfig$StreamingMode SequentialAgent)
+  (:import (com.google.adk.agents Instruction LlmAgent LoopAgent RunConfig RunConfig$StreamingMode SequentialAgent LlmAgent$Builder)
            (com.google.adk.plugins Plugin)
            (com.google.adk.runner Runner)
            (com.google.adk.sessions Session)
@@ -114,17 +114,16 @@
 (defn llm-agent
   [& {:keys [name description model
              instruction global-instruction
-             sub-agents tools generate-content-config
-             example-provider include-contents
-             planning disallow-transfer-to-parent disallow-transfer-to-peers
+             sub-agents tools generate-content-config include-contents
+             planning max-steps disallow-transfer-to-parent disallow-transfer-to-peers
              before-agent-callback after-agent-callback
-             before-model-callback after-model-callback
-             before-tool-callback after-tool-callback
+             before-model-callback after-model-callback model-error-callback
+             before-tool-callback after-tool-callback tool-error-callback
              input-schema output-schema
-             executor output-key]}]
-  (let [b (-> (LlmAgent/builder)
-              (.name name)
-              (.description description))]
+             executor output-key code-executor]}]
+  (let [^LlmAgent$Builder b (-> (LlmAgent/builder)
+                                (.name name)
+                                (.description description))]
     (when (some? model)
       (.model b model))
     (when (some? instruction)
@@ -138,16 +137,25 @@
       (.tools b ^List (mapv p/into-tool tools)))
     (when (some? generate-content-config)
       (.generateContentConfig b (io.kosong.java/make-object GenerateContentConfig generate-content-config)))
-    (when (some? example-provider)
-      (.exampleProvider b example-provider))
     (when (some? include-contents)
       (.includeContents b include-contents))
     (when (some? planning)
       (.planning b planning))
+    (when (some? max-steps)
+      (.maxSteps b (int max-steps)))
     (when (some? disallow-transfer-to-parent)
       (.disallowTransferToParent b disallow-transfer-to-parent))
     (when (some? disallow-transfer-to-peers)
       (.disallowTransferToPeers b disallow-transfer-to-peers))
+    (when (some? before-model-callback)
+      (let [before-model-callback (if (coll? before-model-callback) before-model-callback [before-model-callback])]
+        (.beforeModelCallback b ^List (mapv p/into-before-model-callback before-model-callback))))
+    (when (some? after-model-callback)
+      (let [after-model-callback (if (coll? after-model-callback) after-model-callback [after-model-callback])]
+        (.afterModelCallback b ^List (mapv p/into-after-model-callback after-model-callback))))
+    (when (some? model-error-callback)
+      (let [model-error-callback (if (coll? model-error-callback) model-error-callback [model-error-callback])]
+        (.onModelErrorCallback b ^List (mapv p/into-model-error-callback model-error-callback))))
     (when (some? before-agent-callback)
       (let [before-agent-callback (if (coll? before-agent-callback) before-agent-callback [before-agent-callback])]
         (.beforeAgentCallback b ^List (mapv p/into-before-agent-callback before-agent-callback))))
@@ -166,6 +174,9 @@
     (when (some? after-tool-callback)
       (let [after-tool-callback (if (coll? after-tool-callback) after-tool-callback [after-tool-callback])]
         (.afterToolCallback b ^List (mapv p/into-after-tool-callback after-tool-callback))))
+    (when (some? tool-error-callback)
+      (let [tool-error-callback (if (coll? tool-error-callback) tool-error-callback [tool-error-callback])]
+        (.onToolErrorCallback b ^List (mapv p/into-tool-error-callback tool-error-callback))))
     (when (some? input-schema)
       (.inputSchema b (io.kosong.java/make-object Schema input-schema)))
     (when (some? output-schema)
@@ -174,6 +185,8 @@
       (.executor b executor))
     (when (some? output-key)
       (.outputKey b output-key))
+    (when (some? code-executor)
+      (.codeExecutor b code-executor))
     (.build b)))
 
 (defn loop-agent

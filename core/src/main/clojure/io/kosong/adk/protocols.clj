@@ -16,6 +16,9 @@
 (defprotocol IntoAfterModelCallback
   (into-after-model-callback [x]))
 
+(defprotocol IntoModelErrorCallback
+  (into-model-error-callback [x]))
+
 (defprotocol IntoBeforeAgentCallback
   (into-before-agent-callback [x]))
 
@@ -27,6 +30,9 @@
 
 (defprotocol IntoAfterToolCallback
   (into-after-tool-callback [x]))
+
+(defprotocol IntoToolErrorCallback
+  (into-tool-error-callback [x]))
 
 (defprotocol IntoInstruction
   (into-instruction [x]))

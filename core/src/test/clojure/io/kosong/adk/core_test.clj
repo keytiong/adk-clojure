@@ -114,3 +114,25 @@
                    (adk/with-session ctx "does-not-exist"))))))
 
 
+(comment,
+
+  (require '[io.kosong.adk.core])
+  (require '[io.kosong.adk.models.mock-llm])
+
+  (let [mock-llm (io.kosong.adk.models.mock-llm/make-mock-llm
+                   (fn [_]
+                     {:content {:role "model"
+                                :parts [{:text "pong"}]}
+                      :turn-complete true}))
+        agent (io.kosong.adk.core/llm-agent
+                :name "test"
+                :model mock-llm)
+        context (io.kosong.adk.core/agent-context)]
+
+    (io.kosong.adk.core/run context agent
+                            {:role "user"
+                             :parts [{:text "ping"}]}))
+
+
+
+  )

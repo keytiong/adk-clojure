@@ -27,14 +27,11 @@
   ([^BaseSessionService session-service app-name user-id state]
    (create-session session-service app-name user-id state nil))
   ([^BaseSessionService session-service app-name user-id state session-id]
-   (let [state          (or state {})
-         state          (clojure.walk/stringify-keys state)
-         concurrent-map (if (some? state)
-                          (ConcurrentHashMap. ^Map state)
-                          (ConcurrentHashMap.))
+   (let [state          (-> (or state {})
+                            (clojure.walk/stringify-keys))
          session-id     (or session-id (str (random-uuid)))]
      (-> session-service
-         (.createSession app-name user-id concurrent-map session-id)
+         (.createSession app-name user-id state session-id)
          (.blockingGet)))))
 
 (defn get-session

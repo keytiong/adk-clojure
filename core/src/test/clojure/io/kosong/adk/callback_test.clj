@@ -34,11 +34,11 @@
     (mock-llm/clear-llm-requests!)
     (mock-llm/register-mock-llm! "mock-cb/.*" "Mock response")
     (let [agent (adk/llm-agent
-                 :name "test-agent"
-                 :model "mock-cb/test"
-                 :after-agent-callback (fn [_]
-                                         (swap! callback-log conj :after-agent)
-                                         nil))]
+                  :name "test-agent"
+                  :model "mock-cb/test"
+                  :after-agent-callback (fn [_]
+                                          (swap! callback-log conj :after-agent)
+                                          nil))]
       (dorun (adk/run (make-context {}) agent user-message {}))
       (is (= [:after-agent] @callback-log)))))
 
@@ -48,11 +48,11 @@
     (mock-llm/clear-llm-requests!)
     (mock-llm/register-mock-llm! "mock-cb/.*" "Mock response")
     (let [agent (adk/llm-agent
-                 :name "context-test-agent"
-                 :model "mock-cb/test"
-                 :after-agent-callback (fn [ctx]
-                                         (swap! callback-log conj ctx)
-                                         nil))]
+                  :name "context-test-agent"
+                  :model "mock-cb/test"
+                  :after-agent-callback (fn [ctx]
+                                          (swap! callback-log conj ctx)
+                                          nil))]
       (dorun (adk/run (make-context {}) agent user-message {}))
       (let [ctx (first @callback-log)]
         (is (= "context-test-agent" (:agent-name ctx)))))))
@@ -62,12 +62,12 @@
     (clear-log!)
     (mock-llm/clear-llm-requests!)
     (mock-llm/register-mock-llm! "mock-cb/.*" "Mock response")
-    (let [agent (adk/llm-agent
-                 :name "state-test"
-                 :model "mock-cb/test"
-                 :after-agent-callback (fn [ctx]
-                                         (swap! callback-log conj ctx)
-                                         nil))
+    (let [agent   (adk/llm-agent
+                    :name "state-test"
+                    :model "mock-cb/test"
+                    :after-agent-callback (fn [ctx]
+                                            (swap! callback-log conj ctx)
+                                            nil))
           context (make-context {"test-key" "test-value"})]
       (dorun (adk/run context agent user-message {}))
       (let [ctx (first @callback-log)]
@@ -79,17 +79,17 @@
     (mock-llm/clear-llm-requests!)
     (mock-llm/register-mock-llm! "mock-cb/.*" "Mock response")
     (let [agent (adk/llm-agent
-                 :name "multi-callback-test"
-                 :model "mock-cb/test"
-                 :after-agent-callback [(fn [_]
-                                          (swap! callback-log conj :after-agent-1)
-                                          nil)
-                                        (fn [_]
-                                          (swap! callback-log conj :after-agent-2)
-                                          nil)
-                                        (fn [_]
-                                          (swap! callback-log conj :after-agent-3)
-                                          nil)])]
+                  :name "multi-callback-test"
+                  :model "mock-cb/test"
+                  :after-agent-callback [(fn [_]
+                                           (swap! callback-log conj :after-agent-1)
+                                           nil)
+                                         (fn [_]
+                                           (swap! callback-log conj :after-agent-2)
+                                           nil)
+                                         (fn [_]
+                                           (swap! callback-log conj :after-agent-3)
+                                           nil)])]
       (dorun (adk/run (make-context {}) agent user-message {}))
       (is (= [:after-agent-1 :after-agent-2 :after-agent-3]
              @callback-log)))))
@@ -103,13 +103,19 @@
     (clear-log!)
     (mock-llm/clear-llm-requests!)
     (mock-llm/register-mock-llm! "mock-ba/.*" "Mock response")
-    (let [agent (adk/llm-agent
-                 :name "before-agent-test"
-                 :model "mock-ba/test"
-                 :before-agent-callback (fn [ctx]
-                                          (swap! callback-log conj ctx)
-                                          nil))]
-      (dorun (adk/run (make-context {}) agent user-message {}))
+    (let [agent   (adk/llm-agent
+                    :name "before-agent-test"
+                    ;;:model "mock-ba/test"
+                    :model (mock-llm/make-mock-llm mock-llm/echo-message)
+                    :before-agent-callback (fn [ctx]
+                                             (swap! callback-log conj ctx)
+                                             nil))
+          context (make-context {})]
+      (let [events (adk/run context agent
+                            {:role  "user"
+                             :parts [{:text "hello"}]})]
+        (println events)
+        )
       (let [ctx (first @callback-log)]
         (is (map? ctx) "context is a datafied map")
         (is (= "before-agent-test" (:agent-name ctx)))))))
@@ -124,11 +130,11 @@
     (mock-llm/clear-llm-requests!)
     (mock-llm/register-mock-llm! "mock-ba-sup/.*" "Mock response")
     (let [agent (adk/llm-agent
-                 :name "suppress-agent"
-                 :model "mock-ba-sup/test"
-                 :before-agent-callback (fn [_]
-                                          (swap! callback-log conj :before-agent)
-                                          nil))]
+                  :name "suppress-agent"
+                  :model "mock-ba-sup/test"
+                  :before-agent-callback (fn [_]
+                                           (swap! callback-log conj :before-agent)
+                                           nil))]
       (dorun (adk/run (make-context {}) agent user-message {}))
       ;; before-agent callback was registered and called
       (is (contains? (set @callback-log) :before-agent)
@@ -144,11 +150,11 @@
     (mock-llm/clear-llm-requests!)
     (mock-llm/register-mock-llm! "mock-bm/.*" "Mock response")
     (let [agent (adk/llm-agent
-                 :name "before-model-test"
-                 :model "mock-bm/test"
-                 :before-model-callback (fn [ctx _req-builder]
-                                          (swap! callback-log conj :before-model ctx)
-                                          nil))]
+                  :name "before-model-test"
+                  :model "mock-bm/test"
+                  :before-model-callback (fn [ctx _req-builder]
+                                           (swap! callback-log conj :before-model ctx)
+                                           nil))]
       ;; Agent should be created without error
       (is (some? agent) "agent created with before-model callback"))))
 
@@ -162,13 +168,13 @@
     (mock-llm/clear-llm-requests!)
     (mock-llm/register-mock-llm! "mock-bm-sc/.*" "Mock response")
     (let [agent (adk/llm-agent
-                 :name "short-circuit-test"
-                 :model "mock-bm-sc/test"
-                 :before-model-callback (fn [_ _]
-                                          (swap! callback-log conj :before-model)
-                                          ;; Return an LlmResponse map to short-circuit
-                                          {:content {:role "model" :parts [{:text "short-circuited"}]}
-                                           :turn-complete true}))]
+                  :name "short-circuit-test"
+                  :model "mock-bm-sc/test"
+                  :before-model-callback (fn [_ _]
+                                           (swap! callback-log conj :before-model)
+                                           ;; Return an LlmResponse map to short-circuit
+                                           {:content       {:role "model" :parts [{:text "short-circuited"}]}
+                                            :turn-complete true}))]
       ;; Agent should be created without error
       (is (some? agent) "agent created with before-model callback returning response"))))
 
@@ -180,12 +186,12 @@
   (testing "after-model and after-agent callbacks fire in order"
     (mock-llm/register-mock-llm! "mock-am/.*" "Mock response")
     (mock-llm/clear-llm-requests!)
-    (let [log (atom [])
+    (let [log   (atom [])
           agent (adk/llm-agent
-                 :name "am-test-agent"
-                 :model "mock-am/test"
-                 :after-model-callback (fn [_ resp] (swap! log conj :am) resp)
-                 :after-agent-callback (fn [_] (swap! log conj :aa) nil))]
+                  :name "am-test-agent"
+                  :model "mock-am/test"
+                  :after-model-callback (fn [_ resp] (swap! log conj :am) resp)
+                  :after-agent-callback (fn [_] (swap! log conj :aa) nil))]
       (dorun (adk/run (make-context {}) agent user-message {}))
       (is (= [:am :aa] @log)
           "after-model should fire before after-agent"))))
@@ -194,12 +200,12 @@
   (testing "after-model returning nil suppresses after-agent"
     (mock-llm/register-mock-llm! "mock-am-sup/.*" "Mock response")
     (mock-llm/clear-llm-requests!)
-    (let [log (atom [])
+    (let [log   (atom [])
           agent (adk/llm-agent
-                 :name "suppress-test"
-                 :model "mock-am-sup/test"
-                 :after-model-callback (fn [_ resp] (swap! log conj :am) nil)
-                 :after-agent-callback (fn [_] (swap! log conj :aa) nil))]
+                  :name "suppress-test"
+                  :model "mock-am-sup/test"
+                  :after-model-callback (fn [_ resp] (swap! log conj :am) nil)
+                  :after-agent-callback (fn [_] (swap! log conj :aa) nil))]
       (dorun (adk/run (make-context {}) agent user-message {}))
       (is (contains? (set @log) :am)
           "after-model should fire, regardless of after-agent"))))
@@ -208,16 +214,16 @@
   (testing "after-model returning modified response propagates through"
     (mock-llm/register-mock-llm! "mock-am-mod/.*" "Mock response")
     (mock-llm/clear-llm-requests!)
-    (let [log (atom [])
+    (let [log   (atom [])
           agent (adk/llm-agent
-                 :name "modify-test"
-                 :model "mock-am-mod/test"
-                 :after-model-callback (fn [_ resp]
-                                         (swap! log conj :am)
-                                         resp)
-                 :after-agent-callback (fn [_]
-                                         (swap! log conj :aa)
-                                         nil))]
+                  :name "modify-test"
+                  :model "mock-am-mod/test"
+                  :after-model-callback (fn [_ resp]
+                                          (swap! log conj :am)
+                                          resp)
+                  :after-agent-callback (fn [_]
+                                          (swap! log conj :aa)
+                                          nil))]
       (dorun (adk/run (make-context {}) agent user-message {}))
       (is (= [:am :aa] @log)
           "after-model returning response allows after-agent to fire"))))
@@ -226,12 +232,12 @@
   (testing "throwing after-agent callback does not crash the run"
     (mock-llm/register-mock-llm! "mock-am-err/.*" "Mock response")
     (mock-llm/clear-llm-requests!)
-    (let [log (atom [])
+    (let [log   (atom [])
           agent (adk/llm-agent
-                 :name "error-test"
-                 :model "mock-am-err/test"
-                 :after-model-callback (fn [_ resp] (swap! log conj :am) resp)
-                 :after-agent-callback (fn [_] (throw (ex-info "Callback error" {}))))]
+                  :name "error-test"
+                  :model "mock-am-err/test"
+                  :after-model-callback (fn [_ resp] (swap! log conj :am) resp)
+                  :after-agent-callback (fn [_] (throw (ex-info "Callback error" {}))))]
       (try
         (dorun (adk/run (make-context {}) agent user-message {}))
         (catch Throwable _e
@@ -259,16 +265,16 @@
     (mock-llm/register-mock-llm-with-call! "mock-bt/.*" "bt-echo-tool" {"message" "hello"})
 
     (let [agent (adk/llm-agent
-                 :name "before-tool-test"
-                 :model "mock-bt/test"
-                 :tools [#'bt-echo-tool]
-                 :before-tool-callback (fn [ctx tool input tool-ctx]
-                                         (swap! callback-log conj
-                                                {:bt-ctx ctx
-                                                 :bt-tool tool
-                                                 :bt-input input
-                                                 :bt-tool-ctx tool-ctx})
-                                         nil))]
+                  :name "before-tool-test"
+                  :model "mock-bt/test"
+                  :tools [#'bt-echo-tool]
+                  :before-tool-callback (fn [ctx tool input tool-ctx]
+                                          (swap! callback-log conj
+                                                 {:bt-ctx      ctx
+                                                  :bt-tool     tool
+                                                  :bt-input    input
+                                                  :bt-tool-ctx tool-ctx})
+                                          nil))]
       (dorun (adk/run (make-context {}) agent user-message {}))
 
       ;; Verify the before-tool callback actually fired
@@ -300,17 +306,17 @@
     (mock-llm/register-mock-llm-with-call! "mock-at/.*" "at-echo-tool" {"message" "world"})
 
     (let [agent (adk/llm-agent
-                 :name "after-tool-test"
-                 :model "mock-at/test"
-                 :tools [#'at-echo-tool]
-                 :after-tool-callback (fn [ctx tool input tool-ctx response]
-                                        (swap! callback-log conj
-                                               {:at-ctx ctx
-                                                :at-tool tool
-                                                :at-input input
-                                                :at-tool-ctx tool-ctx
-                                                :at-response response})
-                                        nil))]
+                  :name "after-tool-test"
+                  :model "mock-at/test"
+                  :tools [#'at-echo-tool]
+                  :after-tool-callback (fn [ctx tool input tool-ctx response]
+                                         (swap! callback-log conj
+                                                {:at-ctx      ctx
+                                                 :at-tool     tool
+                                                 :at-input    input
+                                                 :at-tool-ctx tool-ctx
+                                                 :at-response response})
+                                         nil))]
       (dorun (adk/run (make-context {}) agent user-message {}))
 
       ;; Verify the after-tool callback actually fired
@@ -344,21 +350,21 @@
     (mock-llm/register-mock-llm-with-call! "mock-multi-tool/.*" "multi-tool-callback-tool" {"x" "v"})
 
     (let [agent (adk/llm-agent
-                 :name "multi-tool-callback-test"
-                 :model "mock-multi-tool/test"
-                 :tools [#'multi-tool-callback-tool]
-                 :before-tool-callback [(fn [& _]
-                                          (swap! callback-log conj :bt-1)
+                  :name "multi-tool-callback-test"
+                  :model "mock-multi-tool/test"
+                  :tools [#'multi-tool-callback-tool]
+                  :before-tool-callback [(fn [& _]
+                                           (swap! callback-log conj :bt-1)
+                                           nil)
+                                         (fn [& _]
+                                           (swap! callback-log conj :bt-2)
+                                           nil)]
+                  :after-tool-callback [(fn [& _]
+                                          (swap! callback-log conj :at-1)
                                           nil)
                                         (fn [& _]
-                                          (swap! callback-log conj :bt-2)
-                                          nil)]
-                 :after-tool-callback [(fn [& _]
-                                         (swap! callback-log conj :at-1)
-                                         nil)
-                                       (fn [& _]
-                                         (swap! callback-log conj :at-2)
-                                         nil)])]
+                                          (swap! callback-log conj :at-2)
+                                          nil)])]
       (dorun (adk/run (make-context {}) agent user-message {}))
 
       ;; Verify all callbacks fired in order: before-tool 1, before-tool 2, after-tool 1, after-tool 2
@@ -374,9 +380,9 @@
     (mock-llm/register-mock-llm! "mock-instr/.*" "Mock response")
     (mock-llm/clear-llm-requests!)
     (let [agent (adk/llm-agent
-                 :name "string-instruction"
-                 :model "mock-instr/test"
-                 :instruction "You are a helpful assistant.")]
+                  :name "string-instruction"
+                  :model "mock-instr/test"
+                  :instruction "You are a helpful assistant.")]
       (dorun (adk/run (make-context {}) agent user-message {}))
       ;; If it ran without error, the instruction was accepted
       (is (= 1 (mock-llm/request-count))
@@ -391,11 +397,11 @@
     (mock-llm/register-mock-llm! "mock-ifn-instr/.*" "Mock response")
     (mock-llm/clear-llm-requests!)
     (let [agent (adk/llm-agent
-                 :name "ifn-instruction"
-                 :model "mock-ifn-instr/test"
-                 :instruction (fn [ctx]
-                                (swap! callback-log conj :instruction-fn ctx)
-                                "Dynamic instruction from fn."))]
+                  :name "ifn-instruction"
+                  :model "mock-ifn-instr/test"
+                  :instruction (fn [ctx]
+                                 (swap! callback-log conj :instruction-fn ctx)
+                                 "Dynamic instruction from fn."))]
       (dorun (adk/run (make-context {}) agent user-message {}))
       ;; The fn instruction should have been called with a datafied context
       (let [ctx (second @callback-log)]

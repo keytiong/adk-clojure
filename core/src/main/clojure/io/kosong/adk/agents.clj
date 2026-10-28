@@ -13,6 +13,7 @@
             RunConfig RunConfig$Builder RunConfig$StreamingMode RunConfig$ToolExecutionMode)
            (com.google.adk.models LlmRequest$Builder LlmResponse)
            (com.google.adk.tools BaseTool ToolContext)
+           (io.kosong.adk.agents ClojureToolCallback)
            (com.google.genai.types AudioTranscriptionConfig Content Modality)
            (io.reactivex.rxjava3.core Maybe Single)
            (java.util Map)))
@@ -154,21 +155,7 @@
 (extend-protocol p/IntoAfterToolCallback
   IFn
   (into-after-tool-callback [f]
-    (reify Callbacks$AfterToolCallback
-      (^Maybe call [_ ^InvocationContext invocation-context
-                    ^BaseTool tool
-                    ^Map input
-                    ^ToolContext tool-context
-                    ^Object response]
-        (try
-          (let [invocation-context-m (datafy invocation-context)
-                tool-context-m       (datafy tool-context)
-                r                    (f invocation-context-m tool input tool-context-m response)]
-            (if r
-              (Maybe/just (clojure.walk/stringify-keys r))
-              (Maybe/empty)))
-          (catch Throwable t
-            (Maybe/error ^Throwable t)))))))
+    (ClojureToolCallback/createAfterToolCallback f)))
 
 (extend-protocol p/IntoAfterToolCallback
   Callbacks$AfterToolCallbackBase

@@ -23,5 +23,8 @@
     (instance? Map v)
     (assoc m k (PersistentArrayMap/create v))
 
+    (satisfies? clojure.core.protocols/Datafiable v)
+    (assoc m k (datafy v))
+
     :else
-    (assoc m k (datafy v))))
+    (assoc m k v)))

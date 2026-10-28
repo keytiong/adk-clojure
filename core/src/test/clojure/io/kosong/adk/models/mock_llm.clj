@@ -36,7 +36,7 @@
 ;; Response construction
 ;; =============================================================================
 
-(defn- ->part [p]
+(defn- ->Part [p]
   "Convert a Clojure map or existing Part into a Part object."
   (cond
     (instance? Part p)
@@ -45,10 +45,10 @@
     (map? p)
     (cond
       (:function-call p)
-      (let [fc (:function-call p)
-            name (if (instance? FunctionCall fc)
-                   (.getName ^FunctionCall fc)
-                   (name fc))
+      (let [fc       (:function-call p)
+            name     (if (instance? FunctionCall fc)
+                       (.getName ^FunctionCall fc)
+                       (name fc))
             args-map (or (:args p) {})
             args-j   (reduce (fn [m [k v]] (.put m (name k) (str v)) m)
                              (java.util.HashMap.) args-map)]
@@ -63,7 +63,7 @@
     :else
     (Part/fromText (str p))))
 
-(defn- ->content [data]
+(defn- ->Content [data]
   "Convert a Clojure map or string into a Content object."
   (cond
     (string? data)
@@ -74,7 +74,7 @@
 
     (map? data)
     (let [parts (->> (or (:parts data) [])
-                     (mapv ->part))]
+                     (mapv ->Part))]
       (-> (Content/builder)
           (.role (or (:role data) "model"))
           (.parts (into-array Part parts))
@@ -89,12 +89,12 @@
         (.parts (into-array Part [(Part/fromText (str data))]))
         (.build))))
 
-(defn- ->llm-response [data]
+(defn- ->LlmResponse [data]
   "Convert a Clojure map or string into an LlmResponse object."
   (cond
     (string? data)
     (-> (LlmResponse/builder)
-        (.content (->content data))
+        (.content (->Content data))
         (.turnComplete true)
         (.build))
 
@@ -102,10 +102,10 @@
     (if (:content data)
       (io.kosong.java/make-object LlmResponse
                                   (cond-> data
-                                    (not (:turn-complete data))
-                                    (assoc :turn-complete true)))
+                                          (not (:turn-complete data))
+                                          (assoc :turn-complete true)))
       (-> (LlmResponse/builder)
-          (.content (->content data))
+          (.content (->Content data))
           (.turnComplete true)
           (.build)))
 
@@ -114,7 +114,7 @@
 
     :else
     (-> (LlmResponse/builder)
-        (.content (->content data))
+        (.content (->Content data))
         (.turnComplete true)
         (.build))))
 
@@ -137,10 +137,36 @@
        (generateContent [^LlmRequest request ^Boolean _streaming]
          (swap! *llm-requests* conj (datafy request))
          (let [raw-response (response-fn)
-               response     (->llm-response raw-response)]
+               response     (->LlmResponse raw-response)]
            (Flowable/just response)))
        (connect [_request]
          (throw (java.lang.UnsupportedOperationException. "Live connections not supported by mock LLM")))))))
+
+(defn make-mock-llm
+  "Create a BaseLlm proxy where generate-content-fn receives the datafied LlmRequest map.\n\n  Use this when you need to inspect the request before responding (e.g. echo tests).\n  For simple fixed responses, use `mock-llm` instead."
+  ([generate-content-fn] (make-mock-llm generate-content-fn "mock-model"))
+  ([generate-content-fn model-name]
+   (proxy [BaseLlm] [model-name]
+     (generateContent [^LlmRequest request ^Boolean _streaming]
+       (swap! *llm-requests* conj (datafy request))
+       (let [request-data  (datafy request)
+             response-data (generate-content-fn request-data)
+             response      (if response-data
+                             (Flowable/just (io.kosong.java/make-object LlmResponse response-data))
+                             (Flowable/empty))]
+         response))
+     (connect [_request]
+       (throw (java.lang.UnsupportedOperationException. "Live connections not supported by mock LLM"))))))
+
+
+(defn echo-message [llm-request]
+  "Echo back the text from the request as an LlmResponse map."
+  (let [content          (last (get-in llm-request [:contents]))
+        parts            (get-in content [:parts])
+        request-message  (clojure.string/join " " (map :text parts))
+        response-message (str "Echo: " request-message)]
+    {:content       {:role "model" :parts [{:text response-message}]}
+     :turn-complete true}))
 
 ;; =============================================================================
 ;; Registration helpers
@@ -151,17 +177,17 @@
   ([pattern] (register-mock-llm! pattern mock-llm-response-fn))
   ([pattern response-fn]
    (models/register-llm-factory!
-    pattern
-    (fn [model-name]
-      (mock-llm response-fn model-name)))))
+     pattern
+     (fn [model-name]
+       (mock-llm response-fn model-name)))))
 
 (defn- function-call-response
   "Build an LlmResponse with a single function call."
   ([tool-name] (function-call-response tool-name {}))
   ([tool-name args]
-   (let [args-j (reduce (fn [m [k v]] (.put m (name k) (str v)) m)
-                        (java.util.HashMap.) args)
-         part   (Part/fromFunctionCall tool-name args-j)
+   (let [args-j  (reduce (fn [m [k v]] (.put m (name k) (str v)) m)
+                         (java.util.HashMap.) args)
+         part    (Part/fromFunctionCall tool-name args-j)
          content (-> (Content/builder)
                      (.role "model")
                      (.parts (into-array Part [part]))
@@ -197,19 +223,19 @@
   ([pattern tool-name] (register-mock-llm-with-call! pattern tool-name {}))
   ([pattern tool-name args]
    (models/register-llm-factory!
-    pattern
-    (let [^java.util.concurrent.atomic.AtomicBoolean called?
-          (java.util.concurrent.atomic.AtomicBoolean. false)]
-      (fn [model-name]
-        (proxy [BaseLlm] [model-name]
-          (generateContent [^LlmRequest request ^Boolean _streaming]
-            (swap! *llm-requests* conj (datafy request))
-            (if (.getAndSet called? true)
-              (Flowable/just (text-response "tool-ok"))
-              (Flowable/just (function-call-response tool-name args))))
-          (connect [_request]
-            (throw (java.lang.UnsupportedOperationException.
-                    "Live connections not supported")))))))))
+     pattern
+     (let [^java.util.concurrent.atomic.AtomicBoolean called?
+           (java.util.concurrent.atomic.AtomicBoolean. false)]
+       (fn [model-name]
+         (proxy [BaseLlm] [model-name]
+           (generateContent [^LlmRequest request ^Boolean _streaming]
+             (swap! *llm-requests* conj (datafy request))
+             (if (.getAndSet called? true)
+               (Flowable/just (text-response "tool-ok"))
+               (Flowable/just (function-call-response tool-name args))))
+           (connect [_request]
+             (throw (java.lang.UnsupportedOperationException.
+                      "Live connections not supported")))))))))
 
 ;; =============================================================================
 ;; Inspection helpers
@@ -229,3 +255,6 @@
   "Return the number of requests captured in `*llm-requests*`."
   []
   (count @*llm-requests*))
+
+
+
