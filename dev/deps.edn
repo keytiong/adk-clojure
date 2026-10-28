@@ -39,4 +39,11 @@
                 :pom-file       "target/classes/META-INF/maven/io.kosong.adk/adk-clojure-dev/pom.xml"
                 :artifact       "target/adk-clojure-dev-0.1.0-SNAPSHOT.jar"}}
 
+  :test
+  {:extra-paths ["src/test/clojure"]
+   :extra-deps  {io.github.cognitect-labs/test-runner
+                 {:git/tag "v0.5.1" :git/sha "dfb30dd"}}
+   :exec-fn     cognitect.test-runner.api/test
+   :exec-args   {:dirs ["src/test/clojure"]}}
+
   }}

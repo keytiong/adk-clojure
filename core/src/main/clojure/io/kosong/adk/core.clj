@@ -162,12 +162,6 @@
     (when (some? after-agent-callback)
       (let [after-agent-callback (if (coll? after-agent-callback) after-agent-callback [after-agent-callback])]
         (.afterAgentCallback b ^List (mapv p/into-after-agent-callback after-agent-callback))))
-    (when (some? before-model-callback)
-      (let [before-model-callback (if (coll? before-model-callback) before-model-callback [before-model-callback])]
-        (.beforeModelCallback b ^List (mapv p/into-before-model-callback before-model-callback))))
-    (when (some? after-model-callback)
-      (let [after-model-callback (if (coll? after-model-callback) after-model-callback [after-model-callback])]
-        (.afterModelCallback b ^List (mapv p/into-after-model-callback after-model-callback))))
     (when (some? before-tool-callback)
       (let [before-tool-callback (if (coll? before-tool-callback) before-tool-callback [before-tool-callback])]
         (.beforeToolCallback b ^List (mapv p/into-before-tool-callback before-tool-callback))))

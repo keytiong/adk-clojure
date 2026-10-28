@@ -6,7 +6,6 @@ import com.google.adk.tools.BaseTool;
 import com.google.adk.tools.ToolContext;
 import io.reactivex.rxjava3.core.Maybe;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * Bridges Clojure functions to ADK tool callback interfaces.
@@ -30,8 +29,6 @@ public final class ClojureToolCallback {
 
     private ClojureToolCallback() {}
 
-    private static final AtomicLong invokeCount = new AtomicLong(0);
-
     /**
      * Creates an AfterToolCallback from a Clojure function.
      * The Clojure function receives: (datafied-invocation-context, tool, input, datafied-tool-context, response)
@@ -39,7 +36,6 @@ public final class ClojureToolCallback {
     public static Callbacks.AfterToolCallback createAfterToolCallback(IFn f) {
         return (invocationContext, tool, input, toolContext, response) -> {
             try {
-                invokeCount.incrementAndGet();
                 Object ctx = DATAFY_FN.invoke(invocationContext);
                 Object tc = DATAFY_FN.invoke(toolContext);
                 Object r = f.invoke(ctx, tool, input, tc, response);
@@ -53,15 +49,5 @@ public final class ClojureToolCallback {
                 return Maybe.error(t);
             }
         };
-    }
-
-    /** Returns the number of times after-tool callbacks have been invoked. For testing. */
-    public static long getInvokeCount() {
-        return invokeCount.get();
-    }
-
-    /** Resets the invocation counter. For testing. */
-    public static void resetInvokeCount() {
-        invokeCount.set(0);
     }
 }
