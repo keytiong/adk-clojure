@@ -25,7 +25,7 @@
                 :lib       lib
                 :version   version
                 :basis     @basis
-                :src-dirs  ["src/main/clojure"]
+                :src-dirs  ["src/main/clojure" "src/generated/clojure"]
                 :pom-data  [[:url "https://github.com/keytiong/adk-clojure"]
                             [:scm
                              [:url "https://github.com/keytiong/adk-clojure"]]
@@ -33,7 +33,7 @@
                              [:license
                               [:name "The MIT License"]
                               [:url "https://opensource.org/license/MIT"]]]]})
-  (b/copy-dir {:src-dirs   ["src/main/clojure" "resources"]
+  (b/copy-dir {:src-dirs   ["src/main/clojure" "src/generated/clojure" "resources"]
                :target-dir class-dir})
   (b/jar {:class-dir class-dir
           :jar-file  jar-file}))
@@ -56,5 +56,5 @@
                                           (io.kosong.autovalue/generate-source-file
                                            "com.google.genai.types"
                                            'io.kosong.adk.generated-types
-                                           "src/main/clojure/io/kosong/adk/generated_types.clj")))]})]
+                                           "src/generated/clojure/io/kosong/adk/generated_types.clj")))]})]
     (b/process cmd)))

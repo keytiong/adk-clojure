@@ -1,5 +1,5 @@
 {:paths
- ["src/main/clojure" "src/main/java" "target/classes"]
+ ["src/main/clojure" "src/generated/clojure" "src/main/java" "target/classes"]
 
  :deps
  {org.clojure/clojure                 {:mvn/version "1.12.3"}
@@ -53,6 +53,7 @@
    :main-opts   ["-m" "cloverage.coverage"
                  "--runner" ":clojure.test"
                  "--src-ns-path" "src/main/clojure"
+                 "--src-ns-path" "src/generated/clojure"
                  "--test-ns-path" "src/test/clojure"
                  "--codecov"
                  "--html"]}}}
