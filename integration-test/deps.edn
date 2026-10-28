@@ -1,0 +1,15 @@
+{:paths ["src/test/clojure"]
+
+ :deps
+ {io.kosong/adk-core        {:local/root "../core"}
+  org.clojure/clojure       {:mvn/version "1.12.3"}
+  org.clojure/core.async    {:mvn/version "1.9.808-alpha1"}
+  com.google.adk/google-adk {:mvn/version "1.0.0"}
+  dev.langchain4j/langchain4j-open-ai {:mvn/version "1.4.0"}}
+
+ :aliases
+ {:test
+  {:extra-deps {io.github.cognitect-labs/test-runner
+                {:git/tag "v0.5.1" :git/sha "dfb30dd"}}
+   :exec-fn  cognitect.test-runner.api/test
+   :exec-args {:dirs ["src/test/clojure/io/kosong/adk/integration"]}}}}
