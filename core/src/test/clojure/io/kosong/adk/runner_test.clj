@@ -3,9 +3,13 @@
   (:require
    [clojure.core.async :as async]
    [clojure.test :refer [deftest testing is]]
-   [io.kosong.adk.runner :as runner])
+   [io.kosong.adk.artifacts :as artifacts]
+   [io.kosong.adk.core :as adk]
+   [io.kosong.adk.runner :as runner]
+   [io.kosong.adk.sessions :as sessions])
   (:import
-   (com.google.adk.agents LiveRequest LiveRequestQueue)))
+   (com.google.adk.agents LiveRequest LiveRequestQueue)
+   (com.google.adk.runner Runner)))
 
 ;; ---------------------------------------------------------------------------
 ;; Helpers
@@ -69,3 +73,24 @@
             "a LiveRequest was sent through the queue"))
       ;; Clean up
       (async/close! channel))))
+
+(deftest close-runner-closes-plugins
+  (testing "`close-runner` closes the runner's plugins and reports completion"
+    (let [closed (atom false)
+          plugin (reify com.google.adk.plugins.Plugin
+                   (^String getName [_] "close-test-plugin")
+                   (^io.reactivex.rxjava3.core.Completable close [_]
+                     (reset! closed true)
+                     (io.reactivex.rxjava3.core.Completable/complete)))
+          agent  (adk/base-agent :name "close-test" :run-async-fn (fn [_] nil))
+          runner (-> (Runner/builder)
+                     (.agent agent)
+                     (.appName "close-test")
+                     (.artifactService (artifacts/in-memory-artifact-service))
+                     (.sessionService (sessions/in-memory-session-service))
+                     (.plugins (into-array com.google.adk.plugins.Plugin [plugin]))
+                     (.build))]
+      (is (true? (runner/close-runner runner))
+          "close completes within timeout (blockingAwait returns true)")
+      (is (true? @closed)
+          "plugin close was invoked by Runner.close"))))

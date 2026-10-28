@@ -319,9 +319,12 @@
 (defn run-live
   "Executes an agent with bidirectional live streaming support.
 
-   Returns a map with two channels:
+   Returns a map with:
    - :event-ch - core.async channel for Events from agent (sliding buffer 16)
    - :request-ch - core.async channel for LiveRequests to agent (blocking buffer 10)
+   - :live-request-queue - the Java LiveRequestQueue
+   - :runner - the Java Runner; close it with io.kosong.adk.runner/close-runner
+     when done (note: this also closes the agent)
 
    LiveRequest format:
    - {:content ...} - send turn-by-turn content to model
@@ -392,4 +395,5 @@
 
      {:event-ch           event-ch
       :request-ch         channel
-      :live-request-queue queue})))
+      :live-request-queue queue
+      :runner             runner})))

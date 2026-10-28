@@ -113,6 +113,45 @@
       (is (thrown? Exception
                    (adk/with-session ctx "does-not-exist"))))))
 
+;; ---------------------------------------------------------------------------
+;; RunConfig make-object: non-deprecated builder methods + auto-create-session
+;; ---------------------------------------------------------------------------
+
+(deftest run-config-make-object-properties
+  (testing "RunConfig maps convert to a RunConfig with the given properties"
+    (let [^com.google.adk.agents.RunConfig rc
+          (io.kosong.java/make-object
+            com.google.adk.agents.RunConfig
+            {:streaming-mode                "SSE"
+             :max-llm-calls                 7
+             :save-input-blobs-as-artifact  true
+             :auto-create-session           true})]
+      (is (= "SSE" (.. rc streamingMode name)))
+      (is (= 7 (.maxLlmCalls rc)))
+      (is (true? (.saveInputBlobsAsArtifacts rc)))
+      (is (true? (.autoCreateSession rc)))))
+  (testing "auto-create-session defaults to false when unset"
+    (let [^com.google.adk.agents.RunConfig rc
+          (io.kosong.java/make-object com.google.adk.agents.RunConfig {})]
+      (is (false? (.autoCreateSession rc))))))
+
+;; ---------------------------------------------------------------------------
+;; InvocationContext datafy: 1.0.0 fields
+;; ---------------------------------------------------------------------------
+
+(deftest invocation-context-datafy-includes-1-0-0-fields
+  (testing "datafied InvocationContext exposes callback-context-data"
+    (let [captured (atom nil)
+          agent    (adk/base-agent :name "ctx-capture"
+                                   :run-async-fn (fn [ctx] (reset! captured ctx) nil))
+          ctx      (-> (adk/agent-context :app-name "core-test" :user-id "u1")
+                       (adk/with-new-session {}))]
+      (adk/run ctx agent {:role "user" :parts [{:text "hi"}]} {})
+      (is (map? @captured) "run-async-fn received the datafied context")
+      (is (contains? @captured :callback-context-data)
+          "datafied context includes :callback-context-data")
+      (is (= "ctx-capture" (.name ^com.google.adk.agents.BaseAgent (:agent @captured)))))))
+
 
 (comment,
 

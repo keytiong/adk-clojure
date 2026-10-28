@@ -34,7 +34,10 @@
         (optional-datafy-assoc :run-config (.runConfig x))
         (optional-datafy-assoc :end-invocation (.endInvocation x))
         (optional-datafy-assoc :app-name (.appName x))
-        (optional-datafy-assoc :user-id (.userId x)))))
+        (optional-datafy-assoc :user-id (.userId x))
+        (optional-datafy-assoc :events-compaction-config (.eventsCompactionConfig x))
+        (optional-datafy-assoc :context-cache-config (.contextCacheConfig x))
+        (optional-datafy-assoc :callback-context-data (.callbackContextData x)))))
 
 (extend-protocol Datafiable
   ReadonlyContext
@@ -167,22 +170,24 @@
   (let [{:keys [streaming-mode max-llm-calls response-modalities
                 save-input-blobs-as-artifact input-audio-transcription
                 output-audio-transcription
-                tool-execution-mode]} data
+                tool-execution-mode auto-create-session]} data
         ^RunConfig$Builder b (RunConfig/builder)]
     (when (some? streaming-mode)
-      (.setStreamingMode b (RunConfig$StreamingMode/valueOf streaming-mode)))
+      (.streamingMode b (RunConfig$StreamingMode/valueOf streaming-mode)))
     (when (some? max-llm-calls)
-      (.setMaxLlmCalls b max-llm-calls))
+      (.maxLlmCalls b max-llm-calls))
     (when (some? tool-execution-mode)
-      (.setToolExecutionMode b (RunConfig$ToolExecutionMode/valueOf tool-execution-mode)))
+      (.toolExecutionMode b (RunConfig$ToolExecutionMode/valueOf tool-execution-mode)))
     (when (some? response-modalities)
-      (.setResponseModalities b (mapv (fn [^String x] (Modality. x)) response-modalities)))
+      (.responseModalities b (mapv (fn [^String x] (Modality. x)) response-modalities)))
     (when (some? save-input-blobs-as-artifact)
-      (.setSaveInputBlobsAsArtifacts b save-input-blobs-as-artifact))
+      (.saveInputBlobsAsArtifacts b save-input-blobs-as-artifact))
     (when (some? input-audio-transcription)
-      (.setInputAudioTranscription b (io.kosong.java/make-object AudioTranscriptionConfig input-audio-transcription)))
+      (.inputAudioTranscription b (io.kosong.java/make-object AudioTranscriptionConfig input-audio-transcription)))
     (when (some? output-audio-transcription)
-      (.setOutputAudioTranscription b (io.kosong.java/make-object AudioTranscriptionConfig output-audio-transcription)))
+      (.outputAudioTranscription b (io.kosong.java/make-object AudioTranscriptionConfig output-audio-transcription)))
+    (when (some? auto-create-session)
+      (.autoCreateSession b auto-create-session))
     (.build b)))
 
 (extend-protocol p/IntoInstruction

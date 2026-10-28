@@ -2,7 +2,18 @@
   (:require [clojure.core.async :as async]
             [clojure.tools.logging :as log]
             [io.kosong.java])
-  (:import (com.google.adk.agents LiveRequestQueue LiveRequest)))
+  (:import (com.google.adk.agents LiveRequestQueue LiveRequest)
+           (com.google.adk.runner Runner)))
+
+(defn close-runner
+  "Closes a Runner: closes its agent and plugins and releases resources.
+   Blocks up to 30s for completion; returns true if closed, false on timeout.
+
+   Note: Runner.close() also closes the agent, so do not reuse the agent
+   afterwards. Call at application shutdown or when the agent is done.
+   `run-live` returns the runner under :runner for this purpose."
+  [^Runner runner]
+  (.blockingAwait (.close runner) 30 java.util.concurrent.TimeUnit/SECONDS))
 
 (defn live-request-queue
   "Creates a LiveRequestQueue with a core.async channel bridge.
