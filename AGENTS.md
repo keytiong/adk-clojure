@@ -46,6 +46,8 @@ This project uses **Cognitect Labs Test Runner** (`cognitect.test-runner`) for u
 
 > **Important:** Use `clojure -X:test`, **not** `clojure -M:test`. The `-M` flag treats the map args as a file path and throws `FileNotFoundException`. Only `-X` correctly passes the test-runner map arguments.
 
+> **Important:** `-X:test` does **not** recompile changed Java sources — it uses whatever is in `target/classes`. After editing `core/src/main/java/**`, run `clojure -T:build compile-java` before `clojure -X:test`, or tests run against stale classes.
+
 **Run all tests:**
 
 ```bash

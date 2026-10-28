@@ -14,87 +14,87 @@ v1.0.0 is the first stable release with significant architectural changes. Upgra
 ### A.1 Dependency & Compilation (Estimate: 2 days)
 
 #### A.1.1 Update `core/deps.edn`
-- [ ] Change `com.google.adk/google-adk` from `0.5.0` to `1.0.0`
-- [ ] Verify no other transitive dependency conflicts
+- [x] Change `com.google.adk/google-adk` from `0.5.0` to `1.0.0`
+- [x] Verify no other transitive dependency conflicts
 
 #### A.1.2 Fix `State` constructor change
 - **Change**: `State(ConcurrentMap<String,Object>)` → `State(Map<String,Object>)` (internally converts)
-- [ ] `sessions.clj:33` — Remove `ConcurrentHashMap.` wrapper; pass plain `Map` directly
-- [ ] Verify no behavioral regression (State still implements ConcurrentMap internally)
+- [x] `sessions.clj:33` — Remove `ConcurrentHashMap.` wrapper; pass plain `Map` directly
+- [x] Verify no behavioral regression (State still implements ConcurrentMap internally)
 
 #### A.1.3 Fix `LlmAgent` callback type changes
 - **Change**: Callback fields from `Optional<List<...>>` to `ImmutableList<...>` (non-optional, defaults to empty)
-- [ ] `core.clj` — `llm-agent` builder: verify callback builder methods accept lists directly (not wrapped in Optional)
-- [ ] `agents.clj` — `IntoBeforeModelCallback` etc.: verify reified callbacks work with the new `List` setter methods
+- [x] `core.clj` — `llm-agent` builder: verify callback builder methods accept lists directly (not wrapped in Optional)
+- [x] `agents.clj` — `IntoBeforeModelCallback` etc.: verify reified callbacks work with the new `List` setter methods
 
 #### A.1.4 Remove `exampleProvider` from LlmAgent
 - **Change**: `exampleProvider` field/methods removed entirely
-- [ ] `core.clj` — Remove `:example-provider` parameter from `llm-agent`
-- [ ] `core.clj` — Remove `(.exampleProvider b example-provider)` call
-- [ ] Remove from any examples that use it
+- [x] `core.clj` — Remove `:example-provider` parameter from `llm-agent`
+- [x] `core.clj` — Remove `(.exampleProvider b example-provider)` call
+- [x] Remove from any examples that use it
 
 #### A.1.5 Add new error callbacks to LlmAgent
 - **New**: `OnModelErrorCallback`, `OnModelErrorCallbackSync`, `OnModelErrorCallbackBase`
 - **New**: `OnToolErrorCallback`, `OnToolErrorCallbackSync`, `OnToolErrorCallbackBase`
-- [ ] `protocols.clj` — Add `IntoOnModelErrorCallback` and `IntoOnToolErrorCallback` protocols
-- [ ] `agents.clj` — Implement protocol extensions for `IFn` → reify the new callback interfaces
-- [ ] `core.clj` — Add `:on-model-error-callback` and `:on-tool-error-callback` params to `llm-agent`
-- [ ] `core.clj` — Wire `.onModelErrorCallback()` and `.onToolErrorCallback()` builder calls
+- [x] `protocols.clj` — Add `IntoOnModelErrorCallback` and `IntoOnToolErrorCallback` protocols
+- [x] `agents.clj` — Implement protocol extensions for `IFn` → reify the new callback interfaces
+- [x] `core.clj` — Add `:on-model-error-callback` and `:on-tool-error-callback` params to `llm-agent`
+- [x] `core.clj` — Wire `.onModelErrorCallback()` and `.onToolErrorCallback()` builder calls
 
 #### A.1.6 Fix `tools()` return type change
 - **Change**: `tools()` returns `Single<List<BaseTool>>` instead of `List<BaseTool>`
-- [ ] Search for any calls to `(.tools agent)` and handle the Single return type
-- [ ] `run-async` / `run-live` should be unaffected (they use internal paths)
+- [x] Search for any calls to `(.tools agent)` and handle the Single return type
+- [x] `run-async` / `run-live` should be unaffected (they use internal paths)
 
 #### A.1.7 Fix `canonicalTools()` parameter change
 - **Change**: `canonicalTools(Optional<ReadonlyContext>)` → `canonicalTools(@Nullable ReadonlyContext)`
-- [ ] Verify no Clojure code calls `canonicalTools` directly (internal method)
+- [x] Verify no Clojure code calls `canonicalTools` directly (internal method)
 
 #### A.1.8 Fix `codeExecutor()` return type change
 - **Change**: `@Nullable BaseCodeExecutor` → `Optional<BaseCodeExecutor>`
-- [ ] Verify no Clojure code calls `.codeExecutor()` directly
+- [x] Verify no Clojure code calls `.codeExecutor()` directly
 
 ### A.2 `InvocationContext` Overhaul (Estimate: 2 days)
 
 #### A.2.1 Remove `ResumabilityConfig`
 - **Change**: `ResumabilityConfig` removed entirely from InvocationContext
-- [ ] Search for any usage of `ResumabilityConfig` in Clojure code
-- [ ] Remove references to `.resumabilityConfig()`, `isResumable()`, `shouldPauseInvocation()`
+- [x] Search for any usage of `ResumabilityConfig` in Clojure code
+- [x] Remove references to `.resumabilityConfig()`, `isResumable()`, `shouldPauseInvocation()`
 
 #### A.2.2 New fields in InvocationContext
 - **New**: `eventsCompactionConfig` (EventsCompactionConfig), `contextCacheConfig` (ContextCacheConfig), `callbackContextData` (Map<String, Object>)
-- [ ] `agents.clj` — Update `InvocationContext` datafy to include new fields
+- [x] `agents.clj` — Update `InvocationContext` datafy to include new fields
 - [ ] Verify `toBuilder()` method works for creating modified copies
 
 #### A.2.3 `PluginManager` → `Plugin` type change
 - **Change**: `.pluginManager()` returns `Plugin` interface (not `PluginManager` class)
-- [ ] `agents.clj` — Verify `PluginManager` still works (it now extends BasePlugin which implements Plugin)
-- [ ] No Clojure code should need changes here (Java-side compatibility preserved)
+- [x] `agents.clj` — Verify `PluginManager` still works (it now extends BasePlugin which implements Plugin)
+- [x] No Clojure code should need changes here (Java-side compatibility preserved)
 
 #### A.2.4 `@Nullable` instead of `Optional` for many fields
 - **Change**: `liveRequestQueue`, `userContent`, `branch` now `@Nullable` (return Optional from getters still)
-- [ ] Verify autovalue/datafy handles `@Nullable` fields correctly
-- [ ] The getters still return `Optional`, so Clojure-side code should be unaffected
+- [x] Verify autovalue/datafy handles `@Nullable` fields correctly
+- [x] The getters still return `Optional`, so Clojure-side code should be unaffected
 
 #### A.2.5 Builder validation
 - **Change**: Builder now validates required fields (invocationId, agent, session, sessionService)
-- [ ] Ensure all InvocationContext construction in Clojure provides required fields
+- [x] Ensure all InvocationContext construction in Clojure provides required fields
 
 ### A.3 Plugin System Changes (Estimate: 1 day)
 
 #### A.3.1 `BasePlugin` → `Plugin` interface
 - **Change**: `BasePlugin` is now an abstract class implementing the `Plugin` interface
-- [ ] `agents.clj` — `PluginManager` constructor: `List<Plugin>` (was `List<BasePlugin>`)
-- [ ] `core.clj` — `.plugins(plugins)` should work (plugins are now Plugin interface instances)
+- [x] `agents.clj` — `PluginManager` constructor: `List<Plugin>` (was `List<BasePlugin>`)
+- [x] `core.clj` — `.plugins(plugins)` should work (plugins are now Plugin interface instances)
 
 #### A.3.2 New `close()` on Plugin/Runner
 - **New**: Both `Plugin` interface and `Runner` have `close()` method
-- [ ] Consider adding `close-runner` helper in runner.clj
+- [x] Consider adding `close-runner` helper in runner.clj
 - [ ] Update examples to close runner when done
 
 #### A.3.3 `PluginManager` extends `BasePlugin`
 - **Change**: PluginManager itself is now a Plugin (implements all callback methods via override)
-- [ ] No Clojure-side changes needed, but be aware of the structural change
+- [x] No Clojure-side changes needed, but be aware of the structural change
 
 ### A.4 `Runner` Changes (Estimate: 2 days)
 
@@ -104,12 +104,12 @@ v1.0.0 is the first stable release with significant architectural changes. Upgra
 
 #### A.4.2 `Telemetry` → `Tracing`
 - **Change**: Internal telemetry package renamed (import change only)
-- [ ] No Clojure-side impact (Clojure doesn't reference Telemetry directly)
+- [x] No Clojure-side impact (Clojure doesn't reference Telemetry directly)
 
 #### A.4.3 `autoCreateSession()` in RunConfig
 - **New**: `RunConfig.autoCreateSession()` field (defaults to false)
-- [ ] `agents.clj` — Add `:auto-create-session` to RunConfig `make-object` method
-- [ ] `core.clj` — Document in run-async/run-live docs
+- [x] `agents.clj` — Add `:auto-create-session` to RunConfig `make-object` method
+- [x] `core.clj` — Document in run-async/run-live docs
 
 #### A.4.4 `SessionKey` support
 - **New**: `Runner.runAsync(SessionKey, ...)` and `Runner.runLive(SessionKey, ...)` overloads
@@ -117,21 +117,21 @@ v1.0.0 is the first stable release with significant architectural changes. Upgra
 
 #### A.4.5 `copySessionStates` change
 - **Change**: `target.state().putAll(source.state())` instead of iterating
-- [ ] No Clojure-side impact
+- [x] No Clojure-side impact
 
 #### A.4.6 `findSubAgent()` return type change
 - **Change**: `@Nullable BaseAgent` → `Optional<BaseAgent>`
-- [ ] `core.clj` — If any code calls `findSubAgent`, handle Optional
+- [x] `core.clj` — If any code calls `findSubAgent`, handle Optional
 
 #### A.4.7 `Runner` close()
 - **New**: `Runner.close()` returns `Completable`
-- [ ] Add `close-runner` helper in runner.clj
+- [x] Add `close-runner` helper in runner.clj
 
 ### A.5 `RunConfig` Builder Method Renaming (Estimate: 0.5 days)
 
 - **Change**: `setX` methods deprecated, new `x` methods added (both exist via delegation)
-- [ ] `agents.clj` — Update `make-object` for RunConfig to use new method names (`streamingMode` instead of `setStreamingMode`, etc.)
-- [ ] The deprecated `setX` methods still work, so this is just cleanup
+- [x] `agents.clj` — Update `make-object` for RunConfig to use new method names (`streamingMode` instead of `setStreamingMode`, etc.)
+- [x] The deprecated `setX` methods still work, so this is just cleanup
 
 ### A.6 `Session` Changes (Estimate: 0.5 days)
 
@@ -141,17 +141,17 @@ v1.0.0 is the first stable release with significant architectural changes. Upgra
 
 #### A.6.2 `Session.state()` returns `Map` (not ConcurrentMap)
 - **Change**: State internally still ConcurrentMap, but public API is Map
-- [ ] Verify datafy works correctly
+- [x] Verify datafy works correctly
 
 #### A.6.3 `events` is `Collections.synchronizedList`
-- [ ] No Clojure-side change needed
+- [x] No Clojure-side change needed
 
 ### A.7 Autovalue/Java Interop (Estimate: 1 day)
 
 #### A.7.1 `optional-type?` handling
 - **Change**: Many `Optional` fields replaced with `@Nullable`
-- [ ] `autovalue.clj` — Verify `optional-type?` doesn't break for classes that switched from Optional to @Nullable
-- [ ] The `optional-datafy-assoc` function handles nil correctly, so @Nullable fields should work
+- [x] `autovalue.clj` — Verify `optional-type?` doesn't break for classes that switched from Optional to @Nullable
+- [x] The `optional-datafy-assoc` function handles nil correctly, so @Nullable fields should work
 - [ ] Key classes to check: `RunConfig`, `InvocationContext`, `LlmAgent`, `Event`, `EventActions`
 
 #### A.7.2 `make-object` for new classes
@@ -160,17 +160,17 @@ v1.0.0 is the first stable release with significant architectural changes. Upgra
 
 #### A.7.3 `Event` class changes
 - **Change**: Event uses `@Nullable` fields instead of Optional
-- [ ] Verify event datafy and make-object still work
+- [x] Verify event datafy and make-object still work
 
 ### A.8 `ClojureAgent.java` Update (Estimate: 0.5 days)
 
 #### A.8.1 `BaseAgent` constructor changes
-- [ ] Verify ClojureAgent constructor still matches BaseAgent's constructor signature
+- [x] Verify ClojureAgent constructor still matches BaseAgent's constructor signature
 - [ ] In 1.0.0, BaseAgent constructor params changed slightly (subAgents is `@Nullable List`)
-- [ ] Verify `beforeAgentCallback`/`afterAgentCallback` types (now `ImmutableList`)
+- [x] Verify `beforeAgentCallback`/`afterAgentCallback` types (now `ImmutableList`)
 
 #### A.8.2 `findSubAgent` return type
-- [ ] If ClojureAgent overrides `findSubAgent`, update return type to `Optional<BaseAgent>`
+- [x] If ClojureAgent overrides `findSubAgent`, update return type to `Optional<BaseAgent>`
 
 #### A.8.3 `close()` method
 - [ ] Optionally add `close()` override if ClojureAgent has resources to clean up
@@ -194,10 +194,10 @@ v1.0.0 is the first stable release with significant architectural changes. Upgra
 - [ ] Verify SSE and WebSocket endpoints
 
 #### A.10.3 Unit tests
-- [ ] Update `session_test.clj` for State as Map
-- [ ] Add tests for new callback types
-- [ ] Update `runner_test.clj` for Runner changes
-- [ ] Add tests for RunConfig `:auto-create-session`
+- [x] Update `session_test.clj` for State as Map
+- [x] Add tests for new callback types
+- [x] Update `runner_test.clj` for Runner changes
+- [x] Add tests for RunConfig `:auto-create-session`
 
 #### A.10.4 Integration tests
 - [ ] Run full integration test suite
@@ -207,10 +207,10 @@ v1.0.0 is the first stable release with significant architectural changes. Upgra
 - [ ] Verify streaming (SSE + WebSocket)
 
 #### A.10.5 Documentation
-- [ ] Update README.md
-- [ ] Document new callback types
-- [ ] Document new features (autoCreateSession, event compaction)
-- [ ] Document removed features (exampleProvider)
+- [x] Update README.md
+- [x] Document new callback types
+- [x] Document new features (autoCreateSession, event compaction)
+- [x] Document removed features (exampleProvider)
 
 ---
 
@@ -295,53 +295,53 @@ v1.2.0 adds ChatCompletion support and more analytics. The delta from 1.0.0 is s
 ## File-by-File Change Summary (v1.0.0)
 
 ### `core/deps.edn`
-- [ ] Version: `0.5.0` → `1.0.0`
+- [x] Version: `0.5.0` → `1.0.0`
 
 ### `core/src/main/clojure/io/kosong/adk/core.clj`
-- [ ] `llm-agent`: Remove `:example-provider` param
-- [ ] `llm-agent`: Add `:on-model-error-callback` and `:on-tool-error-callback` params
-- [ ] `agent-context`: No change needed
-- [ ] `run-async`: No structural change (Runner API compatible)
-- [ ] `run-live`: No structural change
+- [x] `llm-agent`: Remove `:example-provider` param
+- [x] `llm-agent`: Add `:on-model-error-callback` and `:on-tool-error-callback` params
+- [x] `agent-context`: No change needed
+- [x] `run-async`: No structural change (Runner API compatible)
+- [x] `run-live`: No structural change
 
 ### `core/src/main/clojure/io/kosong/adk/sessions.clj`
-- [ ] `create-session`: Remove `ConcurrentHashMap.` wrapper, pass plain `Map`
+- [x] `create-session`: Remove `ConcurrentHashMap.` wrapper, pass plain `Map`
 
 ### `core/src/main/clojure/io/kosong/adk/agents.clj`
-- [ ] Add `IntoOnModelErrorCallback` protocol implementation for `IFn`
-- [ ] Add `IntoOnToolErrorCallback` protocol implementation for `IFn`
-- [ ] Update `RunConfig` make-object: use new builder method names (`streamingMode` instead of `setStreamingMode`)
-- [ ] Add `:auto-create-session` to RunConfig make-object
-- [ ] Update `InvocationContext` datafy: add `events-compaction-config`, `context-cache-config`, `callback-context-data`
-- [ ] Verify callback protocol implementations work with new `ImmutableList` types
+- [x] Add `IntoOnModelErrorCallback` protocol implementation for `IFn`
+- [x] Add `IntoOnToolErrorCallback` protocol implementation for `IFn`
+- [x] Update `RunConfig` make-object: use new builder method names (`streamingMode` instead of `setStreamingMode`)
+- [x] Add `:auto-create-session` to RunConfig make-object
+- [x] Update `InvocationContext` datafy: add `events-compaction-config`, `context-cache-config`, `callback-context-data`
+- [x] Verify callback protocol implementations work with new `ImmutableList` types
 
 ### `core/src/main/clojure/io/kosong/adk/runner.clj`
-- [ ] Optionally add `close-runner` helper
+- [x] Optionally add `close-runner` helper
 
 ### `core/src/main/clojure/io/kosong/adk/protocols.clj`
-- [ ] Add `IntoOnModelErrorCallback` protocol
-- [ ] Add `IntoOnToolErrorCallback` protocol
+- [x] Add `IntoOnModelErrorCallback` protocol
+- [x] Add `IntoOnToolErrorCallback` protocol
 
 ### `core/src/main/clojure/io/kosong/autovalue.clj`
-- [ ] Verify `optional-type?` works for classes with @Nullable fields
+- [x] Verify `optional-type?` works for classes with @Nullable fields
 - [ ] Register new autovalue types: `EventsCompactionConfig`, `ContextCacheConfig`, `SessionKey`
 
 ### `core/src/main/clojure/io/kosong/adk/generated_types.clj`
 - [ ] Regenerate via `clojure -T:build generate-types`
 
 ### `core/src/main/java/io/kosong/adk/agents/ClojureAgent.java`
-- [ ] Verify constructor compatibility with BaseAgent
+- [x] Verify constructor compatibility with BaseAgent
 - [ ] Optionally add `close()` method
 
 ### `core/src/main/java/io/kosong/adk/tools/ClojureFunctionTool.java`
-- [ ] Verify `runAsync` signature compatibility (should be fine)
+- [x] Verify `runAsync` signature compatibility (should be fine)
 
 ### `examples/`
-- [ ] Remove `exampleProvider` usage from all examples
+- [x] Remove `exampleProvider` usage from all examples
 - [ ] Verify runner creation
 
 ### `dev/src/main/clojure/io/kosong/adk/web/`
-- [ ] Update handlers for new API
+- [x] Update handlers for new API
 - [ ] Verify routes and SSE/WebSocket endpoints
 
 ---

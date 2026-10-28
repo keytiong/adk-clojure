@@ -134,6 +134,57 @@ Result: A sequence of events showing function call, function response, and LLM r
   :timestamp 1761484202682})
 ```
 
+### Callbacks
+
+Agents support lifecycle callbacks. Each callback option accepts a single function or a vector of functions. All context arguments are datafied Clojure maps; return `nil` to let normal processing continue.
+
+|Option|Function signature|Return|
+|---|---|---|
+|`:before-agent-callback`|`(fn [context] ...)`|Content map to skip the agent, or `nil`|
+|`:after-agent-callback`|`(fn [context] ...)`|Content map to replace the output, or `nil`|
+|`:before-model-callback`|`(fn [context llm-request] ...)`|LlmResponse map to skip the LLM call, or `nil`|
+|`:after-model-callback`|`(fn [context llm-response] ...)`|LlmResponse map to replace the response, or `nil`|
+|`:model-error-callback`|`(fn [context llm-request error] ...)`|LlmResponse map to recover from the model error, or `nil`|
+|`:before-tool-callback`|`(fn [context tool input tool-context] ...)`|Response map to skip the tool execution, or `nil`|
+|`:after-tool-callback`|`(fn [context tool input tool-context response] ...)`|Response map to replace the tool result, or `nil`|
+|`:tool-error-callback`|`(fn [context tool input tool-context error] ...)`|Response map to recover from the tool error, or `nil`|
+
+```clojure
+(defn log-before-model
+  "Logs each LLM request; returns nil to continue normally."
+  [context llm-request]
+  (println "Calling model with" (count (:contents llm-request)) "contents")
+  nil)
+
+(defn recover-tool-error
+  "Returns a fallback tool response when a tool throws."
+  [context tool input tool-context ^Throwable error]
+  {:error (ex-message error) :fallback "service unavailable"})
+
+(def agent
+  (adk/llm-agent
+    :name "resilient-agent"
+    :model "gemini-2.5-flash"
+    :before-model-callback log-before-model
+    :tool-error-callback recover-tool-error))
+```
+
+### Run Configuration
+
+`run`, `run-async`, and `run-live` take a run-config map:
+
+```clojure
+(adk/run context agent "Hello"
+  {:streaming-mode             "SSE"   ; "NONE" (default) or "SSE"
+   :max-llm-calls              10      ; limit LLM calls per invocation (-1 = unlimited)
+   :tool-execution-mode        "NONE"  ; "AUTO" (default) or "NONE" (model only, no execution)
+   :auto-create-session        true    ; create the session if it does not exist
+   :response-modalities        ["TEXT"]
+   :save-input-blobs-as-artifact true
+   :input-audio-transcription  {:model "gemini-2.5-flash"}
+   :output-audio-transcription {:model "gemini-2.5-flash"}})
+```
+
 ### Live Streaming with run-live
 
 The `run-live` function enables bidirectional real-time streaming for voice, video, and continuous interactions:
@@ -149,7 +200,7 @@ The `run-live` function enables bidirectional real-time streaming for voice, vid
                :instruction "You are a helpful assistant"))
 
 ;; Start live streaming session
-(let [{:keys [event-ch request-ch]} (adk/run-live (adk/agent-context) chatbot)]
+(let [{:keys [event-ch request-ch runner]} (adk/run-live (adk/agent-context) chatbot)]
   ;; Send messages to agent
   (async/>!! request-ch {:content "Hello!"})
   (async/>!! request-ch {:blob {:mime-type "audio/pcm" :data "..."}})
@@ -159,7 +210,10 @@ The `run-live` function enables bidirectional real-time streaming for voice, vid
     (println "Agent response:" (get-in event [:content :parts 0 :text])))
 
   ;; Close connection
-  (async/>!! request-ch {:close true}))
+  (async/>!! request-ch {:close true})
+
+  ;; Release agent and plugin resources when finished with the runner
+  (adk/close-runner runner))
 ```
 
 **WebSocket Endpoint**: Connect via `ws://localhost:8080/run_live?app_name=my-agent&user_id=user123&session_id=session456`
