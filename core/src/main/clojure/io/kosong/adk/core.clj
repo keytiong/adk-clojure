@@ -3,6 +3,7 @@
             [clojure.datafy :as d :refer [datafy]]
             [io.kosong.adk.protocols :as p]
             [clojure.tools.logging :as log]
+            [io.kosong.adk.utils :as u]
             [io.kosong.java])
   (:import (com.google.adk.agents Instruction LlmAgent LoopAgent RunConfig RunConfig$StreamingMode SequentialAgent LlmAgent$Builder)
            (com.google.adk.plugins Plugin)
@@ -101,10 +102,10 @@
       (.subAgents b sub-agents))
     (when (some? before-agent-callback)
       (let [before-agent-callback (if (coll? before-agent-callback) before-agent-callback [before-agent-callback])]
-        (.beforeAgentCallback b (mapv p/into-before-model-callback before-agent-callback))))
+        (.beforeAgentCallback b ^List (mapv p/into-before-agent-callback before-agent-callback))))
     (when (some? after-agent-callback)
       (let [after-agent-callback (if (coll? after-agent-callback) after-agent-callback [after-agent-callback])]
-        (.afterAgentCallback b (mapv p/into-after-tool-callback after-agent-callback))))
+        (.afterAgentCallback b ^List (mapv p/into-after-agent-callback after-agent-callback))))
     (when (some? run-async-fn)
       (.runAsyncFn b run-async-fn))
     (when (some? run-live-fn)
@@ -282,7 +283,7 @@
                                    (.memoryService memory-service)
                                    (.plugins plugins)
                                    (.build))
-         ^Content content      (io.kosong.java/make-object com.google.genai.types.Content user-content)
+         ^Content content      (io.kosong.java/make-object com.google.genai.types.Content (u/user-content user-content))
          ^RunConfig run-config (if (some? run-config)
                                  (io.kosong.java/make-object RunConfig run-config)
                                  (io.kosong.java/make-object RunConfig {}))
@@ -332,7 +333,7 @@
    - run-config: optional RunConfig map (should include :streaming-mode BIDI for live mode)
 
    Example:
-   (let [{:keys [event-ch request-ch]} (run-live context agent nil {:streaming-mode BIDI})]
+   (let [{:keys [event-ch request-ch]} (run-live context agent {:streaming-mode \"BIDI\"})]
      ;; Send requests
      (async/>!! request-ch {:content \"Hello\"})
      ;; Read events

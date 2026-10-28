@@ -1,6 +1,7 @@
 (ns io.kosong.adk.runner
   (:require [clojure.core.async :as async]
             [clojure.tools.logging :as log]
+            [io.kosong.adk.utils :as u]
             [io.kosong.java])
   (:import (com.google.adk.agents LiveRequestQueue LiveRequest)
            (com.google.adk.runner Runner)))
@@ -35,7 +36,12 @@
       (if-some [live-request-map (async/<! request-ch)]
         (do
           (try
-            (.send java-queue (io.kosong.java/make-object LiveRequest live-request-map))
+            (.send java-queue
+                   (io.kosong.java/make-object
+                     LiveRequest
+                     (cond-> live-request-map
+                       (contains? live-request-map :content)
+                       (update :content u/user-content))))
             (catch Exception e
               ;; Log error but continue processing
               (log/error "Error offering LiveRequest to queue:" (.getMessage e))))

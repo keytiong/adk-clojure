@@ -484,3 +484,34 @@
                                               (get (:response fr) "result")))))
                   events)
             "fallback tool response surfaces in the event stream")))))
+
+;; ---------------------------------------------------------------------------
+;; base-agent callback wiring (regression: before/after-agent callbacks were
+;; once converted via the before-model / after-tool protocol fns)
+;; ---------------------------------------------------------------------------
+
+(deftest base-agent-callback-interface-test
+  (testing "base-agent converts agent callbacks to the agent callback interfaces"
+    (let [agent (adk/base-agent :name "cb-types"
+                                :run-async-fn (fn [_] nil)
+                                :before-agent-callback (fn [_] nil)
+                                :after-agent-callback [(fn [_] nil) (fn [_] nil)])]
+      (is (every? #(instance? com.google.adk.agents.Callbacks$BeforeAgentCallback %)
+                  (.beforeAgentCallback ^com.google.adk.agents.BaseAgent agent))
+          "before-agent callbacks implement BeforeAgentCallback")
+      (is (= 2 (count (.afterAgentCallback ^com.google.adk.agents.BaseAgent agent))))
+      (is (every? #(instance? com.google.adk.agents.Callbacks$AfterAgentCallback %)
+                  (.afterAgentCallback ^com.google.adk.agents.BaseAgent agent))
+          "after-agent callbacks implement AfterAgentCallback"))))
+
+(deftest base-agent-callbacks-fire-test
+  (testing "before/after-agent callbacks fire around a base-agent run"
+    (let [log    (atom [])
+          agent  (adk/base-agent :name "cb-fire"
+                                 :run-async-fn (fn [_] nil)
+                                 :before-agent-callback (fn [_] (swap! log conj :before) nil)
+                                 :after-agent-callback (fn [_] (swap! log conj :after) nil))
+          ctx    (make-context {})
+          events (doall (adk/run ctx agent user-message {}))]
+      (is (not (some (partial instance? Throwable) events)) "no errors")
+      (is (= [:before :after] @log) "both agent callbacks fired in order"))))

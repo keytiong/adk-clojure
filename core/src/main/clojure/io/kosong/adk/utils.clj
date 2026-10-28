@@ -3,6 +3,13 @@
   (:import (clojure.lang PersistentArrayMap)
            (java.util List Map Optional Set)))
 
+(defn user-content
+  "Coerce a plain string into user Content data for make-object
+  (`{:role \"user\" :parts [{:text ...}]}`). Maps and Content instances
+  pass through unchanged."
+  [x]
+  (if (string? x) {:role "user" :parts [{:text x}]} x))
+
 (defn optional-datafy-assoc
   [m k v]
   (cond

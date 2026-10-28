@@ -3,7 +3,8 @@
   base-agent) and session retrieval helpers (with-session)."
   (:require [clojure.datafy :refer [datafy]]
             [clojure.test :refer [deftest is testing]]
-            [io.kosong.adk.core :as adk])
+            [io.kosong.adk.core :as adk]
+            [io.kosong.adk.models.mock-llm :as mock-llm])
   (:import [com.google.adk.agents LoopAgent SequentialAgent]
            [io.kosong.adk.agents ClojureAgent]))
 
@@ -152,3 +153,25 @@
           "datafied context includes :callback-context-data")
       (is (= "ctx-capture" (.name ^com.google.adk.agents.BaseAgent (:agent @captured)))))))
 
+
+;; ---------------------------------------------------------------------------
+;; String message coercion
+;; ---------------------------------------------------------------------------
+
+(deftest string-message-coerced-to-user-content
+  (testing "adk/run accepts a plain string; it reaches the LLM as user Content"
+    (let [pattern (str "mock-string-msg-" (System/nanoTime))]
+      (mock-llm/register-mock-llm! (str pattern "/.*") "Mock response")
+      (mock-llm/clear-llm-requests!)
+      (let [agent  (adk/llm-agent :name "string-msg-agent"
+                                  :model (str pattern "/m1"))
+            ctx    (-> (adk/agent-context :app-name "core-test" :user-id "u1")
+                       (adk/with-new-session {}))
+            events (doall (adk/run ctx agent "plain string hello" {}))]
+        (is (not (some (partial instance? Throwable) events))
+            "event stream contains no errors")
+        (is (= 1 (mock-llm/request-count)) "mock LLM received the request")
+        (let [texts (->> (mock-llm/last-request) :contents
+                         (mapcat :parts) (keep :text))]
+          (is (some #{"plain string hello"} texts)
+              "string arrived at the LLM as a text part"))))))

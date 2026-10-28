@@ -136,7 +136,7 @@ Result: A sequence of events showing function call, function response, and LLM r
 
 ### Callbacks
 
-Agents support lifecycle callbacks. Each callback option accepts a single function or a vector of functions. All context arguments are datafied Clojure maps; return `nil` to let normal processing continue.
+Agents support lifecycle callbacks. Each callback option accepts a single function or a vector of functions. All context arguments are datafied Clojure maps; return `nil` to let normal processing continue. When a vector is given, callbacks run in order and the first non-`nil` return short-circuits the chain.
 
 |Option|Function signature|Return|
 |---|---|---|
