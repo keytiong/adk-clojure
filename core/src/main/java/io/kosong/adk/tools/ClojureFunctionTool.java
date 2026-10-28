@@ -118,7 +118,7 @@ public class ClojureFunctionTool extends BaseTool {
             }
         } catch (Exception e) {
             logger.error("Error running function tool", e);
-            return Single.just(ImmutableMap.of());
+            return Single.error(e);
         }
     }
 

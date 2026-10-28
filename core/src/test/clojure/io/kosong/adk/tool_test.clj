@@ -324,8 +324,7 @@
     (defn ctx-tool
       "ctx tool"
       [tool-context]
-      {:ctx-type (name (ns-name (find-ns (ns-resolve 'clojure.core 'type))))
-       :ctx-val tool-context})
+      {:ctx-val tool-context})
 
     (let [tool (ClojureFunctionTool/create #'ctx-tool)
           result (.blockingGet
@@ -449,17 +448,17 @@
 ;; runAsync: Exception Handling
 ;; =============================================================================
 
-(deftest exception-swallowed-returns-empty-map
-  (testing "Function that throws returns empty map, not propagating exception"
+(deftest exception-propagates-as-single-error
+  (testing "Function that throws propagates the exception so ADK error callbacks can recover"
     (defn throwing-tool
       "throwing tool"
       []
       (throw (RuntimeException. "intentional test error")))
 
-    (let [tool (ClojureFunctionTool/create #'throwing-tool)
-          result (.blockingGet
-                  (.runAsync tool {} nil))]
-      (is (= {} result)))))
+    (let [tool (ClojureFunctionTool/create #'throwing-tool)]
+      (is (thrown-with-msg? RuntimeException #"intentional test error"
+                            (.blockingGet
+                             (.runAsync tool {} nil)))))))
 
 ;; =============================================================================
 ;; End-to-End: Tool used via agent with mock LLM

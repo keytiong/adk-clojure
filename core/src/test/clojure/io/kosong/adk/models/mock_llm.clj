@@ -181,6 +181,21 @@
      (fn [model-name]
        (mock-llm response-fn model-name)))))
 
+(defn register-error-llm!
+  "Register a mock LLM factory whose generateContent always fails with `error`
+  (emitted as an onError signal on the returned Flowable). Used to exercise
+  model-error callbacks. Each test must use a unique pattern."
+  [pattern ^Throwable error]
+  (models/register-llm-factory!
+    pattern
+    (fn [model-name]
+      (proxy [BaseLlm] [model-name]
+        (generateContent [_request _streaming]
+          (Flowable/error error))
+        (connect [_request]
+          (throw (java.lang.UnsupportedOperationException.
+                   "Live connections not supported by mock LLM")))))))
+
 (defn- function-call-response
   "Build an LlmResponse with a single function call."
   ([tool-name] (function-call-response tool-name {}))

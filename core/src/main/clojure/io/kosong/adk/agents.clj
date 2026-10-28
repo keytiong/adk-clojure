@@ -9,9 +9,10 @@
            (com.google.adk.agents
             BaseAgent CallbackContext Callbacks$AfterAgentCallback Callbacks$AfterAgentCallbackBase Callbacks$AfterModelCallback Callbacks$AfterModelCallbackBase
             Callbacks$AfterToolCallback Callbacks$AfterToolCallbackBase Callbacks$BeforeAgentCallback Callbacks$BeforeAgentCallbackBase Callbacks$BeforeModelCallback Callbacks$BeforeModelCallbackBase
-            Callbacks$BeforeToolCallback Callbacks$BeforeToolCallbackBase Instruction Instruction$Provider Instruction$Static InvocationContext ReadonlyContext
+            Callbacks$BeforeToolCallback Callbacks$BeforeToolCallbackBase Callbacks$OnModelErrorCallback Callbacks$OnModelErrorCallbackBase Callbacks$OnToolErrorCallback Callbacks$OnToolErrorCallbackBase
+            Instruction Instruction$Provider Instruction$Static InvocationContext ReadonlyContext
             RunConfig RunConfig$Builder RunConfig$StreamingMode RunConfig$ToolExecutionMode)
-           (com.google.adk.models LlmRequest$Builder LlmResponse)
+           (com.google.adk.models LlmRequest LlmRequest$Builder LlmResponse)
            (com.google.adk.tools BaseTool ToolContext)
            (io.kosong.adk.agents ClojureToolCallback)
            (com.google.genai.types AudioTranscriptionConfig Content Modality)
@@ -163,6 +164,50 @@
 (extend-protocol p/IntoAfterToolCallback
   Callbacks$AfterToolCallbackBase
   (into-after-tool-callback [x]
+    x))
+
+(extend-protocol p/IntoModelErrorCallback
+  IFn
+  (into-model-error-callback [f]
+    (reify Callbacks$OnModelErrorCallback
+      (^Maybe call [_ ^CallbackContext context ^LlmRequest llm-request ^Exception error]
+        (try
+          (let [context-m     (datafy context)
+                llm-request-m (datafy llm-request)
+                r             (f context-m llm-request-m error)]
+            (if r
+              (Maybe/just (io.kosong.java/make-object LlmResponse r))
+              (Maybe/empty)))
+          (catch Throwable t
+            (Maybe/error ^Throwable t)))))))
+
+(extend-protocol p/IntoModelErrorCallback
+  Callbacks$OnModelErrorCallbackBase
+  (into-model-error-callback [x]
+    x))
+
+(extend-protocol p/IntoToolErrorCallback
+  IFn
+  (into-tool-error-callback [f]
+    (reify Callbacks$OnToolErrorCallback
+      (^Maybe call [_ ^InvocationContext invocation-context
+                    ^BaseTool tool
+                    ^Map input
+                    ^ToolContext tool-context
+                    ^Exception error]
+        (try
+          (let [invocation-context-m (datafy invocation-context)
+                tool-context-m       (datafy tool-context)
+                r                    (f invocation-context-m tool input tool-context-m error)]
+            (if r
+              (Maybe/just (clojure.walk/stringify-keys r))
+              (Maybe/empty)))
+          (catch Throwable t
+            (Maybe/error ^Throwable t)))))))
+
+(extend-protocol p/IntoToolErrorCallback
+  Callbacks$OnToolErrorCallbackBase
+  (into-tool-error-callback [x]
     x))
 
 (defmethod io.kosong.java/make-object RunConfig

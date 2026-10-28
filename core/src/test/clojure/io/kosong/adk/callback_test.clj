@@ -408,3 +408,79 @@
         (is (map? ctx) "instruction fn received a datafied context"))
       (is (= 1 (mock-llm/request-count))
           "agent ran with fn instruction"))))
+
+;; ---------------------------------------------------------------------------
+;; Model / tool error callbacks (ADK 1.0.0)
+;; ---------------------------------------------------------------------------
+
+(defn boom-tool
+  "A tool that always throws."
+  []
+  (throw (ex-info "tool exploded" {})))
+
+(deftest model-error-callback-recovers
+  (testing "model-error callback recovers from an LLM failure with a fallback response"
+    (let [n        (System/nanoTime)
+          boom     (ex-info "llm exploded" {})
+          captured (atom nil)
+          agent    (adk/llm-agent
+                     :name "merr-agent"
+                     :model (str "mock-merr-" n "/test")
+                     :model-error-callback
+                     (fn [ctx llm-request error]
+                       (reset! captured {:ctx ctx :req llm-request :error error})
+                       {:content {:role "model" :parts [{:text "model-recovered"}]}
+                        :turn-complete true}))]
+      (mock-llm/register-error-llm! (str "mock-merr-" n "/.*") boom)
+      (let [events (doall (adk/run (make-context {}) agent user-message {}))]
+        (is (instance? Throwable (:error @captured))
+            "callback receives the error as a Throwable")
+        (is (map? (:ctx @captured))
+            "callback receives a datafied context")
+        (is (some #(some-> % :content :parts first :text (= "model-recovered"))
+                  events)
+            "fallback LlmResponse surfaces in the event stream")))))
+
+(deftest model-error-callback-nil-means-no-recovery
+  (testing "model-error callback returning nil does not produce a response"
+    (let [n        (System/nanoTime)
+          agent    (adk/llm-agent
+                     :name "merr-nil-agent"
+                     :model (str "mock-merrnil-" n "/test")
+                     :model-error-callback (fn [_ _ _] nil))]
+      (mock-llm/register-error-llm!
+        (str "mock-merrnil-" n "/.*") (ex-info "llm exploded" {}))
+      (let [texts (try (->> (adk/run (make-context {}) agent user-message {})
+                            (map #(some-> % :content :parts first :text))
+                            (remove nil?)
+                            doall)
+                       (catch Throwable _ []))]
+        (is (empty? texts)
+            "no text response produced when callback declines to recover")))))
+
+(deftest tool-error-callback-recovers
+  (testing "tool-error callback recovers from a throwing tool with a fallback response"
+    (let [n        (System/nanoTime)
+          captured (atom nil)
+          agent    (adk/llm-agent
+                     :name "terr-agent"
+                     :model (str "mock-terr-" n "/test")
+                     :tools [#'boom-tool]
+                     :tool-error-callback
+                     (fn [ctx tool input tool-context error]
+                       (reset! captured {:ctx   ctx
+                                          :tool  (.name ^com.google.adk.tools.BaseTool tool)
+                                          :input input
+                                          :error error})
+                       {:result "tool-fallback"}))]
+      (mock-llm/register-mock-llm-with-call! (str "mock-terr-" n "/.*") "boom-tool")
+      (let [events (doall (adk/run (make-context {}) agent user-message {}))]
+        (is (= "boom-tool" (:tool @captured))
+            "callback receives the failing tool")
+        (is (instance? Throwable (:error @captured))
+            "callback receives the error as a Throwable")
+        (is (some #(some->> % :content :parts (keep :function-response)
+                            (some (fn [fr] (= "tool-fallback"
+                                              (get (:response fr) "result")))))
+                  events)
+            "fallback tool response surfaces in the event stream")))))
