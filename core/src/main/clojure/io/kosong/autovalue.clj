@@ -164,7 +164,7 @@
 (defn- emit-property
   [x {:keys [property-name property-keyword]}]
   (let [accessor (symbol property-name)]
-    `(optional-datafy-assoc ~property-keyword (. ~x ~accessor))))
+    `(~(symbol "io.kosong.autovalue" "optional-datafy-assoc") ~property-keyword (. ~x ~accessor))))
 
 (defn emit-datafy-object
   [cls]
@@ -175,7 +175,7 @@
         props (get-autovalue-properties cls)]
     `(extend-type ~t
        clojure.core.protocols/Datafiable
-       (datafy
+       (~(symbol "datafy")
          [~x]
          (-> (transient {})
              ~@(map (fn [p] (emit-property x p)) props)

@@ -19,7 +19,7 @@
 (clojure.core/extend-type
  com.google.genai.types.ActivityEnd
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -40,7 +40,7 @@
 (clojure.core/extend-type
  com.google.genai.types.ActivityStart
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -83,7 +83,7 @@
 (clojure.core/extend-type
  com.google.genai.types.AggregationOutput
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -161,7 +161,7 @@
 (clojure.core/extend-type
  com.google.genai.types.AggregationResult
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -211,7 +211,7 @@
 (clojure.core/extend-type
  com.google.genai.types.ApiAuth
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -243,7 +243,7 @@
 (clojure.core/extend-type
  com.google.genai.types.ApiAuthApiKeyConfig
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -280,7 +280,7 @@
 (clojure.core/extend-type
  com.google.genai.types.ApiKeyConfig
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -316,7 +316,7 @@
 (clojure.core/extend-type
  com.google.genai.types.AudioTranscriptionConfig
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -382,7 +382,7 @@
 (clojure.core/extend-type
  com.google.genai.types.AuthConfig
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -428,7 +428,7 @@
 (clojure.core/extend-type
  com.google.genai.types.AuthConfigGoogleServiceAccountConfig
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -457,7 +457,7 @@
 (clojure.core/extend-type
  com.google.genai.types.AuthConfigHttpBasicAuthConfig
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -489,7 +489,7 @@
 (clojure.core/extend-type
  com.google.genai.types.AuthConfigOauthConfig
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -522,7 +522,7 @@
 (clojure.core/extend-type
  com.google.genai.types.AuthConfigOidcConfig
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -548,7 +548,7 @@
 (clojure.core/extend-type
  com.google.genai.types.AuthToken
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -585,7 +585,7 @@
 (clojure.core/extend-type
  com.google.genai.types.AutomaticActivityDetection
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -628,7 +628,7 @@
 (clojure.core/extend-type
  com.google.genai.types.AutomaticFunctionCallingConfig
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -670,7 +670,7 @@
 (clojure.core/extend-type
  com.google.genai.types.AutoraterConfig
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -740,7 +740,7 @@
 (clojure.core/extend-type
  com.google.genai.types.BatchJob
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -815,7 +815,7 @@
 (clojure.core/extend-type
  com.google.genai.types.BatchJobDestination
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -868,7 +868,7 @@
 (clojure.core/extend-type
  com.google.genai.types.BatchJobSource
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -901,7 +901,7 @@
 (clojure.core/extend-type
  com.google.genai.types.BigQuerySource
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -926,7 +926,7 @@
 (clojure.core/extend-type
  com.google.genai.types.BleuMetricValue
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -951,7 +951,7 @@
 (clojure.core/extend-type
  com.google.genai.types.BleuSpec
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -980,7 +980,7 @@
 (clojure.core/extend-type
  com.google.genai.types.Blob
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -1024,7 +1024,7 @@
 (clojure.core/extend-type
  com.google.genai.types.CachedContent
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -1079,7 +1079,7 @@
 (clojure.core/extend-type
  com.google.genai.types.CachedContentUsageMetadata
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -1125,7 +1125,7 @@
 (clojure.core/extend-type
  com.google.genai.types.CancelBatchJobConfig
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -1160,7 +1160,7 @@
 (clojure.core/extend-type
  com.google.genai.types.CancelBatchJobParameters
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -1193,7 +1193,7 @@
 (clojure.core/extend-type
  com.google.genai.types.CancelTuningJobConfig
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -1228,7 +1228,7 @@
 (clojure.core/extend-type
  com.google.genai.types.CancelTuningJobParameters
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -1261,7 +1261,7 @@
 (clojure.core/extend-type
  com.google.genai.types.CancelTuningJobResponse
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -1348,7 +1348,7 @@
 (clojure.core/extend-type
  com.google.genai.types.Candidate
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -1403,7 +1403,7 @@
 (clojure.core/extend-type
  com.google.genai.types.Checkpoint
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -1437,7 +1437,7 @@
 (clojure.core/extend-type
  com.google.genai.types.ChunkingConfig
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -1478,7 +1478,7 @@
 (clojure.core/extend-type
  com.google.genai.types.Citation
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -1521,7 +1521,7 @@
 (clojure.core/extend-type
  com.google.genai.types.CitationMetadata
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -1559,7 +1559,7 @@
 (clojure.core/extend-type
  com.google.genai.types.ClientOptions
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -1594,7 +1594,7 @@
 (clojure.core/extend-type
  com.google.genai.types.CodeExecutionResult
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -1630,7 +1630,7 @@
 (clojure.core/extend-type
  com.google.genai.types.CompletionStats
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -1667,7 +1667,7 @@
 (clojure.core/extend-type
  com.google.genai.types.ComputationBasedMetricSpec
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -1702,7 +1702,7 @@
 (clojure.core/extend-type
  com.google.genai.types.ComputeTokensConfig
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -1747,7 +1747,7 @@
 (clojure.core/extend-type
  com.google.genai.types.ComputeTokensParameters
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -1793,7 +1793,7 @@
 (clojure.core/extend-type
  com.google.genai.types.ComputeTokensResponse
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -1834,7 +1834,7 @@
 (clojure.core/extend-type
  com.google.genai.types.ComputeTokensResult
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -1862,7 +1862,7 @@
 (clojure.core/extend-type
  com.google.genai.types.ComputerUse
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -1900,7 +1900,7 @@
 (clojure.core/extend-type
  com.google.genai.types.Content
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -1932,7 +1932,7 @@
 (clojure.core/extend-type
  com.google.genai.types.ContentEmbedding
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -1963,7 +1963,7 @@
 (clojure.core/extend-type
  com.google.genai.types.ContentEmbeddingStatistics
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -2004,7 +2004,7 @@
 (clojure.core/extend-type
  com.google.genai.types.ContentReferenceImage
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -2047,7 +2047,7 @@
 (clojure.core/extend-type
  com.google.genai.types.ContextWindowCompressionConfig
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -2082,7 +2082,7 @@
 (clojure.core/extend-type
  com.google.genai.types.ControlReferenceConfig
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -2131,7 +2131,7 @@
 (clojure.core/extend-type
  com.google.genai.types.ControlReferenceImage
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -2196,7 +2196,7 @@
 (clojure.core/extend-type
  com.google.genai.types.CountTokensConfig
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -2248,7 +2248,7 @@
 (clojure.core/extend-type
  com.google.genai.types.CountTokensParameters
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -2288,7 +2288,7 @@
 (clojure.core/extend-type
  com.google.genai.types.CountTokensResponse
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -2323,7 +2323,7 @@
 (clojure.core/extend-type
  com.google.genai.types.CountTokensResult
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -2373,7 +2373,7 @@
 (clojure.core/extend-type
  com.google.genai.types.CreateAuthTokenConfig
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -2420,7 +2420,7 @@
 (clojure.core/extend-type
  com.google.genai.types.CreateAuthTokenParameters
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -2463,7 +2463,7 @@
 (clojure.core/extend-type
  com.google.genai.types.CreateBatchJobConfig
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -2510,7 +2510,7 @@
 (clojure.core/extend-type
  com.google.genai.types.CreateBatchJobParameters
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -2582,7 +2582,7 @@
 (clojure.core/extend-type
  com.google.genai.types.CreateCachedContentConfig
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -2635,7 +2635,7 @@
 (clojure.core/extend-type
  com.google.genai.types.CreateCachedContentParameters
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -2671,7 +2671,7 @@
 (clojure.core/extend-type
  com.google.genai.types.CreateEmbeddingsBatchJobConfig
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -2718,7 +2718,7 @@
 (clojure.core/extend-type
  com.google.genai.types.CreateEmbeddingsBatchJobParameters
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -2753,7 +2753,7 @@
 (clojure.core/extend-type
  com.google.genai.types.CreateFileConfig
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -2796,7 +2796,7 @@
 (clojure.core/extend-type
  com.google.genai.types.CreateFileParameters
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -2829,7 +2829,7 @@
 (clojure.core/extend-type
  com.google.genai.types.CreateFileResponse
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -2866,7 +2866,7 @@
 (clojure.core/extend-type
  com.google.genai.types.CreateFileSearchStoreConfig
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -2903,7 +2903,7 @@
 (clojure.core/extend-type
  com.google.genai.types.CreateFileSearchStoreParameters
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -3001,7 +3001,7 @@
 (clojure.core/extend-type
  com.google.genai.types.CreateTuningJobConfig
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -3101,7 +3101,7 @@
 (clojure.core/extend-type
  com.google.genai.types.CreateTuningJobParameters
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -3157,7 +3157,7 @@
 (clojure.core/extend-type
  com.google.genai.types.CreateTuningJobParametersPrivate
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -3191,7 +3191,7 @@
 (clojure.core/extend-type
  com.google.genai.types.CustomCodeExecutionResult
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -3218,7 +3218,7 @@
 (clojure.core/extend-type
  com.google.genai.types.CustomCodeExecutionSpec
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -3255,7 +3255,7 @@
 (clojure.core/extend-type
  com.google.genai.types.CustomMetadata
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -3292,7 +3292,7 @@
 (clojure.core/extend-type
  com.google.genai.types.CustomOutput
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -3321,7 +3321,7 @@
 (clojure.core/extend-type
  com.google.genai.types.CustomOutputFormatConfig
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -3366,7 +3366,7 @@
 (clojure.core/extend-type
  com.google.genai.types.DatasetDistribution
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -3401,7 +3401,7 @@
 (clojure.core/extend-type
  com.google.genai.types.DatasetDistributionDistributionBucket
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -3477,7 +3477,7 @@
 (clojure.core/extend-type
  com.google.genai.types.DatasetStats
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -3538,7 +3538,7 @@
 (clojure.core/extend-type
  com.google.genai.types.DeleteBatchJobConfig
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -3573,7 +3573,7 @@
 (clojure.core/extend-type
  com.google.genai.types.DeleteBatchJobParameters
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -3606,7 +3606,7 @@
 (clojure.core/extend-type
  com.google.genai.types.DeleteCachedContentConfig
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -3641,7 +3641,7 @@
 (clojure.core/extend-type
  com.google.genai.types.DeleteCachedContentParameters
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -3674,7 +3674,7 @@
 (clojure.core/extend-type
  com.google.genai.types.DeleteCachedContentResponse
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -3709,7 +3709,7 @@
 (clojure.core/extend-type
  com.google.genai.types.DeleteDocumentConfig
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -3745,7 +3745,7 @@
 (clojure.core/extend-type
  com.google.genai.types.DeleteDocumentParameters
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -3776,7 +3776,7 @@
 (clojure.core/extend-type
  com.google.genai.types.DeleteFileConfig
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -3811,7 +3811,7 @@
 (clojure.core/extend-type
  com.google.genai.types.DeleteFileParameters
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -3844,7 +3844,7 @@
 (clojure.core/extend-type
  com.google.genai.types.DeleteFileResponse
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -3879,7 +3879,7 @@
 (clojure.core/extend-type
  com.google.genai.types.DeleteFileSearchStoreConfig
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -3915,7 +3915,7 @@
 (clojure.core/extend-type
  com.google.genai.types.DeleteFileSearchStoreParameters
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -3948,7 +3948,7 @@
 (clojure.core/extend-type
  com.google.genai.types.DeleteModelConfig
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -3983,7 +3983,7 @@
 (clojure.core/extend-type
  com.google.genai.types.DeleteModelParameters
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -4016,7 +4016,7 @@
 (clojure.core/extend-type
  com.google.genai.types.DeleteModelResponse
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -4058,7 +4058,7 @@
 (clojure.core/extend-type
  com.google.genai.types.DeleteResourceJob
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -4095,7 +4095,7 @@
 (clojure.core/extend-type
  com.google.genai.types.DistillationDataStats
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -4128,7 +4128,7 @@
 (clojure.core/extend-type
  com.google.genai.types.DistillationHyperParameters
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -4187,7 +4187,7 @@
 (clojure.core/extend-type
  com.google.genai.types.DistillationSpec
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -4253,7 +4253,7 @@
 (clojure.core/extend-type
  com.google.genai.types.Document
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -4304,7 +4304,7 @@
 (clojure.core/extend-type
  com.google.genai.types.DownloadFileConfig
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -4334,7 +4334,7 @@
 (clojure.core/extend-type
  com.google.genai.types.DynamicRetrievalConfig
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -4410,7 +4410,7 @@
 (clojure.core/extend-type
  com.google.genai.types.EditImageConfig
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -4503,7 +4503,7 @@
 (clojure.core/extend-type
  com.google.genai.types.EditImageParameters
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -4552,7 +4552,7 @@
 (clojure.core/extend-type
  com.google.genai.types.EditImageResponse
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -4599,7 +4599,7 @@
 (clojure.core/extend-type
  com.google.genai.types.EmbedContentBatch
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -4641,7 +4641,7 @@
 (clojure.core/extend-type
  com.google.genai.types.EmbedContentConfig
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -4683,7 +4683,7 @@
 (clojure.core/extend-type
  com.google.genai.types.EmbedContentMetadata
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -4728,7 +4728,7 @@
 (clojure.core/extend-type
  com.google.genai.types.EmbedContentParameters
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -4782,7 +4782,7 @@
 (clojure.core/extend-type
  com.google.genai.types.EmbedContentParametersPrivate
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -4840,7 +4840,7 @@
 (clojure.core/extend-type
  com.google.genai.types.EmbedContentResponse
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -4879,7 +4879,7 @@
 (clojure.core/extend-type
  com.google.genai.types.EmbeddingsBatchJobSource
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -4907,7 +4907,7 @@
 (clojure.core/extend-type
  com.google.genai.types.EncryptionSpec
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -4935,7 +4935,7 @@
 (clojure.core/extend-type
  com.google.genai.types.Endpoint
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -4968,7 +4968,7 @@
 (clojure.core/extend-type
  com.google.genai.types.EnterpriseWebSearch
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -4997,7 +4997,7 @@
 (clojure.core/extend-type
  com.google.genai.types.EntityLabel
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -5036,7 +5036,7 @@
 (clojure.core/extend-type
  com.google.genai.types.EvaluateDatasetResponse
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -5090,7 +5090,7 @@
 (clojure.core/extend-type
  com.google.genai.types.EvaluateDatasetRun
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -5160,7 +5160,7 @@
 (clojure.core/extend-type
  com.google.genai.types.EvaluationConfig
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -5207,7 +5207,7 @@
 (clojure.core/extend-type
  com.google.genai.types.EvaluationDataset
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -5237,7 +5237,7 @@
 (clojure.core/extend-type
  com.google.genai.types.ExactMatchMetricValue
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -5262,7 +5262,7 @@
 (clojure.core/extend-type
  com.google.genai.types.ExecutableCode
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -5316,7 +5316,7 @@
 (clojure.core/extend-type
  com.google.genai.types.ExternalApi
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -5356,7 +5356,7 @@
 (clojure.core/extend-type
  com.google.genai.types.ExternalApiElasticSearchParams
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -5384,7 +5384,7 @@
 (clojure.core/extend-type
  com.google.genai.types.ExternalApiSimpleSearchParams
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -5415,7 +5415,7 @@
 (clojure.core/extend-type
  com.google.genai.types.FetchPredictOperationConfig
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -5455,7 +5455,7 @@
 (clojure.core/extend-type
  com.google.genai.types.FetchPredictOperationParameters
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -5510,7 +5510,7 @@
 (clojure.core/extend-type
  com.google.genai.types.File
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -5568,7 +5568,7 @@
 (clojure.core/extend-type
  com.google.genai.types.FileData
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -5603,7 +5603,7 @@
 (clojure.core/extend-type
  com.google.genai.types.FileSearch
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -5647,7 +5647,7 @@
 (clojure.core/extend-type
  com.google.genai.types.FileSearchStore
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -5693,7 +5693,7 @@
 (clojure.core/extend-type
  com.google.genai.types.FileStatus
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -5733,7 +5733,7 @@
 (clojure.core/extend-type
  com.google.genai.types.FullFineTuningSpec
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -5781,7 +5781,7 @@
 (clojure.core/extend-type
  com.google.genai.types.FunctionCall
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -5820,7 +5820,7 @@
 (clojure.core/extend-type
  com.google.genai.types.FunctionCallingConfig
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -5871,7 +5871,7 @@
 (clojure.core/extend-type
  com.google.genai.types.FunctionDeclaration
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -5926,7 +5926,7 @@
 (clojure.core/extend-type
  com.google.genai.types.FunctionResponse
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -5964,7 +5964,7 @@
 (clojure.core/extend-type
  com.google.genai.types.FunctionResponseBlob
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -5999,7 +5999,7 @@
 (clojure.core/extend-type
  com.google.genai.types.FunctionResponseFileData
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -6045,7 +6045,7 @@
 (clojure.core/extend-type
  com.google.genai.types.FunctionResponsePart
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -6075,7 +6075,7 @@
 (clojure.core/extend-type
  com.google.genai.types.GcsDestination
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -6100,7 +6100,7 @@
 (clojure.core/extend-type
  com.google.genai.types.GcsSource
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -6146,7 +6146,7 @@
 (clojure.core/extend-type
  com.google.genai.types.GeminiPreferenceExample
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -6181,7 +6181,7 @@
 (clojure.core/extend-type
  com.google.genai.types.GeminiPreferenceExampleCompletion
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -6362,7 +6362,7 @@
 (clojure.core/extend-type
  com.google.genai.types.GenerateContentConfig
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -6491,7 +6491,7 @@
 (clojure.core/extend-type
  com.google.genai.types.GenerateContentParameters
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -6566,7 +6566,7 @@
 (clojure.core/extend-type
  com.google.genai.types.GenerateContentResponse
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -6632,7 +6632,7 @@
 (clojure.core/extend-type
  com.google.genai.types.GenerateContentResponsePromptFeedback
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -6734,7 +6734,7 @@
 (clojure.core/extend-type
  com.google.genai.types.GenerateContentResponseUsageMetadata
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -6841,7 +6841,7 @@
 (clojure.core/extend-type
  com.google.genai.types.GenerateImagesConfig
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -6922,7 +6922,7 @@
 (clojure.core/extend-type
  com.google.genai.types.GenerateImagesParameters
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -6976,7 +6976,7 @@
 (clojure.core/extend-type
  com.google.genai.types.GenerateImagesResponse
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -7075,7 +7075,7 @@
 (clojure.core/extend-type
  com.google.genai.types.GenerateVideosConfig
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -7155,7 +7155,7 @@
 (clojure.core/extend-type
  com.google.genai.types.GenerateVideosOperation
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -7213,7 +7213,7 @@
 (clojure.core/extend-type
  com.google.genai.types.GenerateVideosParameters
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -7260,7 +7260,7 @@
 (clojure.core/extend-type
  com.google.genai.types.GenerateVideosResponse
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -7305,7 +7305,7 @@
 (clojure.core/extend-type
  com.google.genai.types.GenerateVideosSource
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -7349,7 +7349,7 @@
 (clojure.core/extend-type
  com.google.genai.types.GeneratedImage
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -7400,7 +7400,7 @@
 (clojure.core/extend-type
  com.google.genai.types.GeneratedImageMask
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -7429,7 +7429,7 @@
 (clojure.core/extend-type
  com.google.genai.types.GeneratedVideo
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -7535,7 +7535,7 @@
 (clojure.core/extend-type
  com.google.genai.types.GenerationConfig
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -7635,7 +7635,7 @@
 (clojure.core/extend-type
  com.google.genai.types.GenerationConfigRoutingConfig
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -7668,7 +7668,7 @@
 (clojure.core/extend-type
  com.google.genai.types.GenerationConfigRoutingConfigAutoRoutingMode
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -7696,7 +7696,7 @@
 (clojure.core/extend-type
  com.google.genai.types.GenerationConfigRoutingConfigManualRoutingMode
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -7730,7 +7730,7 @@
 (clojure.core/extend-type
  com.google.genai.types.GetBatchJobConfig
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -7765,7 +7765,7 @@
 (clojure.core/extend-type
  com.google.genai.types.GetBatchJobParameters
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -7798,7 +7798,7 @@
 (clojure.core/extend-type
  com.google.genai.types.GetCachedContentConfig
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -7833,7 +7833,7 @@
 (clojure.core/extend-type
  com.google.genai.types.GetCachedContentParameters
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -7866,7 +7866,7 @@
 (clojure.core/extend-type
  com.google.genai.types.GetDocumentConfig
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -7901,7 +7901,7 @@
 (clojure.core/extend-type
  com.google.genai.types.GetDocumentParameters
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -7932,7 +7932,7 @@
 (clojure.core/extend-type
  com.google.genai.types.GetFileConfig
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -7967,7 +7967,7 @@
 (clojure.core/extend-type
  com.google.genai.types.GetFileParameters
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -8000,7 +8000,7 @@
 (clojure.core/extend-type
  com.google.genai.types.GetFileSearchStoreConfig
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -8035,7 +8035,7 @@
 (clojure.core/extend-type
  com.google.genai.types.GetFileSearchStoreParameters
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -8066,7 +8066,7 @@
 (clojure.core/extend-type
  com.google.genai.types.GetModelConfig
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -8101,7 +8101,7 @@
 (clojure.core/extend-type
  com.google.genai.types.GetModelParameters
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -8134,7 +8134,7 @@
 (clojure.core/extend-type
  com.google.genai.types.GetOperationConfig
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -8171,7 +8171,7 @@
 (clojure.core/extend-type
  com.google.genai.types.GetOperationParameters
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -8206,7 +8206,7 @@
 (clojure.core/extend-type
  com.google.genai.types.GetTuningJobConfig
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -8241,7 +8241,7 @@
 (clojure.core/extend-type
  com.google.genai.types.GetTuningJobParameters
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -8273,7 +8273,7 @@
 (clojure.core/extend-type
  com.google.genai.types.GoogleMaps
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -8303,7 +8303,7 @@
 (clojure.core/extend-type
  com.google.genai.types.GoogleRpcStatus
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -8347,7 +8347,7 @@
 (clojure.core/extend-type
  com.google.genai.types.GoogleSearch
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -8390,7 +8390,7 @@
 (clojure.core/extend-type
  com.google.genai.types.GoogleSearchRetrieval
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -8417,7 +8417,7 @@
 (clojure.core/extend-type
  com.google.genai.types.GoogleTypeDate
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -8473,7 +8473,7 @@
 (clojure.core/extend-type
  com.google.genai.types.GroundingChunk
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -8506,7 +8506,7 @@
 (clojure.core/extend-type
  com.google.genai.types.GroundingChunkImage
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -8549,7 +8549,7 @@
 (clojure.core/extend-type
  com.google.genai.types.GroundingChunkMaps
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -8607,7 +8607,7 @@
 (clojure.core/extend-type
  com.google.genai.types.GroundingChunkMapsPlaceAnswerSources
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -8645,7 +8645,7 @@
 (clojure.core/extend-type
  com.google.genai.types.GroundingChunkMapsPlaceAnswerSourcesAuthorAttribution
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -8696,7 +8696,7 @@
 (clojure.core/extend-type
  com.google.genai.types.GroundingChunkMapsPlaceAnswerSourcesReviewSnippet
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -8748,7 +8748,7 @@
 (clojure.core/extend-type
  com.google.genai.types.GroundingChunkRetrievedContext
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -8783,7 +8783,7 @@
 (clojure.core/extend-type
  com.google.genai.types.GroundingChunkWeb
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -8873,7 +8873,7 @@
 (clojure.core/extend-type
  com.google.genai.types.GroundingMetadata
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -8928,7 +8928,7 @@
 (clojure.core/extend-type
  com.google.genai.types.GroundingMetadataSourceFlaggingUri
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -8967,7 +8967,7 @@
 (clojure.core/extend-type
  com.google.genai.types.GroundingSupport
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -9011,7 +9011,7 @@
 (clojure.core/extend-type
  com.google.genai.types.HttpOptions
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -9049,7 +9049,7 @@
 (clojure.core/extend-type
  com.google.genai.types.HttpResponse
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -9082,7 +9082,7 @@
 (clojure.core/extend-type
  com.google.genai.types.HttpRetryOptions
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -9118,7 +9118,7 @@
 (clojure.core/extend-type
  com.google.genai.types.Image
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -9170,7 +9170,7 @@
 (clojure.core/extend-type
  com.google.genai.types.ImageConfig
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -9218,7 +9218,7 @@
 (clojure.core/extend-type
  com.google.genai.types.ImageConfigImageOutputOptions
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -9245,7 +9245,7 @@
 (clojure.core/extend-type
  com.google.genai.types.ImageSearch
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -9294,7 +9294,7 @@
 (clojure.core/extend-type
  com.google.genai.types.ImportFileConfig
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -9338,7 +9338,7 @@
 (clojure.core/extend-type
  com.google.genai.types.ImportFileOperation
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -9378,7 +9378,7 @@
 (clojure.core/extend-type
  com.google.genai.types.ImportFileParameters
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -9420,7 +9420,7 @@
 (clojure.core/extend-type
  com.google.genai.types.ImportFileResponse
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -9464,7 +9464,7 @@
 (clojure.core/extend-type
  com.google.genai.types.InlinedEmbedContentResponse
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -9507,7 +9507,7 @@
 (clojure.core/extend-type
  com.google.genai.types.InlinedRequest
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -9547,7 +9547,7 @@
 (clojure.core/extend-type
  com.google.genai.types.InlinedResponse
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -9582,7 +9582,7 @@
 (clojure.core/extend-type
  com.google.genai.types.InternalRegisterFilesParameters
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -9607,7 +9607,7 @@
 (clojure.core/extend-type
  com.google.genai.types.Interval
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -9635,7 +9635,7 @@
 (clojure.core/extend-type
  com.google.genai.types.JobError
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -9697,7 +9697,7 @@
 (clojure.core/extend-type
  com.google.genai.types.LLMBasedMetricSpec
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -9741,7 +9741,7 @@
 (clojure.core/extend-type
  com.google.genai.types.LatLng
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -9781,7 +9781,7 @@
 (clojure.core/extend-type
  com.google.genai.types.ListBatchJobsConfig
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -9822,7 +9822,7 @@
 (clojure.core/extend-type
  com.google.genai.types.ListBatchJobsParameters
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -9867,7 +9867,7 @@
 (clojure.core/extend-type
  com.google.genai.types.ListBatchJobsResponse
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -9911,7 +9911,7 @@
 (clojure.core/extend-type
  com.google.genai.types.ListCachedContentsConfig
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -9951,7 +9951,7 @@
 (clojure.core/extend-type
  com.google.genai.types.ListCachedContentsParameters
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -9998,7 +9998,7 @@
 (clojure.core/extend-type
  com.google.genai.types.ListCachedContentsResponse
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -10042,7 +10042,7 @@
 (clojure.core/extend-type
  com.google.genai.types.ListDocumentsConfig
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -10083,7 +10083,7 @@
 (clojure.core/extend-type
  com.google.genai.types.ListDocumentsParameters
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -10129,7 +10129,7 @@
 (clojure.core/extend-type
  com.google.genai.types.ListDocumentsResponse
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -10173,7 +10173,7 @@
 (clojure.core/extend-type
  com.google.genai.types.ListFileSearchStoresConfig
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -10213,7 +10213,7 @@
 (clojure.core/extend-type
  com.google.genai.types.ListFileSearchStoresParameters
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -10260,7 +10260,7 @@
 (clojure.core/extend-type
  com.google.genai.types.ListFileSearchStoresResponse
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -10302,7 +10302,7 @@
 (clojure.core/extend-type
  com.google.genai.types.ListFilesConfig
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -10342,7 +10342,7 @@
 (clojure.core/extend-type
  com.google.genai.types.ListFilesParameters
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -10387,7 +10387,7 @@
 (clojure.core/extend-type
  com.google.genai.types.ListFilesResponse
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -10429,7 +10429,7 @@
 (clojure.core/extend-type
  com.google.genai.types.ListModelsConfig
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -10473,7 +10473,7 @@
 (clojure.core/extend-type
  com.google.genai.types.ListModelsParameters
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -10518,7 +10518,7 @@
 (clojure.core/extend-type
  com.google.genai.types.ListModelsResponse
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -10561,7 +10561,7 @@
 (clojure.core/extend-type
  com.google.genai.types.ListTuningJobsConfig
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -10602,7 +10602,7 @@
 (clojure.core/extend-type
  com.google.genai.types.ListTuningJobsParameters
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -10647,7 +10647,7 @@
 (clojure.core/extend-type
  com.google.genai.types.ListTuningJobsResponse
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -10692,7 +10692,7 @@
 (clojure.core/extend-type
  com.google.genai.types.LiveClientContent
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -10759,7 +10759,7 @@
 (clojure.core/extend-type
  com.google.genai.types.LiveClientMessage
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -10837,7 +10837,7 @@
 (clojure.core/extend-type
  com.google.genai.types.LiveClientRealtimeInput
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -10949,7 +10949,7 @@
 (clojure.core/extend-type
  com.google.genai.types.LiveClientSetup
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -11013,7 +11013,7 @@
 (clojure.core/extend-type
  com.google.genai.types.LiveClientToolResponse
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -11148,7 +11148,7 @@
 (clojure.core/extend-type
  com.google.genai.types.LiveConnectConfig
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -11232,7 +11232,7 @@
 (clojure.core/extend-type
  com.google.genai.types.LiveConnectConstraints
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -11266,7 +11266,7 @@
 (clojure.core/extend-type
  com.google.genai.types.LiveConnectParameters
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -11304,7 +11304,7 @@
 (clojure.core/extend-type
  com.google.genai.types.LiveSendClientContentParameters
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -11369,7 +11369,7 @@
 (clojure.core/extend-type
  com.google.genai.types.LiveSendRealtimeInputParameters
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -11417,7 +11417,7 @@
 (clojure.core/extend-type
  com.google.genai.types.LiveSendToolResponseParameters
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -11494,7 +11494,7 @@
 (clojure.core/extend-type
  com.google.genai.types.LiveServerContent
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -11546,7 +11546,7 @@
 (clojure.core/extend-type
  com.google.genai.types.LiveServerGoAway
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -11644,7 +11644,7 @@
 (clojure.core/extend-type
  com.google.genai.types.LiveServerMessage
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -11698,7 +11698,7 @@
 (clojure.core/extend-type
  com.google.genai.types.LiveServerSessionResumptionUpdate
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -11731,7 +11731,7 @@
 (clojure.core/extend-type
  com.google.genai.types.LiveServerSetupComplete
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -11769,7 +11769,7 @@
 (clojure.core/extend-type
  com.google.genai.types.LiveServerToolCall
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -11796,7 +11796,7 @@
 (clojure.core/extend-type
  com.google.genai.types.LiveServerToolCallCancellation
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -11842,7 +11842,7 @@
 (clojure.core/extend-type
  com.google.genai.types.LogprobsResult
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -11876,7 +11876,7 @@
 (clojure.core/extend-type
  com.google.genai.types.LogprobsResultCandidate
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -11916,7 +11916,7 @@
 (clojure.core/extend-type
  com.google.genai.types.LogprobsResultTopCandidates
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -11949,7 +11949,7 @@
 (clojure.core/extend-type
  com.google.genai.types.MaskReferenceConfig
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -12001,7 +12001,7 @@
 (clojure.core/extend-type
  com.google.genai.types.MaskReferenceImage
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -12041,7 +12041,7 @@
 (clojure.core/extend-type
  com.google.genai.types.McpServer
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -12076,7 +12076,7 @@
 (clojure.core/extend-type
  com.google.genai.types.Metric
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -12113,7 +12113,7 @@
 (clojure.core/extend-type
  com.google.genai.types.ModalityTokenCount
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -12196,7 +12196,7 @@
 (clojure.core/extend-type
  com.google.genai.types.Model
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -12262,7 +12262,7 @@
 (clojure.core/extend-type
  com.google.genai.types.ModelArmorConfig
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -12294,7 +12294,7 @@
 (clojure.core/extend-type
  com.google.genai.types.ModelSelectionConfig
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -12332,7 +12332,7 @@
 (clojure.core/extend-type
  com.google.genai.types.MultiSpeakerVoiceConfig
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -12364,7 +12364,7 @@
 (clojure.core/extend-type
  com.google.genai.types.OutputConfig
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -12391,7 +12391,7 @@
 (clojure.core/extend-type
  com.google.genai.types.OutputInfo
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -12429,7 +12429,7 @@
 (clojure.core/extend-type
  com.google.genai.types.PairwiseMetricResult
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -12481,7 +12481,7 @@
 (clojure.core/extend-type
  com.google.genai.types.PairwiseMetricSpec
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -12596,7 +12596,7 @@
 (clojure.core/extend-type
  com.google.genai.types.Part
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -12658,7 +12658,7 @@
 (clojure.core/extend-type
  com.google.genai.types.PartMediaResolution
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -12695,7 +12695,7 @@
 (clojure.core/extend-type
  com.google.genai.types.PartialArg
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -12745,7 +12745,7 @@
 (clojure.core/extend-type
  com.google.genai.types.PartnerModelTuningSpec
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -12787,7 +12787,7 @@
 (clojure.core/extend-type
  com.google.genai.types.PointwiseMetricResult
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -12831,7 +12831,7 @@
 (clojure.core/extend-type
  com.google.genai.types.PointwiseMetricSpec
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -12868,7 +12868,7 @@
 (clojure.core/extend-type
  com.google.genai.types.PreTunedModel
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -12901,7 +12901,7 @@
 (clojure.core/extend-type
  com.google.genai.types.PrebuiltVoiceConfig
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -12933,7 +12933,7 @@
 (clojure.core/extend-type
  com.google.genai.types.PredefinedMetricSpec
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -13021,7 +13021,7 @@
 (clojure.core/extend-type
  com.google.genai.types.PreferenceOptimizationDataStats
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -13083,7 +13083,7 @@
 (clojure.core/extend-type
  com.google.genai.types.PreferenceOptimizationHyperParameters
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -13133,7 +13133,7 @@
 (clojure.core/extend-type
  com.google.genai.types.PreferenceOptimizationSpec
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -13171,7 +13171,7 @@
 (clojure.core/extend-type
  com.google.genai.types.ProactivityConfig
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -13201,7 +13201,7 @@
 (clojure.core/extend-type
  com.google.genai.types.ProductImage
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -13230,7 +13230,7 @@
 (clojure.core/extend-type
  com.google.genai.types.ProxyOptions
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -13265,7 +13265,7 @@
 (clojure.core/extend-type
  com.google.genai.types.RagChunk
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -13296,7 +13296,7 @@
 (clojure.core/extend-type
  com.google.genai.types.RagChunkPageSpan
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -13350,7 +13350,7 @@
 (clojure.core/extend-type
  com.google.genai.types.RagRetrievalConfig
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -13388,7 +13388,7 @@
 (clojure.core/extend-type
  com.google.genai.types.RagRetrievalConfigFilter
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -13421,7 +13421,7 @@
 (clojure.core/extend-type
  com.google.genai.types.RagRetrievalConfigHybridSearch
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -13461,7 +13461,7 @@
 (clojure.core/extend-type
  com.google.genai.types.RagRetrievalConfigRanking
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -13492,7 +13492,7 @@
 (clojure.core/extend-type
  com.google.genai.types.RagRetrievalConfigRankingLlmRanker
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -13520,7 +13520,7 @@
 (clojure.core/extend-type
  com.google.genai.types.RagRetrievalConfigRankingRankService
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -13545,7 +13545,7 @@
 (clojure.core/extend-type
  com.google.genai.types.RawOutput
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -13583,7 +13583,7 @@
 (clojure.core/extend-type
  com.google.genai.types.RawReferenceImage
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -13629,7 +13629,7 @@
 (clojure.core/extend-type
  com.google.genai.types.RealtimeInputConfig
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -13698,7 +13698,7 @@
 (clojure.core/extend-type
  com.google.genai.types.RecontextImageConfig
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -13770,7 +13770,7 @@
 (clojure.core/extend-type
  com.google.genai.types.RecontextImageParameters
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -13808,7 +13808,7 @@
 (clojure.core/extend-type
  com.google.genai.types.RecontextImageResponse
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -13853,7 +13853,7 @@
 (clojure.core/extend-type
  com.google.genai.types.RecontextImageSource
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -13927,7 +13927,7 @@
 (clojure.core/extend-type
  com.google.genai.types.ReferenceImageAPI
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -13982,7 +13982,7 @@
 (clojure.core/extend-type
  com.google.genai.types.RegisterFilesConfig
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -14029,7 +14029,7 @@
 (clojure.core/extend-type
  com.google.genai.types.RegisterFilesResponse
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -14067,7 +14067,7 @@
 (clojure.core/extend-type
  com.google.genai.types.ReplayFile
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -14112,7 +14112,7 @@
 (clojure.core/extend-type
  com.google.genai.types.ReplayInteraction
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -14141,7 +14141,7 @@
 (clojure.core/extend-type
  com.google.genai.types.ReplayRequest
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -14178,7 +14178,7 @@
 (clojure.core/extend-type
  com.google.genai.types.ReplayResponse
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -14215,7 +14215,7 @@
 (clojure.core/extend-type
  com.google.genai.types.ReplicatedVoiceConfig
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -14269,7 +14269,7 @@
 (clojure.core/extend-type
  com.google.genai.types.Retrieval
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -14311,7 +14311,7 @@
 (clojure.core/extend-type
  com.google.genai.types.RetrievalConfig
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -14341,7 +14341,7 @@
 (clojure.core/extend-type
  com.google.genai.types.RetrievalMetadata
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -14366,7 +14366,7 @@
 (clojure.core/extend-type
  com.google.genai.types.RougeMetricValue
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -14393,7 +14393,7 @@
 (clojure.core/extend-type
  com.google.genai.types.RougeSpec
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -14442,7 +14442,7 @@
 (clojure.core/extend-type
  com.google.genai.types.RubricGenerationSpec
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -14480,7 +14480,7 @@
 (clojure.core/extend-type
  com.google.genai.types.SafetyAttributes
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -14521,7 +14521,7 @@
 (clojure.core/extend-type
  com.google.genai.types.SafetyRating
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -14560,7 +14560,7 @@
 (clojure.core/extend-type
  com.google.genai.types.SafetySetting
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -14628,7 +14628,7 @@
 (clojure.core/extend-type
  com.google.genai.types.Schema
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -14695,7 +14695,7 @@
 (clojure.core/extend-type
  com.google.genai.types.ScribbleImage
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -14721,7 +14721,7 @@
 (clojure.core/extend-type
  com.google.genai.types.SearchEntryPoint
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -14760,7 +14760,7 @@
 (clojure.core/extend-type
  com.google.genai.types.SearchTypes
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -14797,7 +14797,7 @@
 (clojure.core/extend-type
  com.google.genai.types.Segment
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -14852,7 +14852,7 @@
 (clojure.core/extend-type
  com.google.genai.types.SegmentImageConfig
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -14909,7 +14909,7 @@
 (clojure.core/extend-type
  com.google.genai.types.SegmentImageParameters
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -14947,7 +14947,7 @@
 (clojure.core/extend-type
  com.google.genai.types.SegmentImageResponse
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -14988,7 +14988,7 @@
 (clojure.core/extend-type
  com.google.genai.types.SegmentImageSource
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -15018,7 +15018,7 @@
 (clojure.core/extend-type
  com.google.genai.types.SessionResumptionConfig
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -15054,7 +15054,7 @@
 (clojure.core/extend-type
  com.google.genai.types.SingleEmbedContentResponse
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -15084,7 +15084,7 @@
 (clojure.core/extend-type
  com.google.genai.types.SlidingWindow
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -15119,7 +15119,7 @@
 (clojure.core/extend-type
  com.google.genai.types.SpeakerVoiceConfig
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -15163,7 +15163,7 @@
 (clojure.core/extend-type
  com.google.genai.types.SpeechConfig
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -15204,7 +15204,7 @@
 (clojure.core/extend-type
  com.google.genai.types.StreamableHttpTransport
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -15235,7 +15235,7 @@
 (clojure.core/extend-type
  com.google.genai.types.StringList
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -15262,7 +15262,7 @@
 (clojure.core/extend-type
  com.google.genai.types.StyleReferenceConfig
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -15308,7 +15308,7 @@
 (clojure.core/extend-type
  com.google.genai.types.StyleReferenceImage
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -15347,7 +15347,7 @@
 (clojure.core/extend-type
  com.google.genai.types.SubjectReferenceConfig
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -15396,7 +15396,7 @@
 (clojure.core/extend-type
  com.google.genai.types.SubjectReferenceImage
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -15440,7 +15440,7 @@
 (clojure.core/extend-type
  com.google.genai.types.SupervisedHyperParameters
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -15536,7 +15536,7 @@
 (clojure.core/extend-type
  com.google.genai.types.SupervisedTuningDataStats
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -15618,7 +15618,7 @@
 (clojure.core/extend-type
  com.google.genai.types.SupervisedTuningDatasetDistribution
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -15656,7 +15656,7 @@
 (clojure.core/extend-type
  com.google.genai.types.SupervisedTuningDatasetDistributionDatasetBucket
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -15700,7 +15700,7 @@
 (clojure.core/extend-type
  com.google.genai.types.SupervisedTuningSpec
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -15753,7 +15753,7 @@
 (clojure.core/extend-type
  com.google.genai.types.TestTableFile
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -15800,7 +15800,7 @@
 (clojure.core/extend-type
  com.google.genai.types.TestTableItem
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -15852,7 +15852,7 @@
 (clojure.core/extend-type
  com.google.genai.types.ThinkingConfig
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -15885,7 +15885,7 @@
 (clojure.core/extend-type
  com.google.genai.types.TokensInfo
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -16006,7 +16006,7 @@
 (clojure.core/extend-type
  com.google.genai.types.Tool
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -16069,7 +16069,7 @@
 (clojure.core/extend-type
  com.google.genai.types.ToolCall
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -16097,7 +16097,7 @@
 (clojure.core/extend-type
  com.google.genai.types.ToolCodeExecution
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -16137,7 +16137,7 @@
 (clojure.core/extend-type
  com.google.genai.types.ToolConfig
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -16173,7 +16173,7 @@
 (clojure.core/extend-type
  com.google.genai.types.ToolParallelAiSearch
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -16201,7 +16201,7 @@
 (clojure.core/extend-type
  com.google.genai.types.ToolResponse
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -16229,7 +16229,7 @@
 (clojure.core/extend-type
  com.google.genai.types.Transcription
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -16266,7 +16266,7 @@
 (clojure.core/extend-type
  com.google.genai.types.TunedModel
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -16300,7 +16300,7 @@
 (clojure.core/extend-type
  com.google.genai.types.TunedModelCheckpoint
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -16330,7 +16330,7 @@
 (clojure.core/extend-type
  com.google.genai.types.TunedModelInfo
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -16384,7 +16384,7 @@
 (clojure.core/extend-type
  com.google.genai.types.TuningDataStats
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -16430,7 +16430,7 @@
 (clojure.core/extend-type
  com.google.genai.types.TuningDataset
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -16458,7 +16458,7 @@
 (clojure.core/extend-type
  com.google.genai.types.TuningExample
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -16623,7 +16623,7 @@
 (clojure.core/extend-type
  com.google.genai.types.TuningJob
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -16736,7 +16736,7 @@
 (clojure.core/extend-type
  com.google.genai.types.TuningOperation
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -16770,7 +16770,7 @@
 (clojure.core/extend-type
  com.google.genai.types.TuningValidationDataset
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -16847,7 +16847,7 @@
 (clojure.core/extend-type
  com.google.genai.types.UnifiedMetric
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -16901,7 +16901,7 @@
 (clojure.core/extend-type
  com.google.genai.types.UpdateCachedContentConfig
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -16940,7 +16940,7 @@
 (clojure.core/extend-type
  com.google.genai.types.UpdateCachedContentParameters
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -16980,7 +16980,7 @@
 (clojure.core/extend-type
  com.google.genai.types.UpdateModelConfig
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -17024,7 +17024,7 @@
 (clojure.core/extend-type
  com.google.genai.types.UpdateModelParameters
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -17060,7 +17060,7 @@
 (clojure.core/extend-type
  com.google.genai.types.UploadFileConfig
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -17128,7 +17128,7 @@
 (clojure.core/extend-type
  com.google.genai.types.UploadToFileSearchStoreConfig
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -17182,7 +17182,7 @@
 (clojure.core/extend-type
  com.google.genai.types.UploadToFileSearchStoreOperation
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -17222,7 +17222,7 @@
 (clojure.core/extend-type
  com.google.genai.types.UploadToFileSearchStoreParameters
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -17261,7 +17261,7 @@
 (clojure.core/extend-type
  com.google.genai.types.UploadToFileSearchStoreResponse
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -17300,7 +17300,7 @@
 (clojure.core/extend-type
  com.google.genai.types.UploadToFileSearchStoreResumableResponse
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -17363,7 +17363,7 @@
 (clojure.core/extend-type
  com.google.genai.types.UpscaleImageAPIConfig
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -17436,7 +17436,7 @@
 (clojure.core/extend-type
  com.google.genai.types.UpscaleImageAPIParameters
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -17498,7 +17498,7 @@
 (clojure.core/extend-type
  com.google.genai.types.UpscaleImageConfig
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -17567,7 +17567,7 @@
 (clojure.core/extend-type
  com.google.genai.types.UpscaleImageParameters
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -17616,7 +17616,7 @@
 (clojure.core/extend-type
  com.google.genai.types.UpscaleImageResponse
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -17643,7 +17643,7 @@
 (clojure.core/extend-type
  com.google.genai.types.UrlContext
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -17678,7 +17678,7 @@
 (clojure.core/extend-type
  com.google.genai.types.UrlContextMetadata
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -17708,7 +17708,7 @@
 (clojure.core/extend-type
  com.google.genai.types.UrlMetadata
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -17804,7 +17804,7 @@
 (clojure.core/extend-type
  com.google.genai.types.UsageMetadata
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -17868,7 +17868,7 @@
 (clojure.core/extend-type
  com.google.genai.types.VeoHyperParameters
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -17915,7 +17915,7 @@
 (clojure.core/extend-type
  com.google.genai.types.VeoTuningSpec
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -17963,7 +17963,7 @@
 (clojure.core/extend-type
  com.google.genai.types.VertexAISearch
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -17999,7 +17999,7 @@
 (clojure.core/extend-type
  com.google.genai.types.VertexAISearchDataStoreSpec
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -18054,7 +18054,7 @@
 (clojure.core/extend-type
  com.google.genai.types.VertexRagStore
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -18097,7 +18097,7 @@
 (clojure.core/extend-type
  com.google.genai.types.VertexRagStoreRagResource
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -18127,7 +18127,7 @@
 (clojure.core/extend-type
  com.google.genai.types.Video
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -18164,7 +18164,7 @@
 (clojure.core/extend-type
  com.google.genai.types.VideoGenerationMask
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -18200,7 +18200,7 @@
 (clojure.core/extend-type
  com.google.genai.types.VideoGenerationReferenceImage
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -18230,7 +18230,7 @@
 (clojure.core/extend-type
  com.google.genai.types.VideoMetadata
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -18261,7 +18261,7 @@
 (clojure.core/extend-type
  com.google.genai.types.VoiceActivity
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -18290,7 +18290,7 @@
 (clojure.core/extend-type
  com.google.genai.types.VoiceActivityDetectionSignal
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -18330,7 +18330,7 @@
 (clojure.core/extend-type
  com.google.genai.types.VoiceConfig
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -18357,7 +18357,7 @@
 (clojure.core/extend-type
  com.google.genai.types.WebSearch
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
@@ -18384,7 +18384,7 @@
 (clojure.core/extend-type
  com.google.genai.types.WhiteSpaceConfig
  clojure.core.protocols/Datafiable
- (clojure.datafy/datafy
+ (datafy
   [x]
   (clojure.core/->
    (clojure.core/transient {})
